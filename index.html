@@ -15,17 +15,14 @@
 
     /* CSS KHUSUS CETAK/PRINT (Isolasi Area Cetak) */
     @media print {
-      /* Sembunyikan semua elemen halaman secara default */
       body * {
         visibility: hidden !important;
       }
       
-      /* Tampilkan hanya area yang diberi class .printable-area beserta descends-nya */
       .printable-area, .printable-area * {
         visibility: visible !important;
       }
 
-      /* Posisikan area cetak rapi di paling atas kertas */
       .printable-area {
         position: absolute !important;
         left: 0 !important;
@@ -36,7 +33,6 @@
         background: #fff !important;
       }
 
-      /* Sembunyikan elemen non-cetak di dalam modal (misal tombol close/action) */
       .no-print {
         display: none !important;
       }
@@ -44,6 +40,12 @@
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- ANIMASI LOADING OVERLAY -->
+  <div id="loading-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex-col items-center justify-center text-white">
+    <div class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-3"></div>
+    <p class="text-sm font-semibold tracking-wide" id="loading-text">Memproses data...</p>
+  </div>
 
   <!-- HEADER & NAVBAR -->
   <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-40">
@@ -71,6 +73,12 @@
 
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 py-8 w-full space-y-8 flex-grow">
+
+    <!-- STATUS BANNER (Tampil Jika URL Apps Script Belum Dimasukkan) -->
+    <div id="sheets-notice" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs flex justify-between items-center">
+      <span>⚠️ <strong>Mode Demo / Offline:</strong> URL Google Apps Script belum diisi pada script. Menggunakan data contoh lokal.</span>
+      <button onclick="document.getElementById('sheets-notice').remove()" class="text-amber-600 hover:text-amber-900 font-bold ml-2">✕</button>
+    </div>
 
     <!-- RINGKASAN STATISTIK (DASHBOARD) -->
     <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -178,7 +186,7 @@
   <footer class="bg-slate-900 text-slate-400 text-xs text-center py-6 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 space-y-2">
       <p class="font-medium text-slate-300">Asosiasi UPK NKRI - Sistem Pengelolaan Aset & Akuntabilitas</p>
-      <p>&copy; 2026 Asosiasi UPK NKRI. Siap Terintegrasi ke Google Sheets & Hosted on GitHub Pages.</p>
+      <p>&copy; 2026 Asosiasi UPK NKRI. Terintegrasi ke Google Sheets & Hosted on GitHub Pages.</p>
     </div>
   </footer>
 
@@ -203,9 +211,8 @@
     </div>
   </div>
 
-  <!-- MODAL 2: TEMPLATE CETAK KWITANSI (SOLUSI FIX PRINTING) -->
+  <!-- MODAL 2: TEMPLATE CETAK KWITANSI -->
   <div id="modal-kwitansi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <!-- Area ini akan diisolasi oleh CSS @media print saat dicetak -->
     <div id="print-kwitansi-area" class="bg-white rounded-xl shadow-xl border border-slate-300 p-8 w-full max-w-xl space-y-6">
       
       <!-- Header Kwitansi -->
@@ -254,7 +261,7 @@
         </div>
       </div>
 
-      <!-- Tombol Aksi (Otomatis Sembunyi Saat Print Karena Class 'no-print') -->
+      <!-- Tombol Aksi -->
       <div class="no-print flex justify-end gap-2 pt-4 border-t border-slate-100">
         <button onclick="tutupModalKwitansi()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Tutup</button>
         <button onclick="eksekusiCetakKwitansi()" class="px-4 py-2 text-xs font-medium bg-slate-800 text-white hover:bg-slate-700 rounded-lg flex items-center gap-1">
@@ -266,9 +273,15 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- JAVASCRIPT LOGIC INTEGRATION -->
   <script>
-    // --- 1. DATA AWAL (DEFAULT) ---
+    // ==========================================
+    // 1. KONFIGURASI GOOGLE APPS SCRIPT URL
+    // Tempelkan URL Web App hasil deploy Apps Script Anda di dalam petik dua di bawah ini:
+    // ==========================================
+    const SCRIPT_URL = ""; 
+
+    // Data cadangan jika Google Sheets belum terhubung (Mode Demo)
     const defaultDataUPK = [
       { nama: 'UPK Maju Bersama (Kec. Kabamaju)', awal: 450000000, sekarang: 1850000000, status: 'Terverifikasi', bentuk: 'PT LKM Demikian Mandiri (AHU-00138/2022)', iuranLunas: true, tglLunas: '14 Jan 2026' },
       { nama: 'UPK Sejahtera (Kec. Pondok Gede)', awal: 700000000, sekarang: 2100000000, status: 'Terverifikasi', bentuk: 'Koperasi LKM (AHU-00466/2021)', iuranLunas: true, tglLunas: '20 Jan 2026' },
@@ -282,27 +295,63 @@
     ];
 
     // --- 2. STATE MANAGEMENT ---
-    let dbUPK = JSON.parse(localStorage.getItem('nkri_upk')) || defaultDataUPK;
-    let dbKeuangan = JSON.parse(localStorage.getItem('nkri_keuangan')) || defaultDataKeuangan;
+    let dbUPK = [];
+    let dbKeuangan = [];
     let isAdmin = false;
 
-    function saveData() {
-      localStorage.setItem('nkri_upk', JSON.stringify(dbUPK));
-      localStorage.setItem('nkri_keuangan', JSON.stringify(dbKeuangan));
-      renderAll();
+    // --- 3. HELPER FUNCTIONS & UI ---
+    function showLoading(message = "Memproses data...") {
+      document.getElementById('loading-text').innerText = message;
+      const overlay = document.getElementById('loading-overlay');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
     }
 
     function formatRupiah(num) {
       return 'Rp ' + Number(num).toLocaleString('id-ID');
     }
 
-    // --- 3. RENDER FUNCTIONS ---
+    // --- 4. FETCH & SYNC DATA GOOGLE SHEETS ---
+    async function loadData() {
+      if (!SCRIPT_URL || SCRIPT_URL.trim() === "") {
+        document.getElementById('sheets-notice').classList.remove('hidden');
+        dbUPK = JSON.parse(localStorage.getItem('nkri_upk')) || defaultDataUPK;
+        dbKeuangan = JSON.parse(localStorage.getItem('nkri_keuangan')) || defaultDataKeuangan;
+        renderAll();
+        return;
+      }
+
+      showLoading("Mengambil data dari Google Sheets...");
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const data = await res.json();
+        dbUPK = data.upk || [];
+        dbKeuangan = data.keuangan || [];
+        renderAll();
+      } catch (err) {
+        console.error("Gagal mengambil data dari Google Sheets:", err);
+        alert("Gagal terhubung ke Google Sheets. Menggunakan data lokal.");
+        dbUPK = JSON.parse(localStorage.getItem('nkri_upk')) || defaultDataUPK;
+        dbKeuangan = JSON.parse(localStorage.getItem('nkri_keuangan')) || defaultDataKeuangan;
+        renderAll();
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // --- 5. RENDER FUNCTIONS ---
     function renderDashboard() {
-      const totalAwal = dbUPK.reduce((acc, curr) => acc + curr.awal, 0);
-      const totalSekarang = dbUPK.reduce((acc, curr) => acc + curr.sekarang, 0);
+      const totalAwal = dbUPK.reduce((acc, curr) => acc + (Number(curr.awal) || 0), 0);
+      const totalSekarang = dbUPK.reduce((acc, curr) => acc + (Number(curr.sekarang) || 0), 0);
       
-      const totalPemasukan = dbKeuangan.filter(k => k.kategori === 'pemasukan').reduce((acc, curr) => acc + curr.jumlah, 0);
-      const totalPengeluaran = dbKeuangan.filter(k => k.kategori === 'pengeluaran').reduce((acc, curr) => acc + curr.jumlah, 0);
+      const totalPemasukan = dbKeuangan.filter(k => k.kategori === 'pemasukan').reduce((acc, curr) => acc + (Number(curr.jumlah) || 0), 0);
+      const totalPengeluaran = dbKeuangan.filter(k => k.kategori === 'pengeluaran').reduce((acc, curr) => acc + (Number(curr.jumlah) || 0), 0);
       const saldoKas = totalPemasukan - totalPengeluaran;
 
       document.getElementById('dash-modal-awal').innerText = formatRupiah(totalAwal);
@@ -314,15 +363,20 @@
       const tbody = document.getElementById('tbl-data-upk');
       tbody.innerHTML = '';
 
+      if (dbUPK.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Belum ada data UPK.</td></tr>`;
+        return;
+      }
+
       dbUPK.forEach((item) => {
         const row = document.createElement('tr');
         row.className = 'hover:bg-slate-50 transition';
         row.innerHTML = `
-          <td class="p-4 font-semibold text-slate-800">${item.nama}</td>
-          <td class="p-4 text-slate-600">${formatRupiah(item.awal)}</td>
-          <td class="p-4 font-semibold text-emerald-600">${formatRupiah(item.sekarang)}</td>
-          <td class="p-4"><span class="text-xs px-2.5 py-1 rounded-full font-medium ${item.status === 'Terverifikasi' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${item.status}</span></td>
-          <td class="p-4 text-slate-500 text-xs">${item.bentuk}</td>
+          <td class="p-4 font-semibold text-slate-800">${item.nama || '-'}</td>
+          <td class="p-4 text-slate-600">${formatRupiah(item.awal || 0)}</td>
+          <td class="p-4 font-semibold text-emerald-600">${formatRupiah(item.sekarang || 0)}</td>
+          <td class="p-4"><span class="text-xs px-2.5 py-1 rounded-full font-medium ${item.status === 'Terverifikasi' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${item.status || 'Proses'}</span></td>
+          <td class="p-4 text-slate-500 text-xs">${item.bentuk || '-'}</td>
         `;
         tbody.appendChild(row);
       });
@@ -331,6 +385,11 @@
     function renderCardsIuran() {
       const grid = document.getElementById('grid-iuran');
       grid.innerHTML = '';
+
+      if (dbUPK.length === 0) {
+        grid.innerHTML = `<p class="text-xs text-slate-400">Tidak ada status iuran.</p>`;
+        return;
+      }
 
       dbUPK.forEach((item) => {
         const card = document.createElement('div');
@@ -352,14 +411,19 @@
       const tbody = document.getElementById('tbl-data-keuangan');
       tbody.innerHTML = '';
 
+      if (dbKeuangan.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Belum ada transaksi recorded.</td></tr>`;
+        return;
+      }
+
       dbKeuangan.forEach((item, index) => {
         const row = document.createElement('tr');
         row.className = 'hover:bg-slate-50 transition';
         row.innerHTML = `
-          <td class="p-4 text-xs text-slate-500">${item.tgl}</td>
-          <td class="p-4 font-medium text-slate-800">${item.uraian} <br><span class="text-xs text-slate-400">Dari/Pihak: ${item.pihak || '-'}</span></td>
-          <td class="p-4"><span class="text-xs px-2 py-0.5 rounded font-medium ${item.kategori === 'pemasukan' ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-700'}">${item.kategori}</span></td>
-          <td class="p-4 font-semibold ${item.kategori === 'pemasukan' ? 'text-emerald-600' : 'text-red-500'}">${formatRupiah(item.jumlah)}</td>
+          <td class="p-4 text-xs text-slate-500">${item.tgl || '-'}</td>
+          <td class="p-4 font-medium text-slate-800">${item.uraian || '-'} <br><span class="text-xs text-slate-400">Dari/Pihak: ${item.pihak || '-'}</span></td>
+          <td class="p-4"><span class="text-xs px-2 py-0.5 rounded font-medium ${item.kategori === 'pemasukan' ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-700'}">${item.kategori || '-'}</span></td>
+          <td class="p-4 font-semibold ${item.kategori === 'pemasukan' ? 'text-emerald-600' : 'text-red-500'}">${formatRupiah(item.jumlah || 0)}</td>
           <td class="p-4 text-center">
             <button onclick="bukaModalKwitansi(${index})" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded transition">
               Kwitansi
@@ -377,7 +441,7 @@
       renderTabelKeuangan();
     }
 
-    // --- 4. AUTHENTICATION (LOGIN) ---
+    // --- 6. AUTHENTICATION (LOGIN) ---
     function toggleLoginModal() {
       const modal = document.getElementById('modal-login');
       modal.classList.toggle('hidden');
@@ -412,18 +476,16 @@
       alert('Anda telah logout');
     }
 
-    // --- 5. LOGIC FITUR CETAK / PRINT (SOLUSI FIX PERMASALAHAN) ---
-
-    // A. Cetak Kwitansi Transaksi Spesifik
+    // --- 7. LOGIC FITUR CETAK / PRINT ---
     function bukaModalKwitansi(index) {
       const item = dbKeuangan[index];
       if (!item) return;
 
       document.getElementById('kw-no').innerText = `KW/2026/00${index + 1}`;
       document.getElementById('kw-pihak').innerText = item.pihak || 'Anggota UPK NKRI';
-      document.getElementById('kw-uraian').innerText = item.uraian;
+      document.getElementById('kw-uraian').innerText = item.uraian || '-';
       document.getElementById('kw-jenis').innerText = item.kategori === 'pemasukan' ? 'Pemasukan Kas' : 'Pengeluaran Kas Operasional';
-      document.getElementById('kw-jumlah').innerText = formatRupiah(item.jumlah);
+      document.getElementById('kw-jumlah').innerText = formatRupiah(item.jumlah || 0);
 
       const modal = document.getElementById('modal-kwitansi');
       modal.classList.remove('hidden');
@@ -443,7 +505,6 @@
       printArea.classList.remove('printable-area');
     }
 
-    // B. Cetak Laporan Aset Sahaja
     function printLaporanAset() {
       const printArea = document.getElementById('area-laporan-aset');
       printArea.classList.add('printable-area');
@@ -451,7 +512,6 @@
       printArea.classList.remove('printable-area');
     }
 
-    // C. Cetak Laporan Kas Keuangan Sahaja
     function printLaporanKeuangan() {
       const printArea = document.getElementById('area-laporan-keuangan');
       printArea.classList.add('printable-area');
@@ -459,8 +519,8 @@
       printArea.classList.remove('printable-area');
     }
 
-    // --- 6. INPUT DATA (ADMIN) ---
-    function tambahUPKModal() {
+    // --- 8. INPUT DATA & POST KE GOOGLE SHEETS ---
+    async function tambahUPKModal() {
       if (!isAdmin) return;
       const nama = prompt("Nama UPK / Wilayah:");
       if (!nama) return;
@@ -469,11 +529,30 @@
       const status = prompt("Status Hukum (Terverifikasi/Proses Registrasi):", "Terverifikasi");
       const bentuk = prompt("Bentuk Badan Hukum:", "PT LKM / Koperasi LKM");
 
-      dbUPK.push({ nama, awal, sekarang, status, bentuk, iuranLunas: false, tglLunas: '-' });
-      saveData();
+      const newItem = { nama, awal, sekarang, status, bentuk, iuranLunas: false, tglLunas: '-' };
+
+      if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
+        showLoading("Menyimpan UPK Baru ke Google Sheets...");
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "addUPK", payload: newItem })
+          });
+          await loadData();
+        } catch (err) {
+          console.error("Gagal menyimpan data:", err);
+          alert("Gagal menyimpan ke Google Sheets.");
+        } finally {
+          hideLoading();
+        }
+      } else {
+        dbUPK.push(newItem);
+        localStorage.setItem('nkri_upk', JSON.stringify(dbUPK));
+        renderAll();
+      }
     }
 
-    function tambahKasModal() {
+    async function tambahKasModal() {
       if (!isAdmin) return;
       const pihak = prompt("Diterima dari / Pihak terkait:");
       if (!pihak) return;
@@ -483,13 +562,32 @@
       const jumlah = parseFloat(prompt("Jumlah Uang (Rp):", "0")) || 0;
       const tgl = new Date().toISOString().split('T')[0];
 
-      dbKeuangan.push({ tgl, pihak, uraian, kategori, jumlah });
-      saveData();
+      const newItem = { tgl, pihak, uraian, kategori, jumlah };
+
+      if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
+        showLoading("Menyimpan Transaksi Kas ke Google Sheets...");
+        try {
+          await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "addKeuangan", payload: newItem })
+          });
+          await loadData();
+        } catch (err) {
+          console.error("Gagal menyimpan transaksi:", err);
+          alert("Gagal menyimpan ke Google Sheets.");
+        } finally {
+          hideLoading();
+        }
+      } else {
+        dbKeuangan.push(newItem);
+        localStorage.setItem('nkri_keuangan', JSON.stringify(dbKeuangan));
+        renderAll();
+      }
     }
 
-    // Inisialisasi Pertama
+    // Inisialisasi Pertama Saat Halaman Dimuat
     document.addEventListener('DOMContentLoaded', () => {
-      renderAll();
+      loadData();
     });
   </script>
 </body>
