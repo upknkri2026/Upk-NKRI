@@ -255,7 +255,6 @@
                 </div>
                 
                 <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
-                    <!-- Tombol Mode Siang / Malam -->
                     <button onclick="toggleDarkMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-200 dark:bg-slate-900 text-sky-600 dark:text-sky-400 hover:bg-slate-300 dark:hover:bg-slate-800 flex items-center justify-center border border-slate-300 dark:border-slate-700 transition shadow-sm" title="Ganti Tema Terang/Gelap">
                         <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
                     </button>
@@ -906,7 +905,6 @@
             document.getElementById('forgot-modal').classList.remove('flex');
         }
 
-        // FUNGSI TOGGLE SIANG/MALAM (DARK/LIGHT MODE) YANG DIPERBAIKI SECARA ROBUST
         function toggleDarkMode() {
             const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
@@ -922,7 +920,6 @@
             }
         }
 
-        // Inisialisasi Tema Saat Dimuat
         (function() {
             const savedTheme = localStorage.getItem('upk_theme');
             const icon = document.getElementById('theme-icon');
@@ -1016,9 +1013,14 @@
             document.getElementById('login-view').classList.remove('hidden');
         }
 
+        // =========================================================================
+        // PEMISAHAN DATA SECARA MUTLAK (PUSAT vs DPW/DPD) AGAR IURAN/KAS PUSAT TIDAK BOCOR
+        // =========================================================================
         function getFilteredData(tabName) {
             let dbKey = getDbKey(tabName);
             let list = database[dbKey] || [];
+            
+            // 1. Jika Admin Pusat, tampilkan seluruh data nasional secara lengkap
             if (!loggedUser || loggedUser.role === 'PUSAT') {
                 if (tabName === 'kas') {
                     return [...list].sort((a, b) => formatDateToISO(b.tanggal).localeCompare(formatDateToISO(a.tanggal)));
@@ -1047,13 +1049,24 @@
                 });
             }
 
+            // 2. Filter ketat: Akun DPW/DPD HANYA menampilkan data yang wilayah provinsi/kabupatennya sesuai
+            // Dan secara mutlak menyaring keluar data yang bersumber dari entri pusat / Asnas pusat (yang tidak ada wilayah spesifiknya).
             if (loggedUser.role === 'DPW') {
-                list = list.filter(item => item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase());
+                list = list.filter(item => {
+                    const prov = (item.provinsi || '').toUpperCase();
+                    const ket = (item.keterangan || item.upk || '').toLowerCase();
+                    // Jika iuran/kas berlabel pusat/asnas tanpa provinsi yang cocok, buang
+                    if ((tabName === 'iuran' || tabName === 'kas') && ket.includes('asnas') && !prov) return false;
+                    return prov === loggedUser.provinsi.toUpperCase();
+                });
             } else if (loggedUser.role === 'DPD') {
-                list = list.filter(item => 
-                    item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase() &&
-                    item.kabupaten && item.kabupaten.toUpperCase() === loggedUser.kabupaten.toUpperCase()
-                );
+                list = list.filter(item => {
+                    const prov = (item.provinsi || '').toUpperCase();
+                    const kab = (item.kabupaten || '').toUpperCase();
+                    const ket = (item.keterangan || item.upk || '').toLowerCase();
+                    if ((tabName === 'iuran' || tabName === 'kas') && ket.includes('asnas') && !kab) return false;
+                    return prov === loggedUser.provinsi.toUpperCase() && kab === loggedUser.kabupaten.toUpperCase();
+                });
             }
 
             if (tabName === 'kas') {
