@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,7 +120,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 antialiased min-h-screen selection:bg-sky-500 selection:text-white transition-colors duration-300">
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased min-h-screen selection:bg-sky-500 selection:text-white transition-colors duration-300">
 
     <datalist id="provinsi-list">
         <option value="ACEH"></option>
@@ -165,7 +165,7 @@
         <div class="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-sky-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse"></div>
         <div class="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none"></div>
 
-        <div class="glass-card bg-slate-900/80 border border-slate-700/40 rounded-3xl p-6 sm:p-10 w-full max-w-lg shadow-2xl shadow-sky-950/90 relative z-10 my-6">
+        <div class="glass-card bg-slate-900/90 dark:bg-slate-900/80 border border-slate-700/40 rounded-3xl p-6 sm:p-10 w-full max-w-lg shadow-2xl relative z-10 my-6">
             
             <div class="flex justify-center mb-6">
                 <div class="w-20 h-20 sm:w-24 sm:h-24 bg-white/95 rounded-2xl shadow-2xl ring-4 ring-sky-500/30 p-1 flex items-center justify-center transition hover:scale-105 duration-300 overflow-hidden">
@@ -236,18 +236,18 @@
     </div>
 
     <!-- ================= 2. DASHBOARD VIEW ================= -->
-    <div id="dashboard-view" class="hidden min-h-screen bg-slate-950 dark:bg-slate-950 flex flex-col transition-colors duration-300">
-        <header class="glass-nav bg-slate-900/90 text-white sticky top-0 z-40 border-b border-slate-800/80 shadow-lg no-print">
+    <div id="dashboard-view" class="hidden min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col transition-colors duration-300">
+        <header class="glass-nav bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-white sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800/80 shadow-lg no-print">
             <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
                 <div class="flex items-center space-x-3 min-w-0">
-                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-xl p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden border border-slate-200 dark:border-none">
                         <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="min-w-0">
-                        <h1 class="font-black text-sm sm:text-lg tracking-tight leading-tight truncate bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent">ASOSIASI UPK NKRI</h1>
+                        <h1 class="font-black text-sm sm:text-lg tracking-tight leading-tight truncate bg-gradient-to-r from-slate-900 via-slate-800 to-sky-600 dark:from-white dark:via-slate-100 dark:to-sky-300 bg-clip-text text-transparent">ASOSIASI UPK NKRI</h1>
                         <div class="flex items-center space-x-2 flex-wrap">
-                            <p class="text-[10px] sm:text-[11px] font-bold text-sky-400 tracking-wider truncate" id="user-role-label">Sistem Kelembagaan, Aset & Keuangan</p>
-                            <button onclick="fetchFromCloud()" title="Klik untuk Refresh Sync" id="sync-status" class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all duration-300">
+                            <p class="text-[10px] sm:text-[11px] font-bold text-sky-600 dark:text-sky-400 tracking-wider truncate" id="user-role-label">Sistem Kelembagaan, Aset & Keuangan</p>
+                            <button onclick="fetchFromCloud()" title="Klik untuk Refresh Sync" id="sync-status" class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30 transition-all duration-300">
                                 <i class="fa-solid fa-rotate mr-1 text-[8px] animate-spin"></i> Syncing...
                             </button>
                         </div>
@@ -255,45 +255,46 @@
                 </div>
                 
                 <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
-                    <button onclick="toggleDarkMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-900 text-sky-400 hover:bg-slate-800 flex items-center justify-center border border-slate-700/80 transition shadow-sm" title="Ganti Tema Terang/Gelap">
+                    <!-- Tombol Mode Siang / Malam -->
+                    <button onclick="toggleDarkMode()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-200 dark:bg-slate-900 text-sky-600 dark:text-sky-400 hover:bg-slate-300 dark:hover:bg-slate-800 flex items-center justify-center border border-slate-300 dark:border-slate-700 transition shadow-sm" title="Ganti Tema Terang/Gelap">
                         <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
                     </button>
 
-                    <button onclick="sendWhatsAppNotification()" class="hidden sm:flex items-center space-x-1.5 px-3.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition shadow-sm" title="Kirim Laporan via WhatsApp">
+                    <button onclick="sendWhatsAppNotification()" class="hidden sm:flex items-center space-x-1.5 px-3.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition shadow-sm" title="Kirim Laporan via WhatsApp">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
                         <span>Kirim WA</span>
                     </button>
 
-                    <div class="hidden md:flex items-center space-x-2 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-1.5 text-xs text-slate-300 shadow-sm">
+                    <div class="hidden md:flex items-center space-x-2 bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span class="font-bold truncate max-w-[120px]" id="logged-user-name">Admin Pusat</span>
                     </div>
                     
-                    <button onclick="handleLogout()" class="bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/30 text-xs font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
+                    <button onclick="handleLogout()" class="bg-rose-500/10 hover:bg-rose-600 text-rose-600 dark:text-rose-400 hover:text-white border border-rose-500/30 text-xs font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span class="hidden sm:inline">Keluar</span>
                     </button>
                 </div>
             </div>
 
-            <div class="bg-slate-900 border-t border-slate-800/80 py-2 px-4 text-xs overflow-hidden flex items-center relative">
-                <span class="bg-sky-500/20 text-sky-300 border border-sky-500/30 font-extrabold px-2.5 py-0.5 rounded text-[10px] mr-3 whitespace-nowrap uppercase tracking-wider flex items-center z-10 relative shrink-0">
-                    <i class="fa-solid fa-bullhorn mr-1.5 text-amber-400"></i> MOTTO
+            <div class="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-2 px-4 text-xs overflow-hidden flex items-center relative">
+                <span class="bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30 font-extrabold px-2.5 py-0.5 rounded text-[10px] mr-3 whitespace-nowrap uppercase tracking-wider flex items-center z-10 relative shrink-0">
+                    <i class="fa-solid fa-bullhorn mr-1.5 text-amber-500"></i> MOTTO
                 </span>
                 <div class="overflow-hidden whitespace-nowrap w-full">
-                    <div id="header-marquee-text" class="animate-marquee inline-block text-slate-300 font-semibold tracking-wide text-xs">
+                    <div id="header-marquee-text" class="animate-marquee inline-block text-slate-600 dark:text-slate-300 font-semibold tracking-wide text-xs">
                         🌟 BERSAMA MEMBANGUN NEGERI: Menguatkan Kelembagaan, Mengembangkan Aset Keuangan untuk Kesejahteraan Masyarakat SELURUH INDONESIA.
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- MAIN LAYOUT DENGAN SIDEBAR PANEL DI KIRI & RESPONSIF HP -->
+        <!-- MAIN LAYOUT -->
         <div class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 md:p-8 flex flex-col lg:flex-row gap-6 no-print">
             
-            <!-- PANEL SIDEBAR MENU KIRI (RESPONSIF MOBILE / HORIZONTAL SCROLL DI HP) -->
+            <!-- SIDEBAR KIRI -->
             <aside class="w-full lg:w-72 shrink-0 space-y-4">
-                <div class="bg-slate-900/90 rounded-2xl p-3 shadow-xl border border-slate-800 space-y-1 backdrop-blur-xl overflow-x-auto flex lg:block flex-row gap-1.5">
+                <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-800 space-y-1 backdrop-blur-xl overflow-x-auto flex lg:block flex-row gap-1.5">
                     <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 px-3 py-1 mb-1 hidden lg:block">Navigasi Utama</p>
                     
                     <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left shrink-0">
@@ -320,21 +321,21 @@
                         <i class="fa-solid fa-folder-open w-5 text-center text-sm"></i>
                         <span>Dokumen & SK</span>
                     </button>
-                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-amber-500/10 text-amber-400 border border-amber-500/20 hidden shrink-0">
+                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hidden shrink-0">
                         <i class="fa-solid fa-users-gear w-5 text-center text-sm"></i>
                         <span>Kelola User</span>
                     </button>
-                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-sky-500/10 text-sky-400 border border-sky-500/20 hidden shrink-0">
+                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 hidden shrink-0">
                         <i class="fa-solid fa-gear w-5 text-center text-sm"></i>
                         <span>Pengaturan</span>
                     </button>
-                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shrink-0">
+                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20 shrink-0">
                         <i class="fa-solid fa-clock-rotate-left w-5 text-center text-sm"></i>
                         <span>Log Aktivitas</span>
                     </button>
                 </div>
 
-                <div class="bg-slate-900/90 rounded-2xl p-3 shadow-xl border border-slate-800 hidden lg:block">
+                <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-800 hidden lg:block">
                     <button onclick="exportToExcel()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-xs px-4 py-3 rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-file-excel text-sm"></i>
                         <span>Ekspor Excel (.XLS)</span>
@@ -345,45 +346,45 @@
             <!-- KONTEN UTAMA KANAN -->
             <div class="flex-1 space-y-6 min-w-0">
                 
-                <div class="p-4 rounded-2xl bg-gradient-to-r from-sky-600/15 via-blue-600/15 to-indigo-600/15 border border-sky-500/30 flex items-center justify-between text-xs sm:text-sm text-slate-200 shadow-lg backdrop-blur-md">
+                <div class="p-4 rounded-2xl bg-gradient-to-r from-sky-600/10 via-blue-600/10 to-indigo-600/10 dark:from-sky-600/15 dark:via-blue-600/15 dark:to-indigo-600/15 border border-sky-500/30 flex items-center justify-between text-xs sm:text-sm text-slate-700 dark:text-slate-200 shadow-lg backdrop-blur-md">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-sky-500/25 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
+                        <div class="w-10 h-10 rounded-xl bg-sky-500/20 dark:bg-sky-500/25 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/40">
                             <i class="fa-solid fa-circle-info text-base"></i>
                         </div>
                         <div>
-                            <b class="text-white font-extrabold">Pengumuman Resmi Pusat:</b> <span id="announcement-text-banner" class="text-slate-300">Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.</span>
+                            <b class="text-slate-900 dark:text-white font-extrabold">Pengumuman Resmi Pusat:</b> <span id="announcement-text-banner" class="text-slate-600 dark:text-slate-300">Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- KARTU STATISTIK (RESPONSIF HP) -->
+                <!-- KARTU STATISTIK -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                    <div class="bg-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-800 flex items-center justify-between relative overflow-hidden backdrop-blur-xl">
+                    <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between relative overflow-hidden backdrop-blur-xl">
                         <div class="relative z-10 min-w-0 pr-2">
                             <p class="text-[11px] sm:text-xs font-black text-slate-400 uppercase tracking-widest truncate">Total Iuran Masuk</p>
-                            <h3 id="stat-total-iuran" class="text-xl sm:text-2xl font-black text-emerald-400 mt-1 tracking-tight truncate font-mono">Rp 0</h3>
+                            <h3 id="stat-total-iuran" class="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 tracking-tight truncate font-mono">Rp 0</h3>
                         </div>
-                        <div class="relative z-10 w-11 h-11 sm:w-13 sm:h-13 bg-emerald-950/60 text-emerald-400 rounded-2xl flex items-center justify-center text-lg sm:text-xl border border-emerald-500/30 shrink-0">
+                        <div class="relative z-10 w-11 h-11 sm:w-13 sm:h-13 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-lg sm:text-xl border border-emerald-500/30 shrink-0">
                             <i class="fa-solid fa-hand-holding-dollar"></i>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-800 flex items-center justify-between relative overflow-hidden backdrop-blur-xl">
+                    <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between relative overflow-hidden backdrop-blur-xl">
                         <div class="relative z-10 min-w-0 pr-2">
                             <p class="text-[11px] sm:text-xs font-black text-slate-400 uppercase tracking-widest truncate">Posisi Saldo Kas</p>
-                            <h3 id="stat-saldo-kas" class="text-xl sm:text-2xl font-black text-sky-400 mt-1 tracking-tight truncate font-mono">Rp 0</h3>
+                            <h3 id="stat-saldo-kas" class="text-xl sm:text-2xl font-black text-sky-600 dark:text-sky-400 mt-1 tracking-tight truncate font-mono">Rp 0</h3>
                         </div>
-                        <div class="relative z-10 w-11 h-11 sm:w-13 sm:h-13 bg-sky-950/60 text-sky-400 rounded-2xl flex items-center justify-center text-lg sm:text-xl border border-sky-500/30 shrink-0">
+                        <div class="relative z-10 w-11 h-11 sm:w-13 sm:h-13 bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center text-lg sm:text-xl border border-sky-500/30 shrink-0">
                             <i class="fa-solid fa-wallet"></i>
                         </div>
                     </div>
 
-                    <div class="bg-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-800 flex items-center justify-between relative overflow-hidden backdrop-blur-xl">
+                    <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between relative overflow-hidden backdrop-blur-xl">
                         <div class="relative z-10 min-w-0 pr-2">
                             <p class="text-[11px] sm:text-xs font-black text-slate-400 uppercase tracking-widest truncate">UPK Terdaftar</p>
-                            <h3 id="stat-total-upk" class="text-xl sm:text-2xl font-black text-amber-400 mt-1 tracking-tight truncate font-mono">0 UPK</h3>
+                            <h3 id="stat-total-upk" class="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400 mt-1 tracking-tight truncate font-mono">0 UPK</h3>
                         </div>
-                        <div class="relative z-10 w-11 h-11 sm:w-13 sm:h-13 bg-amber-950/60 text-amber-400 rounded-2xl flex items-center justify-center text-lg sm:text-xl border border-amber-500/30 shrink-0">
+                        <div class="relative z-10 w-11 h-11 sm:w-13 sm:h-13 bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-lg sm:text-xl border border-amber-500/30 shrink-0">
                             <i class="fa-solid fa-building-columns"></i>
                         </div>
                     </div>
@@ -425,14 +426,14 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="bg-slate-900/90 rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl backdrop-blur-xl">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-4"><i class="fa-solid fa-chart-column mr-2 text-sky-400"></i> Grafik Status Badan Hukum UPK</h4>
+                        <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4"><i class="fa-solid fa-chart-column mr-2 text-sky-500"></i> Grafik Status Badan Hukum UPK</h4>
                             <div class="h-60 sm:h-64 flex justify-center items-center">
                                 <canvas id="statusHukumChart"></canvas>
                             </div>
                         </div>
-                        <div class="bg-slate-900/90 rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl backdrop-blur-xl">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-4"><i class="fa-solid fa-chart-line mr-2 text-emerald-400"></i> Perbandingan Modal vs Total Aset</h4>
+                        <div class="bg-white dark:bg-slate-900/90 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4"><i class="fa-solid fa-chart-line mr-2 text-emerald-500"></i> Perbandingan Modal vs Total Aset</h4>
                             <div class="h-60 sm:h-64 flex justify-center items-center">
                                 <canvas id="modalAsetChart"></canvas>
                             </div>
@@ -441,24 +442,24 @@
                 </div>
 
                 <!-- ADVANCED FILTER BAR -->
-                <div id="filter-section-card" class="bg-slate-900/90 rounded-2xl p-4 sm:p-6 shadow-xl border border-slate-800 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 backdrop-blur-xl">
+                <div id="filter-section-card" class="bg-white dark:bg-slate-900/90 rounded-2xl p-4 sm:p-6 shadow-xl border border-slate-200 dark:border-slate-800 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 backdrop-blur-xl">
                     <div>
-                        <h2 id="section-title" class="text-lg sm:text-xl font-black text-white tracking-tight">Database UPK</h2>
-                        <p id="section-subtitle" class="text-xs text-slate-400 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
+                        <h2 id="section-title" class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">Database UPK</h2>
+                        <p id="section-subtitle" class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
                     </div>
                     
                     <div id="filter-actions-wrapper" class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end">
-                        <div class="flex items-center space-x-1.5 text-xs bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                        <div class="flex items-center space-x-1.5 text-xs bg-slate-100 dark:bg-slate-950 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
                             <span class="text-slate-400 font-bold px-1">Dari:</span>
-                            <input type="date" id="filter-date-start" onchange="renderTable()" class="bg-transparent text-slate-200 outline-none font-medium text-xs">
+                            <input type="date" id="filter-date-start" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium text-xs">
                             <span class="text-slate-400 font-bold px-1">s/d</span>
-                            <input type="date" id="filter-date-end" onchange="renderTable()" class="bg-transparent text-slate-200 outline-none font-medium text-xs">
+                            <input type="date" id="filter-date-end" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium text-xs">
                         </div>
 
                         <div class="relative flex-1 lg:flex-none min-w-[180px]">
                             <input type="text" id="search-input" onkeyup="renderTable()" placeholder="Cari Provinsi / UPK..." 
-                                class="w-full pl-9 pr-4 py-2.5 bg-slate-950 text-white text-xs rounded-xl border border-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium placeholder:text-slate-600">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-500 text-xs"></i>
+                                class="w-full pl-9 pr-4 py-2.5 bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-white text-xs rounded-xl border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium placeholder:text-slate-500">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
                         </div>
 
                         <button id="print-report-btn" onclick="printFullReport()" class="bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-lg transition flex items-center space-x-2 border border-slate-700">
@@ -473,26 +474,26 @@
                     </div>
                 </div>
 
-                <div id="main-table-container" class="bg-slate-900/90 rounded-2xl shadow-xl border border-slate-800 overflow-hidden backdrop-blur-xl">
+                <div id="main-table-container" class="bg-white dark:bg-slate-900/90 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden backdrop-blur-xl">
                     <div id="table-content-area" class="overflow-x-auto"></div>
                 </div>
 
                 <!-- PANEL PENGATURAN WEBSITE -->
-                <div id="settings-panel-view" class="hidden bg-slate-900/90 rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 max-w-2xl mx-auto space-y-6 backdrop-blur-xl">
+                <div id="settings-panel-view" class="hidden bg-white dark:bg-slate-900/90 rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-800 max-w-2xl mx-auto space-y-6 backdrop-blur-xl">
                     <div>
-                        <h3 class="text-lg font-black text-white"><i class="fa-solid fa-gear text-sky-400 mr-2"></i> Panel Pengaturan Website & Teks Informasi</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Perbarui teks motto berjalan di header dan pengumuman resmi pusat secara real-time</p>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white"><i class="fa-solid fa-gear text-sky-500 mr-2"></i> Panel Pengaturan Website & Teks Informasi</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Perbarui teks motto berjalan di header dan pengumuman resmi pusat secara real-time</p>
                     </div>
 
                     <div class="space-y-4 text-xs">
                         <div>
-                            <label class="block font-black text-slate-300 uppercase mb-2">Teks Motto Berjalan (Marquee Header)</label>
-                            <textarea id="setting-marquee-input" rows="3" class="w-full p-3.5 bg-slate-950 border border-slate-800 rounded-xl outline-none font-medium text-white"></textarea>
+                            <label class="block font-black text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Motto Berjalan (Marquee Header)</label>
+                            <textarea id="setting-marquee-input" rows="3" class="w-full p-3.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl outline-none font-medium text-slate-900 dark:text-white"></textarea>
                         </div>
 
                         <div>
-                            <label class="block font-black text-slate-300 uppercase mb-2">Teks Pengumuman Resmi Pusat (Banner Dashboard)</label>
-                            <textarea id="setting-announcement-input" rows="3" class="w-full p-3.5 bg-slate-950 border border-slate-800 rounded-xl outline-none font-medium text-white"></textarea>
+                            <label class="block font-black text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Pengumuman Resmi Pusat (Banner Dashboard)</label>
+                            <textarea id="setting-announcement-input" rows="3" class="w-full p-3.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl outline-none font-medium text-slate-900 dark:text-white"></textarea>
                         </div>
 
                         <button type="button" onclick="saveWebsiteSettings()" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 text-white font-extrabold rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
@@ -505,20 +506,20 @@
             </div>
         </div>
 
-        <footer class="bg-slate-900 border-t border-slate-800 py-5 text-center text-xs text-slate-400 font-semibold no-print mt-auto">
+        <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-5 text-center text-xs text-slate-500 dark:text-slate-400 font-semibold no-print mt-auto">
             © 2026 Asosiasi UPK NKRI. All rights reserved.
         </footer>
     </div>
 
     <!-- ================= 3. MODAL FORM DATA ================= -->
     <div id="form-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
-        <div class="bg-slate-900 text-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-800 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-5">
+        <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-4 mb-5">
                 <div>
-                    <h3 id="modal-form-title" class="text-lg font-black text-white">Form Transaksi</h3>
-                    <p class="text-xs text-slate-400 font-medium">Lengkapi rincian formulir di bawah ini</p>
+                    <h3 id="modal-form-title" class="text-lg font-black text-slate-900 dark:text-white">Form Transaksi</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Lengkapi rincian formulir di bawah ini</p>
                 </div>
-                <button onclick="closeFormModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+                <button onclick="closeFormModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
@@ -527,8 +528,8 @@
                 <input type="hidden" id="entry-id">
                 <div id="dynamic-form-fields" class="space-y-4"></div>
 
-                <div class="flex justify-end space-x-3 pt-5 border-t border-slate-800 mt-6">
-                    <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-700 text-xs font-bold text-slate-300 hover:bg-slate-800 transition">Batal</button>
+                <div class="flex justify-end space-x-3 pt-5 border-t border-slate-200 dark:border-slate-800 mt-6">
+                    <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">Batal</button>
                     <button type="button" onclick="handleFormSubmit()" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-2">
                         <i class="fa-solid fa-floppy-disk"></i>
                         <span>Simpan Data</span>
@@ -540,17 +541,17 @@
 
     <!-- ================= 3.1 MODAL VERIFIKASI EMAIL ADMIN PUSAT ================= -->
     <div id="verify-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
-        <div class="bg-slate-900 text-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative border border-slate-800 text-center">
-            <div class="w-14 h-14 bg-sky-950 text-sky-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-sky-500/30">
+        <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200 dark:border-slate-800 text-center">
+            <div class="w-14 h-14 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-sky-200 dark:border-sky-500/30">
                 <i class="fa-solid fa-envelope-circle-check"></i>
             </div>
-            <h3 class="text-base font-black text-white mb-1">Verifikasi Email Keamanan</h3>
-            <p class="text-xs text-slate-400 mb-5">Untuk mengubah akun Admin Pusat, masukkan kode verifikasi yang dikirimkan ke <b class="text-slate-200">upknkri2026@gmail.com</b> <br><span class="text-[10px] text-sky-400 font-bold">(Gunakan kode demo: 2026)</span></p>
+            <h3 class="text-base font-black text-slate-900 dark:text-white mb-1">Verifikasi Email Keamanan</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Untuk mengubah akun Admin Pusat, masukkan kode verifikasi yang dikirimkan ke <b class="text-slate-800 dark:text-slate-200">upknkri2026@gmail.com</b> <br><span class="text-[10px] text-sky-600 dark:text-sky-400 font-bold">(Gunakan kode demo: 2026)</span></p>
 
-            <input type="text" id="verify-code-input" placeholder="Masukkan Kode (2026)" class="w-full p-3.5 bg-slate-950 border border-slate-800 rounded-xl text-sm font-bold text-center tracking-widest outline-none mb-4 focus:ring-2 focus:ring-sky-500 text-white">
+            <input type="text" id="verify-code-input" placeholder="Masukkan Kode (2026)" class="w-full p-3.5 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm font-bold text-center tracking-widest outline-none mb-4 focus:ring-2 focus:ring-sky-500 text-slate-900 dark:text-white">
 
             <div class="flex space-x-2">
-                <button type="button" onclick="closeVerifyModal()" class="w-1/2 py-3 rounded-xl border border-slate-700 text-xs font-bold text-slate-300 transition">Batal</button>
+                <button type="button" onclick="closeVerifyModal()" class="w-1/2 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 transition">Batal</button>
                 <button type="button" onclick="confirmVerifyCode()" class="w-1/2 py-3 bg-sky-600 hover:bg-sky-500 text-white text-xs font-extrabold rounded-xl shadow-lg transition">Verifikasi</button>
             </div>
         </div>
@@ -558,18 +559,18 @@
 
     <!-- ================= 3.2 MODAL LUPA PASSWORD ================= -->
     <div id="forgot-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
-        <div class="bg-slate-900 text-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative border border-slate-800 text-center">
-            <div class="w-14 h-14 bg-emerald-950 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-emerald-500/30">
+        <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200 dark:border-slate-800 text-center">
+            <div class="w-14 h-14 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-emerald-200 dark:border-emerald-500/30">
                 <i class="fa-brands fa-whatsapp"></i>
             </div>
-            <h3 class="text-base font-black text-white mb-1">Bantuan Lupa Password</h3>
-            <p class="text-xs text-slate-400 mb-5">Silakan hubungi Admin Pusat melalui WhatsApp untuk melakukan reset password akun Anda.</p>
+            <h3 class="text-base font-black text-slate-900 dark:text-white mb-1">Bantuan Lupa Password</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Silakan hubungi Admin Pusat melalui WhatsApp untuk melakukan reset password akun Anda.</p>
 
             <a href="https://wa.me/6285398087772?text=Halo%20Admin%20Pusat,%20saya%20lupa%20password%20akun%20saya%20di%20Sistem%20Asosiasi%20UPK%20NKRI." target="_blank" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold rounded-xl shadow-lg transition flex items-center justify-center space-x-2 mb-3">
                 <i class="fa-brands fa-whatsapp text-sm"></i>
                 <span>Hubungi Admin WhatsApp</span>
             </a>
-            <button type="button" onclick="closeForgotPassword()" class="w-full py-3 rounded-xl border border-slate-700 text-xs font-bold text-slate-300 transition">Tutup</button>
+            <button type="button" onclick="closeForgotPassword()" class="w-full py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 transition">Tutup</button>
         </div>
     </div>
 
@@ -772,7 +773,7 @@
 
         async function fetchFromCloud() {
             const statusEl = document.getElementById('sync-status');
-            statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30";
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Syncing...`;
 
             try {
@@ -795,11 +796,11 @@
                     await rtdbRef.set(defaultDatabase);
                 }
                 
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> RTDB Synced`;
             } catch (err) {
                 console.error("RTDB sync error:", err);
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Offline`;
             }
 
@@ -810,16 +811,16 @@
 
         async function pushToCloud() {
             const statusEl = document.getElementById('sync-status');
-            statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30";
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Saving...`;
 
             try {
                 await rtdbRef.set(database);
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Synced`;
             } catch (err) {
                 console.error("RTDB save error:", err);
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Failed`;
             }
         }
@@ -905,30 +906,34 @@
             document.getElementById('forgot-modal').classList.remove('flex');
         }
 
-        // FUNGSI SIANG / MALAM YANG DIPERBAIKI SECARA INSTAN
+        // FUNGSI TOGGLE SIANG/MALAM (DARK/LIGHT MODE) YANG DIPERBAIKI SECARA ROBUST
         function toggleDarkMode() {
-            const htmlEl = document.documentElement;
+            const html = document.documentElement;
             const icon = document.getElementById('theme-icon');
             
-            htmlEl.classList.toggle('dark');
-            
-            if (htmlEl.classList.contains('dark')) {
-                icon.className = 'fa-solid fa-sun text-xs text-amber-400';
-                localStorage.setItem('upk_theme', 'dark');
-            } else {
-                icon.className = 'fa-solid fa-moon text-xs text-sky-400';
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
                 localStorage.setItem('upk_theme', 'light');
+                if(icon) icon.className = 'fa-solid fa-moon text-xs text-sky-600';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('upk_theme', 'dark');
+                if(icon) icon.className = 'fa-solid fa-sun text-xs text-amber-400';
             }
         }
 
-        // Cek preferensi tema tersimpan saat load
-        if (localStorage.getItem('upk_theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-            document.getElementById('theme-icon').className = 'fa-solid fa-moon text-xs text-sky-400';
-        } else {
-            document.documentElement.classList.add('dark');
-            document.getElementById('theme-icon').className = 'fa-solid fa-sun text-xs text-amber-400';
-        }
+        // Inisialisasi Tema Saat Dimuat
+        (function() {
+            const savedTheme = localStorage.getItem('upk_theme');
+            const icon = document.getElementById('theme-icon');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                if(icon) icon.className = 'fa-solid fa-moon text-xs text-sky-600';
+            } else {
+                document.documentElement.classList.add('dark');
+                if(icon) icon.className = 'fa-solid fa-sun text-xs text-amber-400';
+            }
+        })();
 
         function sendWhatsAppNotification() {
             const pesan = `Halo Admin Pusat Asosiasi UPK NKRI, laporan terkini per tanggal ${new Date().toLocaleDateString('id-ID')} telah diperbarui oleh ${loggedUser.nama}. Silakan cek sistem untuk melihat rekapan data terbaru.`;
@@ -1145,7 +1150,7 @@
                     if(t === tab) {
                         btn.className = "tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-black text-xs sm:text-sm flex items-center space-x-3.5 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 text-white shadow-lg shadow-sky-950/60 text-left border border-sky-400/35 shrink-0";
                     } else {
-                        btn.className = "tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3.5 text-slate-400 hover:text-white hover:bg-slate-800/80 text-left transition shrink-0";
+                        btn.className = "tab-btn whitespace-nowrap lg:w-full px-4 py-2.5 lg:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800/80 text-left transition shrink-0";
                     }
                 }
             });
@@ -1209,53 +1214,53 @@
 
             if (currentTab === 'struktur') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[600px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[600px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">ID</th><th class="p-4">Nama Lengkap & Gelar</th><th class="p-4">Jabatan</th><th class="p-4">Wilayah Kerja</th><th class="p-4">No WhatsApp</th><th class="p-4 text-center">Aksi</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('struktur').filter(s => s.nama.toLowerCase().includes(searchQuery) || s.jabatan.toLowerCase().includes(searchQuery));
                 filtered.forEach(s => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono text-xs text-slate-500">#${s.id}</td>
-                            <td class="p-4 font-bold text-white"><i class="fa-solid fa-user-tie text-sky-400 mr-2"></i>${s.nama}</td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-extrabold bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-lg">${s.jabatan}</span></td>
-                            <td class="p-4 text-xs font-semibold text-slate-300">${s.wilayah}</td>
-                            <td class="p-4 font-mono text-xs text-emerald-400 font-bold">${s.hp || '-'}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${s.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-user-tie text-sky-500 mr-2"></i>${s.nama}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-extrabold bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30 rounded-lg">${s.jabatan}</span></td>
+                            <td class="p-4 text-xs font-semibold text-slate-700 dark:text-slate-300">${s.wilayah}</td>
+                            <td class="p-4 font-mono text-xs text-emerald-600 dark:text-emerald-400 font-bold">${s.hp || '-'}</td>
                             <td class="p-4 text-center">${getActionButtons(s.id, 'struktur')}</td>
                         </tr>`;
                 });
             } else if (currentTab === 'galeri') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[650px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[650px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">ID</th><th class="p-4">Judul Kegiatan / Berita</th><th class="p-4">Kategori</th><th class="p-4">Tanggal</th><th class="p-4">Deskripsi Singkat</th><th class="p-4 text-center">Aksi</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('galeri').filter(g => g.judul.toLowerCase().includes(searchQuery) || g.kategori.toLowerCase().includes(searchQuery));
                 filtered.forEach(g => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono text-xs text-slate-500">#${g.id}</td>
-                            <td class="p-4 font-bold text-white"><i class="fa-solid fa-newspaper text-amber-400 mr-2"></i>${g.judul}</td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-lg">${g.kategori}</span></td>
-                            <td class="p-4 text-xs text-slate-300">${g.tanggal}</td>
-                            <td class="p-4 text-xs text-slate-400 max-w-xs truncate">${g.deskripsi}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${g.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-newspaper text-amber-500 mr-2"></i>${g.judul}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-bold bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-lg">${g.kategori}</span></td>
+                            <td class="p-4 text-xs text-slate-700 dark:text-slate-300">${g.tanggal}</td>
+                            <td class="p-4 text-xs text-slate-500 dark:text-slate-400 max-w-xs truncate">${g.deskripsi}</td>
                             <td class="p-4 text-center">${getActionButtons(g.id, 'galeri')}</td>
                         </tr>`;
                 });
             } else if (currentTab === 'iuran') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[700px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[700px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">ID</th><th class="p-4">Nama UPK</th><th class="p-4">Wilayah (Prov/Kab/Kec)</th><th class="p-4">Tanggal</th><th class="p-4">Nominal</th><th class="p-4">Keterangan</th><th class="p-4 text-center">Aksi</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('iuran').filter(item => 
@@ -1263,35 +1268,35 @@
                 );
                 filtered.forEach(item => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono text-xs text-slate-500">#${item.id}</td>
-                            <td class="p-4 font-bold text-white">${item.upk}</td>
-                            <td class="p-4 text-xs font-semibold text-slate-400">${item.provinsi || '-'} / ${item.kabupaten || '-'} / ${item.kecamatan || '-'}</td>
-                            <td class="p-4 text-slate-400">${formatDateToID(item.tanggal)}</td>
-                            <td class="p-4 font-extrabold text-emerald-400 font-mono">${formatRupiah(item.nominal)}</td>
-                            <td class="p-4 text-slate-400">${item.keterangan}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${item.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">${item.upk}</td>
+                            <td class="p-4 text-xs font-semibold text-slate-600 dark:text-slate-400">${item.provinsi || '-'} / ${item.kabupaten || '-'} / ${item.kecamatan || '-'}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${formatDateToID(item.tanggal)}</td>
+                            <td class="p-4 font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">${formatRupiah(item.nominal)}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${item.keterangan}</td>
                             <td class="p-4 text-center">${getActionButtons(item.id, 'iuran')}</td>
                         </tr>`;
                 });
             } else if (currentTab === 'kas') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[600px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[600px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">ID</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan</th><th class="p-4">Jenis</th><th class="p-4">Nominal</th><th class="p-4 text-center">Aksi</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('kas').filter(item => item.keterangan.toLowerCase().includes(searchQuery));
                 filtered.forEach(item => {
-                    const badgeClass = item.jenis === 'Masuk' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border-rose-500/30';
+                    const badgeClass = item.jenis === 'Masuk' ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' : 'bg-rose-500/20 text-rose-700 dark:text-rose-300 border-rose-500/30';
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono text-xs text-slate-500">#${item.id}</td>
-                            <td class="p-4 text-slate-400">${formatDateToID(item.tanggal)}</td>
-                            <td class="p-4 font-bold text-white">${item.keterangan}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${item.id}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${formatDateToID(item.tanggal)}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">${item.keterangan}</td>
                             <td class="p-4"><span class="px-3 py-1 text-[10px] font-extrabold rounded-full border ${badgeClass}">${item.jenis}</span></td>
-                            <td class="p-4 font-extrabold text-slate-200 font-mono">${formatRupiah(item.nominal)}</td>
+                            <td class="p-4 font-extrabold text-slate-800 dark:text-slate-200 font-mono">${formatRupiah(item.nominal)}</td>
                             <td class="p-4 text-center">${getActionButtons(item.id, 'kas')}</td>
                         </tr>`;
                 });
@@ -1316,22 +1321,22 @@
                     let totalProvModal = items.reduce((acc, curr) => acc + (curr.modalAwal || 0), 0);
 
                     htmlContent += `
-                        <div class="border-b border-slate-800 last:border-0 mb-6 pb-6 last:mb-0">
-                            <div class="bg-gradient-to-r from-sky-950/60 to-indigo-950/60 p-4 rounded-2xl border border-sky-500/30 flex flex-wrap justify-between items-center mb-3 shadow-md">
+                        <div class="border-b border-slate-200 dark:border-slate-800 last:border-0 mb-6 pb-6 last:mb-0">
+                            <div class="bg-gradient-to-r from-sky-50 to-indigo-50 dark:from-sky-950/60 dark:to-indigo-950/60 p-4 rounded-2xl border border-sky-500/30 flex flex-wrap justify-between items-center mb-3 shadow-sm">
                                 <div class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-map-location-dot text-sky-400 text-base"></i>
-                                    <h3 class="font-black text-sm uppercase text-white tracking-wide">PROVINSI: ${prov}</h3>
-                                    <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">${items.length} UPK</span>
+                                    <i class="fa-solid fa-map-location-dot text-sky-600 dark:text-sky-400 text-base"></i>
+                                    <h3 class="font-black text-sm uppercase text-slate-900 dark:text-white tracking-wide">PROVINSI: ${prov}</h3>
+                                    <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30">${items.length} UPK</span>
                                 </div>
-                                <div class="text-xs space-x-4 font-bold text-slate-300 mt-2 sm:mt-0">
-                                    <span>Modal: <b class="text-amber-400 font-mono">${formatRupiah(totalProvModal)}</b></span>
-                                    <span>Total Aset: <b class="text-sky-400 font-mono">${formatRupiah(totalProvAset)}</b></span>
+                                <div class="text-xs space-x-4 font-bold text-slate-700 dark:text-slate-300 mt-2 sm:mt-0">
+                                    <span>Modal: <b class="text-amber-600 dark:text-amber-400 font-mono">${formatRupiah(totalProvModal)}</b></span>
+                                    <span>Total Aset: <b class="text-sky-600 dark:text-sky-400 font-mono">${formatRupiah(totalProvAset)}</b></span>
                                 </div>
                             </div>
 
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[700px]">
-                                    <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                                <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[700px]">
+                                    <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                                         <tr>
                                             <th class="p-3">Kabupaten</th>
                                             <th class="p-3">Kecamatan</th>
@@ -1343,21 +1348,21 @@
                                             <th class="p-3 text-center">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-slate-800/80 font-medium">`;
+                                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium">`;
 
                     items.forEach(item => {
                         const growth = item.modalAwal > 0 ? (((item.totalAset - item.modalAwal) / item.modalAwal) * 100).toFixed(1) : 0;
-                        const growthBadge = growth >= 0 ? `<span class="text-emerald-400 font-bold">+${growth}%</span>` : `<span class="text-rose-400 font-bold">${growth}%</span>`;
+                        const growthBadge = growth >= 0 ? `<span class="text-emerald-600 dark:text-emerald-400 font-bold">+${growth}%</span>` : `<span class="text-rose-600 dark:text-rose-400 font-bold">${growth}%</span>`;
 
                         htmlContent += `
-                            <tr class="hover:bg-slate-800/40 transition">
-                                <td class="p-3 font-bold text-xs text-slate-200">${item.kabupaten}</td>
-                                <td class="p-3 text-xs text-slate-400">${item.kecamatan || '-'}</td>
-                                <td class="p-3 font-extrabold text-white">${item.namaUPK}</td>
-                                <td class="p-3 font-mono text-xs text-slate-400">${formatRupiah(item.modalAwal)}</td>
-                                <td class="p-3 font-mono text-xs font-black text-sky-400">${formatRupiah(item.totalAset)}</td>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+                                <td class="p-3 font-bold text-xs text-slate-700 dark:text-slate-200">${item.kabupaten}</td>
+                                <td class="p-3 text-xs text-slate-500 dark:text-slate-400">${item.kecamatan || '-'}</td>
+                                <td class="p-3 font-extrabold text-slate-900 dark:text-white">${item.namaUPK}</td>
+                                <td class="p-3 font-mono text-xs text-slate-600 dark:text-slate-400">${formatRupiah(item.modalAwal)}</td>
+                                <td class="p-3 font-mono text-xs font-black text-sky-600 dark:text-sky-400">${formatRupiah(item.totalAset)}</td>
                                 <td class="p-3 font-mono text-xs">${growthBadge}</td>
-                                <td class="p-3"><span class="px-2.5 py-1 text-[10px] font-bold rounded-full border bg-sky-500/20 text-sky-300 border-sky-500/30">${item.statusBadanHukum || 'Belum'}</span></td>
+                                <td class="p-3"><span class="px-2.5 py-1 text-[10px] font-bold rounded-full border bg-sky-500/20 text-sky-700 dark:text-sky-300 border-sky-500/30">${item.statusBadanHukum || 'Belum'}</span></td>
                                 <td class="p-3 text-center">${getActionButtons(item.id, 'aset')}</td>
                             </tr>`;
                     });
@@ -1371,72 +1376,72 @@
                 container.innerHTML = `<div class="p-4 space-y-6">${htmlContent}</div>`;
             } else if (currentTab === 'docs') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[650px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[650px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">ID</th><th class="p-4">Judul Dokumen</th><th class="p-4">Kategori</th><th class="p-4">Tanggal Unggah</th><th class="p-4">Pengunggah</th><th class="p-4 text-center">Berkas File</th><th class="p-4 text-center">Aksi</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('docs').filter(d => d.judul.toLowerCase().includes(searchQuery) || d.kategori.toLowerCase().includes(searchQuery));
                 filtered.forEach(d => {
-                    const fileLink = d.fileData ? `<a href="${d.fileData}" target="_blank" download="${d.judul}" class="px-3 py-1.5 bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-lg text-xs font-bold inline-flex items-center hover:bg-sky-500/30 transition"><i class="fa-solid fa-download mr-1.5"></i> Unduh Berkas</a>` : `<span class="text-slate-500 italic text-xs">Tidak ada file</span>`;
+                    const fileLink = d.fileData ? `<a href="${d.fileData}" target="_blank" download="${d.judul}" class="px-3 py-1.5 bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30 rounded-lg text-xs font-bold inline-flex items-center hover:bg-sky-500/30 transition"><i class="fa-solid fa-download mr-1.5"></i> Unduh Berkas</a>` : `<span class="text-slate-400 italic text-xs">Tidak ada file</span>`;
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono text-xs text-slate-500">#${d.id}</td>
-                            <td class="p-4 font-bold text-white"><i class="fa-solid fa-file-pdf text-rose-400 mr-2"></i>${d.judul}</td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30 rounded-lg">${d.kategori}</span></td>
-                            <td class="p-4 text-slate-400">${formatDateToID(d.tanggal)}</td>
-                            <td class="p-4 text-slate-400">${d.pembuat}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${d.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-file-pdf text-rose-500 mr-2"></i>${d.judul}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-bold bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30 rounded-lg">${d.kategori}</span></td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${formatDateToID(d.tanggal)}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${d.pembuat}</td>
                             <td class="p-4 text-center">${fileLink}</td>
                             <td class="p-4 text-center">${getActionButtons(d.id, 'docs')}</td>
                         </tr>`;
                 });
             } else if (currentTab === 'users') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[700px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[700px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">Username</th><th class="p-4">No HP</th><th class="p-4">Password</th><th class="p-4">Nama Akun</th><th class="p-4">Role</th><th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4 text-center">Aksi</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('users').filter(u => u.nama.toLowerCase().includes(searchQuery) || u.username.includes(searchQuery) || (u.hp && u.hp.includes(searchQuery)));
                 filtered.forEach(u => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono font-bold text-white">${u.username}</td>
-                            <td class="p-4 font-mono text-xs text-emerald-400 font-bold">${u.hp || '-'}</td>
-                            <td class="p-4 font-mono text-xs text-rose-400 font-bold flex items-center space-x-2">
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono font-bold text-slate-900 dark:text-white">${u.username}</td>
+                            <td class="p-4 font-mono text-xs text-emerald-600 dark:text-emerald-400 font-bold">${u.hp || '-'}</td>
+                            <td class="p-4 font-mono text-xs text-rose-600 dark:text-rose-400 font-bold flex items-center space-x-2">
                                 <span id="pass-span-${u.id}">••••••••</span>
-                                <button type="button" onclick="toggleTablePassword(${u.id})" class="text-slate-400 hover:text-white transition">
+                                <button type="button" onclick="toggleTablePassword(${u.id})" class="text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
                                     <i id="pass-icon-${u.id}" class="fa-solid fa-eye text-xs"></i>
                                 </button>
                             </td>
-                            <td class="p-4 font-bold text-slate-200">${u.nama}</td>
-                            <td class="p-4"><span class="px-3 py-1 text-[10px] font-black rounded-full ${u.role === 'PUSAT' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : u.role === 'DPW' ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}">${u.role}</span></td>
-                            <td class="p-4 text-xs text-slate-300">${u.provinsi || '-'}</td>
-                            <td class="p-4 text-xs text-slate-300">${u.kabupaten || '-'}</td>
+                            <td class="p-4 font-bold text-slate-800 dark:text-slate-200">${u.nama}</td>
+                            <td class="p-4"><span class="px-3 py-1 text-[10px] font-black rounded-full ${u.role === 'PUSAT' ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30' : u.role === 'DPW' ? 'bg-sky-500/20 text-sky-700 dark:text-sky-300 border border-sky-500/30' : 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'}">${u.role}</span></td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-300">${u.provinsi || '-'}</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-300">${u.kabupaten || '-'}</td>
                             <td class="p-4 text-center">${getActionButtons(u.id, 'users', u)}</td>
                         </tr>`;
                 });
             } else if (currentTab === 'audit') {
                 container.innerHTML = `
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-300 min-w-[600px]">
-                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-800">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-700 dark:text-slate-300 min-w-[600px]">
+                        <thead class="bg-slate-100 dark:bg-slate-950/80 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                             <tr><th class="p-4">ID Log</th><th class="p-4">Waktu Aktivitas</th><th class="p-4">Pengguna</th><th class="p-4">Aksi / Keterangan</th></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-800/80 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-200 dark:divide-slate-800/80 font-medium"></tbody>
                     </table>`;
                 const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('audit').filter(a => a.aksi.toLowerCase().includes(searchQuery) || a.user.toLowerCase().includes(searchQuery));
                 filtered.forEach(a => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
-                            <td class="p-4 font-mono text-xs text-slate-500">#${a.id}</td>
-                            <td class="p-4 text-xs font-mono text-slate-400">${a.waktu}</td>
-                            <td class="p-4 font-bold text-slate-200">${a.user}</td>
-                            <td class="p-4 font-medium text-slate-300">${a.aksi}</td>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition border-b border-slate-200 dark:border-slate-800/60">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${a.id}</td>
+                            <td class="p-4 text-xs font-mono text-slate-500 dark:text-slate-400">${a.waktu}</td>
+                            <td class="p-4 font-bold text-slate-800 dark:text-slate-200">${a.user}</td>
+                            <td class="p-4 font-medium text-slate-700 dark:text-slate-300">${a.aksi}</td>
                         </tr>`;
                 });
             }
@@ -1447,26 +1452,26 @@
                 if (targetUser.role === 'PUSAT') {
                     return `
                         <div class="flex items-center justify-center space-x-1.5">
-                            <button onclick="editEntry(${id})" title="Edit Admin Pusat" class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center transition border border-amber-500/30 hover:bg-amber-500/20 shadow-sm">
+                            <button onclick="editEntry(${id})" title="Edit Admin Pusat" class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center transition border border-amber-500/30 hover:bg-amber-500/20 shadow-sm">
                                 <i class="fa-solid fa-pen-to-square text-xs"></i>
                             </button>
                         </div>`;
                 }
                 if (loggedUser.role === 'DPW' && targetUser.role === 'DPW') {
-                    return `<span class="text-[11px] font-semibold text-slate-500 italic"><i class="fa-solid fa-lock text-xs mr-1"></i> Terkunci</span>`;
+                    return `<span class="text-[11px] font-semibold text-slate-400 italic"><i class="fa-solid fa-lock text-xs mr-1"></i> Terkunci</span>`;
                 }
             }
 
             return `
                 <div class="flex items-center justify-center space-x-1.5">
-                    <button onclick="editEntry(${id})" title="Edit Data" class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center transition border border-amber-500/30 hover:bg-amber-500/20">
+                    <button onclick="editEntry(${id})" title="Edit Data" class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center transition border border-amber-500/30 hover:bg-amber-500/20">
                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                     </button>
                     ${tab !== 'users' && tab !== 'docs' && tab !== 'audit' && tab !== 'struktur' && tab !== 'galeri' ? `
-                    <button onclick="openPrintModal(${id})" title="Cetak Bukti" class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center transition border border-sky-500/30 hover:bg-sky-500/20">
+                    <button onclick="openPrintModal(${id})" title="Cetak Bukti" class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center transition border border-sky-500/30 hover:bg-sky-500/20">
                         <i class="fa-solid fa-print text-xs"></i>
                     </button>` : ''}
-                    <button onclick="deleteEntry(${id})" title="Hapus Data" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center transition border border-rose-500/30 hover:bg-rose-500/20">
+                    <button onclick="deleteEntry(${id})" title="Hapus Data" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center transition border border-rose-500/30 hover:bg-rose-500/20">
                         <i class="fa-solid fa-trash text-xs"></i>
                     </button>
                 </div>`;
@@ -1487,42 +1492,42 @@
             if (currentTab === 'struktur') {
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nama Lengkap & Gelar</label>
-                        <input type="text" id="field-nama" value="${item.nama || ''}" required placeholder="Contoh: Dr. H. Harman, S.E., M.M." class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nama Lengkap & Gelar</label>
+                        <input type="text" id="field-nama" value="${item.nama || ''}" required placeholder="Contoh: Dr. H. Harman, S.E., M.M." class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Jabatan</label>
-                        <input type="text" id="field-jabatan" value="${item.jabatan || ''}" required placeholder="Contoh: Ketua Umum / Ketua DPW" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Jabatan</label>
+                        <input type="text" id="field-jabatan" value="${item.jabatan || ''}" required placeholder="Contoh: Ketua Umum / Ketua DPW" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Wilayah Kerja</label>
-                        <input type="text" id="field-wilayah" value="${item.wilayah || ''}" required placeholder="Contoh: Nasional / Sulawesi Selatan" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Wilayah Kerja</label>
+                        <input type="text" id="field-wilayah" value="${item.wilayah || ''}" required placeholder="Contoh: Nasional / Sulawesi Selatan" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nomor WhatsApp</label>
-                        <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nomor WhatsApp</label>
+                        <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>`;
             } else if (currentTab === 'galeri') {
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Judul Kegiatan / Berita</label>
-                        <input type="text" id="field-judul" value="${item.judul || ''}" required placeholder="Contoh: Rapat Kerja Nasional 2026" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Judul Kegiatan / Berita</label>
+                        <input type="text" id="field-judul" value="${item.judul || ''}" required placeholder="Contoh: Rapat Kerja Nasional 2026" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kategori</label>
-                        <select id="field-kategori" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kategori</label>
+                        <select id="field-kategori" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                             <option value="Kegiatan Nasional" ${item.kategori === 'Kegiatan Nasional' ? 'selected' : ''}>Kegiatan Nasional</option>
                             <option value="Penyerahan SK" ${item.kategori === 'Penyerahan SK' ? 'selected' : ''}>Penyerahan SK</option>
                             <option value="Bakti Sosial" ${item.kategori === 'Bakti Sosial' ? 'selected' : ''}>Bakti Sosial</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
-                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
+                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Deskripsi Singkat</label>
-                        <textarea id="field-deskripsi" rows="3" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">${item.deskripsi || ''}</textarea>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Deskripsi Singkat</label>
+                        <textarea id="field-deskripsi" rows="3" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">${item.deskripsi || ''}</textarea>
                     </div>`;
             } else if (currentTab === 'users') {
                 const defaultProvUser = loggedUser.role === 'DPW' ? loggedUser.provinsi : (item.provinsi || '');
@@ -1530,36 +1535,36 @@
 
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Username</label>
-                        <input type="text" id="field-username" value="${item.username || ''}" required placeholder="Contoh: upk_nkri" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Username</label>
+                        <input type="text" id="field-username" value="${item.username || ''}" required placeholder="Contoh: upk_nkri" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nomor HP</label>
-                        <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nomor HP</label>
+                        <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Password</label>
-                        <input type="text" id="field-password" value="${item.password || ''}" required placeholder="Masukkan Password Akun" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Password</label>
+                        <input type="text" id="field-password" value="${item.password || ''}" required placeholder="Masukkan Password Akun" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nama Pengguna / Pengurus</label>
-                        <input type="text" id="field-nama" value="${item.nama || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nama Pengguna / Pengurus</label>
+                        <input type="text" id="field-nama" value="${item.nama || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Role Pengurus</label>
-                        <select id="field-role" onchange="toggleKabupatenField()" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Role Pengurus</label>
+                        <select id="field-role" onchange="toggleKabupatenField()" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                             ${loggedUser.role === 'PUSAT' ? '<option value="DPW" ' + (currentRole === 'DPW' ? 'selected' : '') + '>DPW (Dewan Pengurus Wilayah / Provinsi)</option>' : ''}
                             <option value="DPD" ${currentRole === 'DPD' || loggedUser.role === 'DPW' ? 'selected' : ''}>DPD (Dewan Pengurus Daerah / Kabupaten)</option>
                             ${loggedUser.role === 'PUSAT' ? '<option value="PUSAT" ' + (currentRole === 'PUSAT' ? 'selected' : '') + '>Admin Pusat</option>' : ''}
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Provinsi</label>
-                        <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProvUser}" ${loggedUser.role === 'DPW' ? 'readonly' : ''} required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Provinsi</label>
+                        <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProvUser}" ${loggedUser.role === 'DPW' ? 'readonly' : ''} required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                     </div>
                     <div id="kabupaten-field-wrapper">
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kabupaten</label>
-                        <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" placeholder="Contoh: BONE" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kabupaten</label>
+                        <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" placeholder="Contoh: BONE" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                     </div>`;
 
                 setTimeout(() => toggleKabupatenField(), 50);
@@ -1567,24 +1572,24 @@
             } else if (currentTab === 'docs') {
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Judul Dokumen / SK</label>
-                        <input type="text" id="field-judul" value="${item.judul || ''}" required placeholder="Contoh: SK Pengurus DPD" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Judul Dokumen / SK</label>
+                        <input type="text" id="field-judul" value="${item.judul || ''}" required placeholder="Contoh: SK Pengurus DPD" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kategori</label>
-                        <select id="field-kategori" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kategori</label>
+                        <select id="field-kategori" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                             <option value="Legalitas" ${item.kategori === 'Legalitas' ? 'selected' : ''}>Legalitas</option>
                             <option value="SOP" ${item.kategori === 'SOP' ? 'selected' : ''}>SOP</option>
                             <option value="Surat Edaran" ${item.kategori === 'Surat Edaran' ? 'selected' : ''}>Surat Edaran</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Unggah Berkas File (PDF/Foto - Maks 700KB)</label>
-                        <input type="file" id="field-file" accept=".pdf,image/*" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30 text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Unggah Berkas File (PDF/Foto - Maks 700KB)</label>
+                        <input type="file" id="field-file" accept=".pdf,image/*" class="w-full p-2.5 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-600 dark:file:text-sky-300 hover:file:bg-sky-500/30 text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
-                        <input type="date" id="field-tgl-doc" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
+                        <input type="date" id="field-tgl-doc" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>`;
             } else if (currentTab === 'aset') {
                 const defaultProv = loggedUser.role !== 'PUSAT' ? loggedUser.provinsi : (item.provinsi || '');
@@ -1593,35 +1598,35 @@
                 fieldsContainer.innerHTML = `
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Provinsi</label>
-                            <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProv}" ${loggedUser.role !== 'PUSAT' ? 'readonly' : ''} required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Provinsi</label>
+                            <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProv}" ${loggedUser.role !== 'PUSAT' ? 'readonly' : ''} required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kabupaten</label>
-                            <input type="text" id="field-kabupaten" value="${defaultKab}" ${loggedUser.role === 'DPD' ? 'readonly' : ''} required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kabupaten</label>
+                            <input type="text" id="field-kabupaten" value="${defaultKab}" ${loggedUser.role === 'DPD' ? 'readonly' : ''} required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kecamatan</label>
-                        <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kecamatan</label>
+                        <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nama UPK</label>
-                        <input type="text" id="field-namaUPK" value="${item.namaUPK || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nama UPK</label>
+                        <input type="text" id="field-namaUPK" value="${item.namaUPK || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Modal Awal (Rp)</label>
-                            <input type="number" step="any" id="field-modalAwal" value="${item.modalAwal || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Modal Awal (Rp)</label>
+                            <input type="number" step="any" id="field-modalAwal" value="${item.modalAwal || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Total Aset Sekarang (Rp)</label>
-                            <input type="number" step="any" id="field-totalAset" value="${item.totalAset || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Total Aset Sekarang (Rp)</label>
+                            <input type="number" step="any" id="field-totalAset" value="${item.totalAset || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Status Badan Hukum</label>
-                        <select id="field-statusBadanHukum" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Status Badan Hukum</label>
+                        <select id="field-statusBadanHukum" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                             <option value="PBH" ${item.statusBadanHukum === 'PBH' ? 'selected' : ''}>PBH</option>
                             <option value="Koperasi" ${item.statusBadanHukum === 'Koperasi' ? 'selected' : ''}>Koperasi</option>
                             <option value="PT" ${item.statusBadanHukum === 'PT' ? 'selected' : ''}>PT</option>
@@ -1635,55 +1640,55 @@
 
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nama UPK</label>
-                        <input type="text" id="field-upk" value="${item.upk || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nama UPK</label>
+                        <input type="text" id="field-upk" value="${item.upk || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Provinsi</label>
-                            <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProvIuran}" ${loggedUser.role !== 'PUSAT' ? 'readonly' : ''} required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Provinsi</label>
+                            <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProvIuran}" ${loggedUser.role !== 'PUSAT' ? 'readonly' : ''} required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kabupaten</label>
-                            <input type="text" id="field-kabupaten" value="${defaultKabIuran}" ${loggedUser.role === 'DPD' ? 'readonly' : ''} required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-white">
+                            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kabupaten</label>
+                            <input type="text" id="field-kabupaten" value="${defaultKabIuran}" ${loggedUser.role === 'DPD' ? 'readonly' : ''} required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium uppercase outline-none text-slate-900 dark:text-white">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Kecamatan</label>
-                        <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white" placeholder="Contoh: AMALI">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Kecamatan</label>
+                        <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white" placeholder="Contoh: AMALI">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
-                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
+                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nominal (Rp)</label>
-                        <input type="number" id="field-nominal" value="${item.nominal || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nominal (Rp)</label>
+                        <input type="number" id="field-nominal" value="${item.nominal || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Keterangan</label>
-                        <textarea id="field-keterangan" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white" rows="2">${item.keterangan || ''}</textarea>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Keterangan</label>
+                        <textarea id="field-keterangan" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white" rows="2">${item.keterangan || ''}</textarea>
                     </div>`;
             } else if (currentTab === 'kas') {
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
-                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
+                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Keterangan Transaksi</label>
-                        <input type="text" id="field-keterangan" value="${item.keterangan || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Keterangan Transaksi</label>
+                        <input type="text" id="field-keterangan" value="${item.keterangan || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Jenis Kas</label>
-                        <select id="field-jenis" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Jenis Kas</label>
+                        <select id="field-jenis" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                             <option value="Masuk" ${item.jenis === 'Masuk' ? 'selected' : ''}>Pemasukan (Masuk)</option>
                             <option value="Keluar" ${item.jenis === 'Keluar' ? 'selected' : ''}>Pengeluaran (Keluar)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1.5">Nominal (Rp)</label>
-                        <input type="number" id="field-nominal" value="${item.nominal || ''}" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs font-medium outline-none text-white">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nominal (Rp)</label>
+                        <input type="number" id="field-nominal" value="${item.nominal || ''}" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
                     </div>`;
             }
 
