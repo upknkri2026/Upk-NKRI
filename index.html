@@ -676,7 +676,7 @@
             ]
         };
 
-        // Muat database dari LocalStorage jika ada
+        // Muat database dari LocalStorage jika ada sebagai cache lokal
         let savedDatabase = localStorage.getItem('upk_nkri_database');
         let database = savedDatabase ? JSON.parse(savedDatabase) : defaultDatabase;
 
@@ -756,14 +756,32 @@
                     const textData = await response.text();
                     if (textData && textData !== "{}" && textData.trim() !== "") {
                         const parsedData = JSON.parse(textData);
+                        
+                        // Smart merging untuk dokumen dan log agar dokumen antar perangkat tergabung (tidak tertimpa kosong)
+                        let mergedDocs = database.documents || [];
+                        if (Array.isArray(parsedData.documents)) {
+                            let docMap = new Map();
+                            mergedDocs.forEach(d => docMap.set(d.id, d));
+                            parsedData.documents.forEach(d => docMap.set(d.id, d));
+                            mergedDocs = Array.from(docMap.values());
+                        }
+
+                        let mergedLogs = database.auditLogs || [];
+                        if (Array.isArray(parsedData.auditLogs)) {
+                            let logMap = new Map();
+                            mergedLogs.forEach(l => logMap.set(l.id, l));
+                            parsedData.auditLogs.forEach(l => logMap.set(l.id, l));
+                            mergedLogs = Array.from(logMap.values());
+                        }
+
                         database = {
                             settings: parsedData.settings || database.settings,
-                            users: Array.isArray(parsedData.users) ? parsedData.users : database.users,
+                            users: Array.isArray(parsedData.users) && parsedData.users.length > 0 ? parsedData.users : database.users,
                             iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : database.iuran,
                             kas: Array.isArray(parsedData.kas) ? parsedData.kas : database.kas,
-                            aset: Array.isArray(parsedData.aset) ? parsedData.aset : database.aset,
-                            documents: Array.isArray(parsedData.documents) && parsedData.documents.length > 0 ? parsedData.documents : database.documents,
-                            auditLogs: Array.isArray(parsedData.auditLogs) && parsedData.auditLogs.length > 0 ? parsedData.auditLogs : database.auditLogs
+                            aset: Array.isArray(parsedData.aset) && parsedData.aset.length > 0 ? parsedData.aset : database.aset,
+                            documents: mergedDocs,
+                            auditLogs: mergedLogs
                         };
                         localStorage.setItem('upk_nkri_database', JSON.stringify(database));
                     }
@@ -809,7 +827,6 @@
         }
 
         async function saveWebsiteSettings() {
-            // Validasi ketat role PUSAT
             if (!loggedUser || loggedUser.role !== 'PUSAT') {
                 alert('Akses Ditolak! Hanya Admin Pusat yang dapat mengubah pengaturan website.');
                 return;
@@ -1064,7 +1081,6 @@
                 tab = 'aset';
             }
 
-            // Keamanan tambahan: cegah role non-PUSAT membuka pengaturan website
             if (tab === 'settings' && (!loggedUser || loggedUser.role !== 'PUSAT')) {
                 alert('Akses Ditolak! Hanya Admin Pusat yang dapat mengakses Pengaturan Website.');
                 tab = 'aset';
