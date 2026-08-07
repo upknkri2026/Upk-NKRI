@@ -358,6 +358,7 @@
                         <i class="fa-solid fa-users-gear"></i>
                         <span>Kelola User</span>
                     </button>
+                    <!-- Tombol Pengaturan Website (Hanya untuk PUSAT) -->
                     <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
                         <i class="fa-solid fa-gear"></i>
                         <span>Pengaturan Website</span>
@@ -675,7 +676,7 @@
             ]
         };
 
-        // Muat database dari LocalStorage jika ada, agar data dokumen/SK tidak hilang saat refresh
+        // Muat database dari LocalStorage jika ada
         let savedDatabase = localStorage.getItem('upk_nkri_database');
         let database = savedDatabase ? JSON.parse(savedDatabase) : defaultDatabase;
 
@@ -808,6 +809,12 @@
         }
 
         async function saveWebsiteSettings() {
+            // Validasi ketat role PUSAT
+            if (!loggedUser || loggedUser.role !== 'PUSAT') {
+                alert('Akses Ditolak! Hanya Admin Pusat yang dapat mengubah pengaturan website.');
+                return;
+            }
+
             const newMarquee = document.getElementById('setting-marquee-input').value.trim();
             const newAnnouncement = document.getElementById('setting-announcement-input').value.trim();
 
@@ -1054,6 +1061,12 @@
 
         function switchTab(tab) {
             if (tab === 'users' && loggedUser.role === 'DPD') {
+                tab = 'aset';
+            }
+
+            // Keamanan tambahan: cegah role non-PUSAT membuka pengaturan website
+            if (tab === 'settings' && (!loggedUser || loggedUser.role !== 'PUSAT')) {
+                alert('Akses Ditolak! Hanya Admin Pusat yang dapat mengakses Pengaturan Website.');
                 tab = 'aset';
             }
 
