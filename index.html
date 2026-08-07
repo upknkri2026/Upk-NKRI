@@ -18,9 +18,9 @@
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Firebase App & Firestore SDK (Compat) -->
+    <!-- Firebase App & Realtime Database SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
     <style>
         body {
@@ -251,7 +251,7 @@
                         <div class="flex items-center space-x-2">
                             <p class="text-[11px] font-semibold text-sky-400 tracking-wider" id="user-role-label">Sistem Kelembagaan, Aset & Keuangan</p>
                             <button onclick="fetchFromCloud()" title="Klik untuk Refresh Sync" id="sync-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all duration-300">
-                                <i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Connecting Firebase...
+                                <i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Connecting RTDB...
                             </button>
                         </div>
                     </div>
@@ -607,18 +607,18 @@
 
     <!-- ================= 5. JAVASCRIPT & LOGIC ================= -->
     <script>
-        // Inisialisasi Firebase
+        // Inisialisasi Firebase Realtime Database
         const firebaseConfig = {
             apiKey: "AIzaSyAEnT3_ZaYXLwOuFNDhAEtKL7Xp2-tRtHs",
             authDomain: "database-upk-nkri.firebaseapp.com",
+            databaseURL: "https://database-upk-nkri-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "database-upk-nkri",
             storageBucket: "database-upk-nkri.firebasestorage.app",
             messagingSenderId: "1061803867420",
             appId: "1:1061803867420:web:973031618ae2eff5820ed9"
         };
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const DB_DOC_REF = db.collection('asosiasi').doc('main_db');
+        const rtdbRef = firebase.database().ref('asosiasi/main_db');
 
         let currentTab = 'aset';
         let loggedUser = null;
@@ -763,12 +763,12 @@
         async function fetchFromCloud() {
             const statusEl = document.getElementById('sync-status');
             statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
-            statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Syncing Firebase...`;
+            statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Syncing RTDB...`;
 
             try {
-                const docSnap = await DB_DOC_REF.get();
-                if (docSnap.exists) {
-                    const parsedData = docSnap.data();
+                const snapshot = await rtdbRef.once('value');
+                if (snapshot.exists()) {
+                    const parsedData = snapshot.val();
                     database = {
                         settings: parsedData.settings || defaultDatabase.settings,
                         users: Array.isArray(parsedData.users) && parsedData.users.length > 0 ? parsedData.users : defaultDatabase.users,
@@ -780,14 +780,13 @@
                     };
                     localStorage.setItem('upk_nkri_database', JSON.stringify(database));
                 } else {
-                    // Jika database di cloud belum ada, inisialisasi pertama kali
-                    await DB_DOC_REF.set(defaultDatabase);
+                    await rtdbRef.set(defaultDatabase);
                 }
                 
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Firebase Synced`;
+                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> RTDB Synced`;
             } catch (err) {
-                console.error("Firebase sync error:", err);
+                console.error("RTDB sync error:", err);
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Offline`;
             }
@@ -803,11 +802,11 @@
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Saving...`;
 
             try {
-                await DB_DOC_REF.set(database);
+                await rtdbRef.set(database);
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Data Saved`;
             } catch (err) {
-                console.error("Firebase save error:", err);
+                console.error("RTDB save error:", err);
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Save Failed`;
             }
