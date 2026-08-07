@@ -1,594 +1,585 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asosiasi UPK NKRI - Sistem Pengelolaan Aset & Akuntabilitas</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-
-    /* CSS KHUSUS CETAK/PRINT (Isolasi Area Cetak) */
-    @media print {
-      body * {
-        visibility: hidden !important;
-      }
-      
-      .printable-area, .printable-area * {
-        visibility: visible !important;
-      }
-
-      .printable-area {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 20px !important;
-        background: #fff !important;
-      }
-
-      .no-print {
-        display: none !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kelembagaan, Aset & Keuangan - ASOSIASI UPK NKRI</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS khusus untuk pencetakan (Print Area) */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-[#032d4d] font-sans antialiased text-gray-800 min-h-screen">
 
-  <!-- ANIMASI LOADING OVERLAY -->
-  <div id="loading-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex-col items-center justify-center text-white">
-    <div class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-3"></div>
-    <p class="text-sm font-semibold tracking-wide" id="loading-text">Memproses data...</p>
-  </div>
+    <!-- ================= 1. TAMPILAN LOGIN (Persis Seperti Gambar) ================= -->
+    <div id="login-view" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-[#f0f4f8] rounded-3xl p-8 sm:p-10 w-full max-w-md shadow-2xl relative text-center border border-white/20">
+            
+            <!-- Logo Container -->
+            <div class="flex justify-center mb-4">
+                <div class="w-20 h-20 bg-white rounded-2xl shadow-md border-2 border-cyan-500 p-2 flex items-center justify-center">
+                    <!-- Logo Icon placeholder/custom SVG -->
+                    <div class="w-full h-full rounded-xl bg-gradient-to-tr from-cyan-600 via-emerald-500 to-amber-500 flex items-center justify-center text-white font-bold text-2xl shadow-inner">
+                        UPK
+                    </div>
+                </div>
+            </div>
 
-  <!-- HEADER & NAVBAR -->
-  <header class="bg-emerald-800 text-white shadow-md sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-xl border border-emerald-400">
-          NKRI
+            <!-- Title & Subtitle -->
+            <h1 class="text-2xl font-black text-[#0c2340] tracking-wide mb-1">ASOSIASI UPK NKRI</h1>
+            <p class="text-xs font-bold text-[#0284c7] tracking-wider uppercase mb-8">Sistem Kelembagaan, Aset & Keuangan</p>
+
+            <!-- Form Login -->
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 tracking-wider uppercase mb-2">USERNAME</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-user text-sm"></i>
+                        </div>
+                        <input type="text" id="username" required placeholder="Masukkan Username" 
+                            class="w-full pl-10 pr-4 py-3 bg-white text-gray-700 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 tracking-wider uppercase mb-2">PASSWORD</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-lock text-sm"></i>
+                        </div>
+                        <input type="password" id="password" required placeholder="••••••••" 
+                            class="w-full pl-10 pr-4 py-3 bg-white text-gray-700 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 px-4 bg-[#0073ab] hover:bg-[#005f8d] active:bg-[#004d73] text-white font-semibold rounded-xl shadow-lg shadow-cyan-900/20 flex items-center justify-center space-x-2 transition duration-200 mt-2">
+                    <span>Masuk Sistem</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <p class="text-xs text-gray-400 mt-10">© 2026 Asosiasi UPK NKRI. All rights reserved.</p>
         </div>
-        <div>
-          <h1 class="text-xl font-bold leading-tight">Asosiasi UPK NKRI</h1>
-          <p class="text-xs text-emerald-200">Sistem Pengelolaan Aset & Akuntabilitas Keuangan</p>
-        </div>
-      </div>
-      
-      <div class="flex items-center space-x-3">
-        <span id="admin-badge" class="hidden bg-emerald-700 text-emerald-100 text-xs px-3 py-1 rounded-full border border-emerald-500">
-          Mode Admin Active
-        </span>
-        <button id="btn-login-modal" onclick="toggleLoginModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition shadow-sm">
-          Login Admin
-        </button>
-      </div>
     </div>
-  </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto px-4 py-8 w-full space-y-8 flex-grow">
+    <!-- ================= 2. DASHBOARD APLIKASI (Setelah Login) ================= -->
+    <div id="dashboard-view" class="hidden min-h-screen bg-gray-100 flex flex-col">
+        
+        <!-- Navbar Header -->
+        <header class="bg-[#032d4d] text-white shadow-md no-print">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-lg p-1 flex items-center justify-center font-bold text-[#032d4d] text-xs">UPK</div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">ASOSIASI UPK NKRI</h1>
+                        <p class="text-xs text-cyan-300">Sistem Kelembagaan, Aset & Keuangan</p>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" class="bg-red-600/80 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition flex items-center space-x-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Keluar</span>
+                </button>
+            </div>
+        </header>
 
-    <!-- STATUS BANNER (Tampil Jika URL Apps Script Belum Dimasukkan) -->
-    <div id="sheets-notice" class="hidden bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs flex justify-between items-center">
-      <span>⚠️ <strong>Mode Demo / Offline:</strong> URL Google Apps Script belum diisi pada script. Menggunakan data contoh lokal.</span>
-      <button onclick="document.getElementById('sheets-notice').remove()" class="text-amber-600 hover:text-amber-900 font-bold ml-2">✕</button>
+        <!-- Main Content Area -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 no-print">
+            
+            <!-- Navigation Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
+                <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-[#0073ab] text-white shadow">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span>Data Iuran</span>
+                </button>
+                <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-white text-gray-600 hover:bg-gray-50 border">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Kas Keuangan</span>
+                </button>
+                <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-white text-gray-600 hover:bg-gray-50 border">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <span>Data Aset Semua UPK</span>
+                </button>
+            </div>
+
+            <!-- Header Panel & Add Button -->
+            <div class="bg-white rounded-xl p-5 shadow-sm mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 id="section-title" class="text-xl font-bold text-gray-800">Manajemen Data Iuran</h2>
+                    <p id="section-subtitle" class="text-sm text-gray-500">Kelola dan catat transaksi iuran anggota UPK</p>
+                </div>
+                <button onclick="openFormModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Tambah Data Baru</span>
+                </button>
+            </div>
+
+            <!-- Table Container -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-600">
+                        <thead class="bg-gray-50 text-gray-700 uppercase text-xs font-semibold border-b">
+                            <tr id="table-head-row">
+                                <!-- Dynamic Headers -->
+                            </tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-gray-200">
+                            <!-- Dynamic Content Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Dashboard -->
+        <footer class="bg-white border-t py-4 text-center text-xs text-gray-500 no-print">
+            © 2026 Asosiasi UPK NKRI. All rights reserved.
+        </footer>
     </div>
 
-    <!-- RINGKASAN STATISTIK (DASHBOARD) -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Modal Awal</span>
-        <div class="text-2xl font-bold text-slate-800 mt-2" id="dash-modal-awal">Rp 0</div>
-        <p class="text-xs text-slate-500 mt-1">Gabungan seluruh UPK Wilayah</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-        <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Total Aset Sekarang</span>
-        <div class="text-2xl font-bold text-emerald-600 mt-2" id="dash-aset-sekarang">Rp 0</div>
-        <p class="text-xs text-slate-500 mt-1">Akumulasi pertumbuhan aset</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-        <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">Saldo Kas Operasional</span>
-        <div class="text-2xl font-bold text-blue-600 mt-2" id="dash-saldo-kas">Rp 0</div>
-        <p class="text-xs text-slate-500 mt-1">Hasil transaksi iuran & pengeluaran</p>
-      </div>
-    </section>
+    <!-- ================= 3. MODAL FORM (INPUT / EDIT & SIMPAN) ================= -->
+    <div id="form-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50 no-print">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 id="modal-form-title" class="text-lg font-bold text-gray-800">Form Transaksi</h3>
+                <button onclick="closeFormModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
 
-    <!-- SEKSI 1: DATA ASET UPK / WILAYAH -->
-    <section id="area-laporan-aset" class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-      <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <div>
-          <h2 class="text-lg font-bold text-slate-800">Daftar UPK Wilayah & Status Hukum</h2>
-          <p class="text-xs text-slate-500">Transparansi modal dan badan hukum lembaga</p>
+            <form id="active-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <input type="hidden" id="entry-id">
+                <div id="dynamic-form-fields" class="space-y-4">
+                    <!-- Dynamic Form Inputs -->
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t mt-6">
+                    <button type="button" onclick="closeFormModal()" class="px-4 py-2 border rounded-lg text-sm text-gray-600 hover:bg-gray-50">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-lg shadow flex items-center space-x-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Simpan Data</span>
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="flex gap-2">
-          <button onclick="printLaporanAset()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-3 py-2 rounded-lg font-medium transition flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H7a2 2 0 00-2 2v4h10z"></path></svg>
-            Cetak Laporan Aset
-          </button>
-          <button id="btn-tambah-upk" onclick="tambahUPKModal()" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg font-medium transition">
-            + Tambah UPK
-          </button>
-        </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm border-collapse">
-          <thead>
-            <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-xs uppercase tracking-wider">
-              <th class="p-4">Nama UPK / Wilayah</th>
-              <th class="p-4">Modal Awal</th>
-              <th class="p-4">Aset Sekarang</th>
-              <th class="p-4">Status Hukum</th>
-              <th class="p-4">Bentuk Badan Hukum</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-data-upk" class="divide-y divide-slate-100">
-            <!-- Data dimasukkan secara dinamis via JS -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- SEKSI 2: STATUS IURAN ANGGOTA -->
-    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-      <div class="mb-4">
-        <h2 class="text-lg font-bold text-slate-800">Status Iuran Anggota Asosiasi</h2>
-        <p class="text-xs text-slate-500">Monitoring kewajiban iuran tahunan anggota UPK NKRI</p>
-      </div>
-      <div id="grid-iuran" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Kartu iuran dimasukkan secara dinamis via JS -->
-      </div>
-    </section>
-
-    <!-- SEKSI 3: LAPORAN KEUANGAN & TRANSAKSI -->
-    <section id="area-laporan-keuangan" class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-      <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <div>
-          <h2 class="text-lg font-bold text-slate-800">Arus Kas & Buku Kas Umum</h2>
-          <p class="text-xs text-slate-500">Catatan mutasi pemasukan dan pengeluaran operasional</p>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="printLaporanKeuangan()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-3 py-2 rounded-lg font-medium transition flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H7a2 2 0 00-2 2v4h10z"></path></svg>
-            Cetak Kas
-          </button>
-          <button id="btn-tambah-kas" onclick="tambahKasModal()" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg font-medium transition">
-            + Transaksi Baru
-          </button>
-        </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm border-collapse">
-          <thead>
-            <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-xs uppercase">
-              <th class="p-4">Tanggal</th>
-              <th class="p-4">Uraian Transaksi</th>
-              <th class="p-4">Kategori</th>
-              <th class="p-4">Jumlah (Rp)</th>
-              <th class="p-4 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-data-keuangan" class="divide-y divide-slate-100">
-            <!-- Data kas dimasukkan secara dinamis via JS -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="bg-slate-900 text-slate-400 text-xs text-center py-6 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 space-y-2">
-      <p class="font-medium text-slate-300">Asosiasi UPK NKRI - Sistem Pengelolaan Aset & Akuntabilitas</p>
-      <p>&copy; 2026 Asosiasi UPK NKRI. Terintegrasi ke Google Sheets & Hosted on GitHub Pages.</p>
     </div>
-  </footer>
 
-  <!-- MODAL 1: LOGIN ADMIN -->
-  <div id="modal-login" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-xl shadow-xl border border-slate-200 p-6 w-full max-w-sm space-y-4">
-      <h3 class="text-lg font-bold text-slate-800">Login Administrator</h3>
-      <div class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-slate-600 mb-1">Username</label>
-          <input type="text" id="login-user" placeholder="admin" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+    <!-- ================= 4. AREA CETAK / PRINTER TEMPLATE ================= -->
+    <div id="print-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border">
+            
+            <!-- Struk/Bukti Cetak Container -->
+            <div id="print-area" class="p-4 bg-white">
+                <div class="text-center border-b pb-4 mb-4">
+                    <h2 class="text-lg font-black text-gray-900">ASOSIASI UPK NKRI</h2>
+                    <p class="text-xs text-gray-500">Sistem Kelembagaan, Aset & Keuangan</p>
+                    <p class="text-xs font-mono text-gray-400 mt-1" id="print-date"></p>
+                </div>
+
+                <div class="text-center my-3">
+                    <span id="print-type-badge" class="font-bold text-sm uppercase px-3 py-1 bg-gray-100 rounded-full inline-block">BUKTI TRANSAKSI</span>
+                </div>
+
+                <div id="print-details" class="space-y-2 text-sm text-gray-700 font-mono my-4 border-y py-3">
+                    <!-- Dynamic Details for Printing -->
+                </div>
+
+                <div class="text-center text-xs text-gray-400 mt-6 pt-4 border-t border-dashed">
+                    <p>Terima kasih atas keikutsertaan Anda.</p>
+                    <p>Dokumen ini sah dicetak dari sistem resmi UPK NKRI.</p>
+                </div>
+            </div>
+
+            <!-- Button Action (Disembunyikan saat mencetak) -->
+            <div class="flex justify-between items-center mt-6 pt-4 border-t no-print">
+                <button onclick="closePrintModal()" class="px-4 py-2 border rounded-lg text-sm text-gray-600 hover:bg-gray-50">Tutup</button>
+                <button onclick="triggerPrint()" class="px-5 py-2 bg-[#0073ab] hover:bg-[#005f8d] text-white font-medium text-sm rounded-lg shadow flex items-center space-x-2">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Cetak / Print</span>
+                </button>
+            </div>
         </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-600 mb-1">Password</label>
-          <input type="password" id="login-pass" placeholder="admin2026" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 pt-2">
-        <button onclick="toggleLoginModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
-        <button onclick="prosesLogin()" class="px-4 py-2 text-xs font-medium bg-emerald-600 text-white hover:bg-emerald-500 rounded-lg">Login</button>
-      </div>
     </div>
-  </div>
 
-  <!-- MODAL 2: TEMPLATE CETAK KWITANSI -->
-  <div id="modal-kwitansi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div id="print-kwitansi-area" class="bg-white rounded-xl shadow-xl border border-slate-300 p-8 w-full max-w-xl space-y-6">
-      
-      <!-- Header Kwitansi -->
-      <div class="flex justify-between items-start border-b-2 border-slate-800 pb-4">
-        <div>
-          <h2 class="text-xl font-bold tracking-tight text-slate-900">ASOSIASI UPK NKRI</h2>
-          <p class="text-xs text-slate-600">Sistem Pengelolaan Aset & Akuntabilitas Keuangan</p>
-        </div>
-        <div class="text-right">
-          <span class="inline-block text-xs font-bold text-slate-800 border border-slate-800 px-3 py-1 uppercase">Kwitansi Resmi</span>
-          <p id="kw-no" class="text-xs text-slate-500 mt-1">KW/2026/001</p>
-        </div>
-      </div>
+    <!-- ================= 5. JAVASCRIPT LOGIC ================= -->
+    <script>
+        // State Data Lokal
+        let currentTab = 'iuran';
+        
+        let database = {
+            iuran: [
+                { id: 101, upk: 'UPK Kec. Mandiri', tanggal: '2026-08-01', nominal: 500000, keterangan: 'Iuran Bulanan Agustus' },
+                { id: 102, upk: 'UPK Sejahtera', tanggal: '2026-08-03', nominal: 750000, keterangan: 'Iuran Tahunan & Organisasi' }
+            ],
+            kas: [
+                { id: 201, tanggal: '2026-08-01', keterangan: 'Pemasukan Iuran Anggota', jenis: 'Masuk', nominal: 1250000 },
+                { id: 202, tanggal: '2026-08-05', keterangan: 'Biaya Operasional Rapat', jenis: 'Keluar', nominal: 300000 }
+            ],
+            aset: [
+                { id: 301, upk: 'UPK Kec. Mandiri', namaAset: 'Laptop Kantor Core i5', kategori: 'Elektronik', nilai: 8500000, kondisi: 'Baik' },
+                { id: 302, upk: 'UPK Sejahtera', namaAset: 'Sepeda Motor Dinas', kategori: 'Kendaraan', nilai: 17000000, kondisi: 'Baik' }
+            ]
+        };
 
-      <!-- Isian Kwitansi -->
-      <div class="space-y-3 text-sm text-slate-800">
-        <div class="flex border-b border-slate-100 pb-2">
-          <span class="w-36 text-slate-500 font-medium">Telah Diterima Dari</span>
-          <span id="kw-pihak" class="font-semibold">: -</span>
-        </div>
-        <div class="flex border-b border-slate-100 pb-2">
-          <span class="w-36 text-slate-500 font-medium">Uraian / Kebutuhan</span>
-          <span id="kw-uraian" class="font-semibold">: -</span>
-        </div>
-        <div class="flex border-b border-slate-100 pb-2">
-          <span class="w-36 text-slate-500 font-medium">Jenis Transaksi</span>
-          <span id="kw-jenis" class="font-semibold">: -</span>
-        </div>
-        <div class="flex border-b border-slate-100 pb-2 bg-slate-50 p-2 rounded">
-          <span class="w-36 text-slate-700 font-bold">Jumlah Uang</span>
-          <span id="kw-jumlah" class="font-bold text-emerald-700 text-lg">: Rp 0</span>
-        </div>
-      </div>
-
-      <!-- Tanda Tangan -->
-      <div class="grid grid-cols-2 gap-4 text-center text-xs pt-8">
-        <div>
-          <p class="text-slate-500">Penyetor / Penerima,</p>
-          <div class="h-16"></div>
-          <p class="font-bold border-b border-slate-400 inline-block px-4">( .................................... )</p>
-        </div>
-        <div>
-          <p class="text-slate-500">Bendahara / Pengurus Asosiasi,</p>
-          <div class="h-16"></div>
-          <p class="font-bold border-b border-slate-400 inline-block px-4">Pengurus UPK NKRI</p>
-        </div>
-      </div>
-
-      <!-- Tombol Aksi -->
-      <div class="no-print flex justify-end gap-2 pt-4 border-t border-slate-100">
-        <button onclick="tutupModalKwitansi()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Tutup</button>
-        <button onclick="eksekusiCetakKwitansi()" class="px-4 py-2 text-xs font-medium bg-slate-800 text-white hover:bg-slate-700 rounded-lg flex items-center gap-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H7a2 2 0 00-2 2v4h10z"></path></svg>
-          Cetak Sekarang
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC INTEGRATION -->
-  <script>
-    // ==========================================
-    // 1. KONFIGURASI GOOGLE APPS SCRIPT URL
-    // Tempelkan URL Web App hasil deploy Apps Script Anda di dalam petik dua di bawah ini:
-    // ==========================================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvGq-vff3KUg7ORZBUuiRzkm1FMg3HopFDxyyD1GPzdoJDfJ9__GHBzjgOlccNTdlb/exec"; 
-
-    // Data cadangan jika Google Sheets belum terhubung (Mode Demo)
-    const defaultDataUPK = [
-      { nama: 'UPK Maju Bersama (Kec. Kabamaju)', awal: 450000000, sekarang: 1850000000, status: 'Terverifikasi', bentuk: 'PT LKM Demikian Mandiri (AHU-00138/2022)', iuranLunas: true, tglLunas: '14 Jan 2026' },
-      { nama: 'UPK Sejahtera (Kec. Pondok Gede)', awal: 700000000, sekarang: 2100000000, status: 'Terverifikasi', bentuk: 'Koperasi LKM (AHU-00466/2021)', iuranLunas: true, tglLunas: '20 Jan 2026' },
-      { nama: 'UPK Harapan Rakyat (Kec. Ciawi)', awal: 400000000, sekarang: 920000000, status: 'Proses Registrasi', bentuk: 'Proses Permenhan No. 14/2021', iuranLunas: false, tglLunas: '-' }
-    ];
-
-    const defaultDataKeuangan = [
-      { tgl: '2026-01-14', pihak: 'UPK Maju Bersama', uraian: 'Iuran Tahunan Asosiasi 2026', kategori: 'pemasukan', jumlah: 1200000 },
-      { tgl: '2026-01-20', pihak: 'UPK Sejahtera', uraian: 'Iuran Tahunan Asosiasi 2026', kategori: 'pemasukan', jumlah: 1200000 },
-      { tgl: '2026-02-01', pihak: 'Sekretariat NKRI', uraian: 'Konsumsi & Administrasi Rakernas', kategori: 'pengeluaran', jumlah: 450000 }
-    ];
-
-    // --- 2. STATE MANAGEMENT ---
-    let dbUPK = [];
-    let dbKeuangan = [];
-    let isAdmin = false;
-
-    // --- 3. HELPER FUNCTIONS & UI ---
-    function showLoading(message = "Memproses data...") {
-      document.getElementById('loading-text').innerText = message;
-      const overlay = document.getElementById('loading-overlay');
-      overlay.classList.remove('hidden');
-      overlay.classList.add('flex');
-    }
-
-    function hideLoading() {
-      const overlay = document.getElementById('loading-overlay');
-      overlay.classList.add('hidden');
-      overlay.classList.remove('flex');
-    }
-
-    function formatRupiah(num) {
-      return 'Rp ' + Number(num).toLocaleString('id-ID');
-    }
-
-    // --- 4. FETCH & SYNC DATA GOOGLE SHEETS ---
-    async function loadData() {
-      if (!SCRIPT_URL || SCRIPT_URL.trim() === "") {
-        document.getElementById('sheets-notice').classList.remove('hidden');
-        dbUPK = JSON.parse(localStorage.getItem('nkri_upk')) || defaultDataUPK;
-        dbKeuangan = JSON.parse(localStorage.getItem('nkri_keuangan')) || defaultDataKeuangan;
-        renderAll();
-        return;
-      }
-
-      showLoading("Mengambil data dari Google Sheets...");
-      try {
-        const res = await fetch(SCRIPT_URL);
-        const data = await res.json();
-        dbUPK = data.upk || [];
-        dbKeuangan = data.keuangan || [];
-        renderAll();
-      } catch (err) {
-        console.error("Gagal mengambil data dari Google Sheets:", err);
-        alert("Gagal terhubung ke Google Sheets. Menggunakan data lokal.");
-        dbUPK = JSON.parse(localStorage.getItem('nkri_upk')) || defaultDataUPK;
-        dbKeuangan = JSON.parse(localStorage.getItem('nkri_keuangan')) || defaultDataKeuangan;
-        renderAll();
-      } finally {
-        hideLoading();
-      }
-    }
-
-    // --- 5. RENDER FUNCTIONS ---
-    function renderDashboard() {
-      const totalAwal = dbUPK.reduce((acc, curr) => acc + (Number(curr.awal) || 0), 0);
-      const totalSekarang = dbUPK.reduce((acc, curr) => acc + (Number(curr.sekarang) || 0), 0);
-      
-      const totalPemasukan = dbKeuangan.filter(k => k.kategori === 'pemasukan').reduce((acc, curr) => acc + (Number(curr.jumlah) || 0), 0);
-      const totalPengeluaran = dbKeuangan.filter(k => k.kategori === 'pengeluaran').reduce((acc, curr) => acc + (Number(curr.jumlah) || 0), 0);
-      const saldoKas = totalPemasukan - totalPengeluaran;
-
-      document.getElementById('dash-modal-awal').innerText = formatRupiah(totalAwal);
-      document.getElementById('dash-aset-sekarang').innerText = formatRupiah(totalSekarang);
-      document.getElementById('dash-saldo-kas').innerText = formatRupiah(saldoKas);
-    }
-
-    function renderTabelAset() {
-      const tbody = document.getElementById('tbl-data-upk');
-      tbody.innerHTML = '';
-
-      if (dbUPK.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Belum ada data UPK.</td></tr>`;
-        return;
-      }
-
-      dbUPK.forEach((item) => {
-        const row = document.createElement('tr');
-        row.className = 'hover:bg-slate-50 transition';
-        row.innerHTML = `
-          <td class="p-4 font-semibold text-slate-800">${item.nama || '-'}</td>
-          <td class="p-4 text-slate-600">${formatRupiah(item.awal || 0)}</td>
-          <td class="p-4 font-semibold text-emerald-600">${formatRupiah(item.sekarang || 0)}</td>
-          <td class="p-4"><span class="text-xs px-2.5 py-1 rounded-full font-medium ${item.status === 'Terverifikasi' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${item.status || 'Proses'}</span></td>
-          <td class="p-4 text-slate-500 text-xs">${item.bentuk || '-'}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function renderCardsIuran() {
-      const grid = document.getElementById('grid-iuran');
-      grid.innerHTML = '';
-
-      if (dbUPK.length === 0) {
-        grid.innerHTML = `<p class="text-xs text-slate-400">Tidak ada status iuran.</p>`;
-        return;
-      }
-
-      dbUPK.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = 'p-4 rounded-xl border border-slate-200 bg-slate-50 flex justify-between items-center';
-        card.innerHTML = `
-          <div>
-            <h4 class="font-bold text-slate-800 text-sm">${item.nama}</h4>
-            <p class="text-xs text-slate-500 mt-1">Iuran: Rp 1.200.000 (${item.iuranLunas ? 'Lunas: ' + item.tglLunas : 'Belum Bayar'})</p>
-          </div>
-          <span class="text-xs px-3 py-1 font-bold rounded-md ${item.iuranLunas ? 'bg-emerald-600 text-white' : 'bg-red-500 text-white'}">
-            ${item.iuranLunas ? 'LUNAS' : 'PENDING'}
-          </span>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function renderTabelKeuangan() {
-      const tbody = document.getElementById('tbl-data-keuangan');
-      tbody.innerHTML = '';
-
-      if (dbKeuangan.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Belum ada transaksi recorded.</td></tr>`;
-        return;
-      }
-
-      dbKeuangan.forEach((item, index) => {
-        const row = document.createElement('tr');
-        row.className = 'hover:bg-slate-50 transition';
-        row.innerHTML = `
-          <td class="p-4 text-xs text-slate-500">${item.tgl || '-'}</td>
-          <td class="p-4 font-medium text-slate-800">${item.uraian || '-'} <br><span class="text-xs text-slate-400">Dari/Pihak: ${item.pihak || '-'}</span></td>
-          <td class="p-4"><span class="text-xs px-2 py-0.5 rounded font-medium ${item.kategori === 'pemasukan' ? 'bg-blue-100 text-blue-700' : 'bg-slate-200 text-slate-700'}">${item.kategori || '-'}</span></td>
-          <td class="p-4 font-semibold ${item.kategori === 'pemasukan' ? 'text-emerald-600' : 'text-red-500'}">${formatRupiah(item.jumlah || 0)}</td>
-          <td class="p-4 text-center">
-            <button onclick="bukaModalKwitansi(${index})" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded transition">
-              Kwitansi
-            </button>
-          </td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function renderAll() {
-      renderDashboard();
-      renderTabelAset();
-      renderCardsIuran();
-      renderTabelKeuangan();
-    }
-
-    // --- 6. AUTHENTICATION (LOGIN) ---
-    function toggleLoginModal() {
-      const modal = document.getElementById('modal-login');
-      modal.classList.toggle('hidden');
-      modal.classList.toggle('flex');
-    }
-
-    function prosesLogin() {
-      const u = document.getElementById('login-user').value;
-      const p = document.getElementById('login-pass').value;
-
-      if (u === 'admin' && p === 'admin2026') {
-        isAdmin = true;
-        document.getElementById('admin-badge').classList.remove('hidden');
-        document.getElementById('btn-tambah-upk').classList.remove('hidden');
-        document.getElementById('btn-tambah-kas').classList.remove('hidden');
-        document.getElementById('btn-login-modal').innerText = 'Logout Admin';
-        document.getElementById('btn-login-modal').onclick = prosesLogout;
-        toggleLoginModal();
-        alert('Login Berhasil sebagai Administrator');
-      } else {
-        alert('Username atau Password salah!');
-      }
-    }
-
-    function prosesLogout() {
-      isAdmin = false;
-      document.getElementById('admin-badge').classList.add('hidden');
-      document.getElementById('btn-tambah-upk').classList.add('hidden');
-      document.getElementById('btn-tambah-kas').classList.add('hidden');
-      document.getElementById('btn-login-modal').innerText = 'Login Admin';
-      document.getElementById('btn-login-modal').onclick = toggleLoginModal;
-      alert('Anda telah logout');
-    }
-
-    // --- 7. LOGIC FITUR CETAK / PRINT ---
-    function bukaModalKwitansi(index) {
-      const item = dbKeuangan[index];
-      if (!item) return;
-
-      document.getElementById('kw-no').innerText = `KW/2026/00${index + 1}`;
-      document.getElementById('kw-pihak').innerText = item.pihak || 'Anggota UPK NKRI';
-      document.getElementById('kw-uraian').innerText = item.uraian || '-';
-      document.getElementById('kw-jenis').innerText = item.kategori === 'pemasukan' ? 'Pemasukan Kas' : 'Pengeluaran Kas Operasional';
-      document.getElementById('kw-jumlah').innerText = formatRupiah(item.jumlah || 0);
-
-      const modal = document.getElementById('modal-kwitansi');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function tutupModalKwitansi() {
-      const modal = document.getElementById('modal-kwitansi');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    function eksekusiCetakKwitansi() {
-      const printArea = document.getElementById('print-kwitansi-area');
-      printArea.classList.add('printable-area');
-      window.print();
-      printArea.classList.remove('printable-area');
-    }
-
-    function printLaporanAset() {
-      const printArea = document.getElementById('area-laporan-aset');
-      printArea.classList.add('printable-area');
-      window.print();
-      printArea.classList.remove('printable-area');
-    }
-
-    function printLaporanKeuangan() {
-      const printArea = document.getElementById('area-laporan-keuangan');
-      printArea.classList.add('printable-area');
-      window.print();
-      printArea.classList.remove('printable-area');
-    }
-
-    // --- 8. INPUT DATA & POST KE GOOGLE SHEETS ---
-    async function tambahUPKModal() {
-      if (!isAdmin) return;
-      const nama = prompt("Nama UPK / Wilayah:");
-      if (!nama) return;
-      const awal = parseFloat(prompt("Modal Awal (Rp):", "0")) || 0;
-      const sekarang = parseFloat(prompt("Aset Sekarang (Rp):", "0")) || 0;
-      const status = prompt("Status Hukum (Terverifikasi/Proses Registrasi):", "Terverifikasi");
-      const bentuk = prompt("Bentuk Badan Hukum:", "PT LKM / Koperasi LKM");
-
-      const newItem = { nama, awal, sekarang, status, bentuk, iuranLunas: false, tglLunas: '-' };
-
-      if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
-        showLoading("Menyimpan UPK Baru ke Google Sheets...");
-        try {
-          await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "addUPK", payload: newItem })
-          });
-          await loadData();
-        } catch (err) {
-          console.error("Gagal menyimpan data:", err);
-          alert("Gagal menyimpan ke Google Sheets.");
-        } finally {
-          hideLoading();
+        // Format Rupiah Helper
+        function formatRupiah(val) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
         }
-      } else {
-        dbUPK.push(newItem);
-        localStorage.setItem('nkri_upk', JSON.stringify(dbUPK));
-        renderAll();
-      }
-    }
 
-    async function tambahKasModal() {
-      if (!isAdmin) return;
-      const pihak = prompt("Diterima dari / Pihak terkait:");
-      if (!pihak) return;
-      const uraian = prompt("Uraian Transaksi:");
-      if (!uraian) return;
-      const kategori = prompt("Kategori (pemasukan / pengeluaran):", "pemasukan").toLowerCase();
-      const jumlah = parseFloat(prompt("Jumlah Uang (Rp):", "0")) || 0;
-      const tgl = new Date().toISOString().split('T')[0];
-
-      const newItem = { tgl, pihak, uraian, kategori, jumlah };
-
-      if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
-        showLoading("Menyimpan Transaksi Kas ke Google Sheets...");
-        try {
-          await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "addKeuangan", payload: newItem })
-          });
-          await loadData();
-        } catch (err) {
-          console.error("Gagal menyimpan transaksi:", err);
-          alert("Gagal menyimpan ke Google Sheets.");
-        } finally {
-          hideLoading();
+        // Login Handler
+        function handleLogin(e) {
+            e.preventDefault();
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            renderTable();
         }
-      } else {
-        dbKeuangan.push(newItem);
-        localStorage.setItem('nkri_keuangan', JSON.stringify(dbKeuangan));
-        renderAll();
-      }
-    }
 
-    // Inisialisasi Pertama Saat Halaman Dimuat
-    document.addEventListener('DOMContentLoaded', () => {
-      loadData();
-    });
-  </script>
+        // Logout Handler
+        function handleLogout() {
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('login-view').classList.remove('hidden');
+        }
+
+        // Switch Tab
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Toggle Button Styles
+            const tabs = ['iuran', 'kas', 'aset'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if(t === tab) {
+                    btn.className = "tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-[#0073ab] text-white shadow";
+                } else {
+                    btn.className = "tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-white text-gray-600 hover:bg-gray-50 border";
+                }
+            });
+
+            // Update Titles
+            const titles = {
+                iuran: { title: "Manajemen Data Iuran", sub: "Kelola pencatatan data iuran anggota UPK" },
+                kas: { title: "Data Kas Keuangan", sub: "Kelola arus kas masuk dan keluar kelembagaan" },
+                aset: { title: "Data Aset Semua UPK", sub: "Inventarisasi dan pencatatan aset seluruh unit UPK" }
+            };
+            document.getElementById('section-title').innerText = titles[tab].title;
+            document.getElementById('section-subtitle').innerText = titles[tab].sub;
+
+            renderTable();
+        }
+
+        // Render Table Data
+        function renderTable() {
+            const headRow = document.getElementById('table-head-row');
+            const bodyRows = document.getElementById('table-body-rows');
+            bodyRows.innerHTML = '';
+
+            if (currentTab === 'iuran') {
+                headRow.innerHTML = `
+                    <th class="p-4">ID</th>
+                    <th class="p-4">Nama UPK</th>
+                    <th class="p-4">Tanggal</th>
+                    <th class="p-4">Nominal</th>
+                    <th class="p-4">Keterangan</th>
+                    <th class="p-4 text-center">Aksi</th>
+                `;
+                database.iuran.forEach(item => {
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="p-4 font-mono text-xs">#${item.id}</td>
+                            <td class="p-4 font-medium text-gray-900">${item.upk}</td>
+                            <td class="p-4">${item.tanggal}</td>
+                            <td class="p-4 font-semibold text-emerald-600">${formatRupiah(item.nominal)}</td>
+                            <td class="p-4">${item.keterangan}</td>
+                            <td class="p-4 text-center">${getActionButtons(item.id)}</td>
+                        </tr>
+                    `;
+                });
+            } else if (currentTab === 'kas') {
+                headRow.innerHTML = `
+                    <th class="p-4">ID</th>
+                    <th class="p-4">Tanggal</th>
+                    <th class="p-4">Keterangan</th>
+                    <th class="p-4">Jenis</th>
+                    <th class="p-4">Nominal</th>
+                    <th class="p-4 text-center">Aksi</th>
+                `;
+                database.kas.forEach(item => {
+                    const badgeClass = item.jenis === 'Masuk' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800';
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="p-4 font-mono text-xs">#${item.id}</td>
+                            <td class="p-4">${item.tanggal}</td>
+                            <td class="p-4 font-medium text-gray-900">${item.keterangan}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-semibold rounded-full ${badgeClass}">${item.jenis}</span></td>
+                            <td class="p-4 font-semibold">${formatRupiah(item.nominal)}</td>
+                            <td class="p-4 text-center">${getActionButtons(item.id)}</td>
+                        </tr>
+                    `;
+                });
+            } else if (currentTab === 'aset') {
+                headRow.innerHTML = `
+                    <th class="p-4">ID</th>
+                    <th class="p-4">UPK Pemilik</th>
+                    <th class="p-4">Nama Aset</th>
+                    <th class="p-4">Kategori</th>
+                    <th class="p-4">Nilai Aset</th>
+                    <th class="p-4">Kondisi</th>
+                    <th class="p-4 text-center">Aksi</th>
+                `;
+                database.aset.forEach(item => {
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="p-4 font-mono text-xs">#${item.id}</td>
+                            <td class="p-4 font-medium text-gray-900">${item.upk}</td>
+                            <td class="p-4">${item.namaAset}</td>
+                            <td class="p-4">${item.kategori}</td>
+                            <td class="p-4 font-semibold text-blue-600">${formatRupiah(item.nilai)}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">${item.kondisi}</span></td>
+                            <td class="p-4 text-center">${getActionButtons(item.id)}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // Generate Tombol Edit, Cetak, dan Hapus
+        function getActionButtons(id) {
+            return `
+                <div class="flex items-center justify-center space-x-2">
+                    <button onclick="editEntry(${id})" title="Edit Data" class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg transition">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button onclick="openPrintModal(${id})" title="Cetak Item" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                    <button onclick="deleteEntry(${id})" title="Hapus Data" class="p-2 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        // Open Form Modal (Add or Edit)
+        function openFormModal(id = null) {
+            const fieldsContainer = document.getElementById('dynamic-form-fields');
+            const entryIdField = document.getElementById('entry-id');
+            const modalTitle = document.getElementById('modal-form-title');
+            
+            entryIdField.value = id || '';
+            modalTitle.innerText = id ? 'Edit Data Transaksi' : 'Tambah Data Baru';
+            fieldsContainer.innerHTML = '';
+
+            let item = id ? database[currentTab].find(x => x.id === id) : {};
+
+            if (currentTab === 'iuran') {
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama UPK</label>
+                        <input type="text" id="field-upk" value="${item.upk || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal</label>
+                        <input type="date" id="field-tanggal" value="${item.tanggal || new Date().toISOString().split('T')[0]}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nominal (Rp)</label>
+                        <input type="number" id="field-nominal" value="${item.nominal || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Keterangan</label>
+                        <textarea id="field-keterangan" class="w-full p-2.5 border rounded-lg text-sm" rows="2">${item.keterangan || ''}</textarea>
+                    </div>
+                `;
+            } else if (currentTab === 'kas') {
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal</label>
+                        <input type="date" id="field-tanggal" value="${item.tanggal || new Date().toISOString().split('T')[0]}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Keterangan Transaksi</label>
+                        <input type="text" id="field-keterangan" value="${item.keterangan || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Jenis Kas</label>
+                        <select id="field-jenis" class="w-full p-2.5 border rounded-lg text-sm">
+                            <option value="Masuk" ${item.jenis === 'Masuk' ? 'selected' : ''}>Pemasukan (Masuk)</option>
+                            <option value="Keluar" ${item.jenis === 'Keluar' ? 'selected' : ''}>Pengeluaran (Keluar)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nominal (Rp)</label>
+                        <input type="number" id="field-nominal" value="${item.nominal || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                `;
+            } else if (currentTab === 'aset') {
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">UPK Pemilik</label>
+                        <input type="text" id="field-upk" value="${item.upk || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Aset</label>
+                        <input type="text" id="field-namaAset" value="${item.namaAset || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kategori Aset</label>
+                        <input type="text" id="field-kategori" value="${item.kategori || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nilai Aset (Rp)</label>
+                        <input type="number" id="field-nilai" value="${item.nilai || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kondisi</label>
+                        <select id="field-kondisi" class="w-full p-2.5 border rounded-lg text-sm">
+                            <option value="Baik" ${item.kondisi === 'Baik' ? 'selected' : ''}>Baik</option>
+                            <option value="Rusak Ringan" ${item.kondisi === 'Rusak Ringan' ? 'selected' : ''}>Rusak Ringan</option>
+                            <option value="Rusak Berat" ${item.kondisi === 'Rusak Berat' ? 'selected' : ''}>Rusak Berat</option>
+                        </select>
+                    </div>
+                `;
+            }
+
+            document.getElementById('form-modal').classList.remove('hidden');
+            document.getElementById('form-modal').classList.add('flex');
+        }
+
+        function closeFormModal() {
+            document.getElementById('form-modal').classList.add('hidden');
+            document.getElementById('form-modal').classList.remove('flex');
+        }
+
+        // Save / Edit Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('entry-id').value;
+
+            if (currentTab === 'iuran') {
+                const dataObj = {
+                    id: id ? parseInt(id) : Date.now(),
+                    upk: document.getElementById('field-upk').value,
+                    tanggal: document.getElementById('field-tanggal').value,
+                    nominal: parseFloat(document.getElementById('field-nominal').value),
+                    keterangan: document.getElementById('field-keterangan').value
+                };
+                saveToDatabase(dataObj, id);
+            } else if (currentTab === 'kas') {
+                const dataObj = {
+                    id: id ? parseInt(id) : Date.now(),
+                    tanggal: document.getElementById('field-tanggal').value,
+                    keterangan: document.getElementById('field-keterangan').value,
+                    jenis: document.getElementById('field-jenis').value,
+                    nominal: parseFloat(document.getElementById('field-nominal').value)
+                };
+                saveToDatabase(dataObj, id);
+            } else if (currentTab === 'aset') {
+                const dataObj = {
+                    id: id ? parseInt(id) : Date.now(),
+                    upk: document.getElementById('field-upk').value,
+                    namaAset: document.getElementById('field-namaAset').value,
+                    kategori: document.getElementById('field-kategori').value,
+                    nilai: parseFloat(document.getElementById('field-nilai').value),
+                    kondisi: document.getElementById('field-kondisi').value
+                };
+                saveToDatabase(dataObj, id);
+            }
+
+            closeFormModal();
+            renderTable();
+        }
+
+        function saveToDatabase(dataObj, id) {
+            if (id) {
+                // Edit / Update Existing
+                const index = database[currentTab].findIndex(x => x.id == id);
+                database[currentTab][index] = dataObj;
+            } else {
+                // Add New
+                database[currentTab].push(dataObj);
+            }
+        }
+
+        function editEntry(id) {
+            openFormModal(id);
+        }
+
+        function deleteEntry(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                database[currentTab] = database[currentTab].filter(x => x.id !== id);
+                renderTable();
+            }
+        }
+
+        // Print Functionality
+        function openPrintModal(id) {
+            const item = database[currentTab].find(x => x.id === id);
+            const detailsDiv = document.getElementById('print-details');
+            const typeBadge = document.getElementById('print-type-badge');
+            document.getElementById('print-date').innerText = 'Tanggal Cetak: ' + new Date().toLocaleDateString('id-ID');
+
+            let html = `<div class="flex justify-between border-b pb-1"><span>ID Transaksi:</span><span>#${item.id}</span></div>`;
+
+            if (currentTab === 'iuran') {
+                typeBadge.innerText = 'BUKTI IURAN ANGGOTA';
+                html += `
+                    <div class="flex justify-between"><span>Nama UPK:</span><span class="font-bold">${item.upk}</span></div>
+                    <div class="flex justify-between"><span>Tanggal:</span><span>${item.tanggal}</span></div>
+                    <div class="flex justify-between"><span>Nominal:</span><span class="font-bold">${formatRupiah(item.nominal)}</span></div>
+                    <div class="flex justify-between"><span>Keterangan:</span><span>${item.keterangan || '-'}</span></div>
+                `;
+            } else if (currentTab === 'kas') {
+                typeBadge.innerText = 'BUKTI KAS KEUANGAN';
+                html += `
+                    <div class="flex justify-between"><span>Tanggal:</span><span>${item.tanggal}</span></div>
+                    <div class="flex justify-between"><span>Jenis Kas:</span><span class="font-bold uppercase">${item.jenis}</span></div>
+                    <div class="flex justify-between"><span>Keterangan:</span><span>${item.keterangan}</span></div>
+                    <div class="flex justify-between"><span>Nominal:</span><span class="font-bold">${formatRupiah(item.nominal)}</span></div>
+                `;
+            } else if (currentTab === 'aset') {
+                typeBadge.innerText = 'LEMBAR INVENTARIS ASET';
+                html += `
+                    <div class="flex justify-between"><span>UPK Pemilik:</span><span class="font-bold">${item.upk}</span></div>
+                    <div class="flex justify-between"><span>Nama Aset:</span><span>${item.namaAset}</span></div>
+                    <div class="flex justify-between"><span>Kategori:</span><span>${item.kategori}</span></div>
+                    <div class="flex justify-between"><span>Nilai Aset:</span><span class="font-bold">${formatRupiah(item.nilai)}</span></div>
+                    <div class="flex justify-between"><span>Kondisi:</span><span>${item.kondisi}</span></div>
+                `;
+            }
+
+            detailsDiv.innerHTML = html;
+            document.getElementById('print-modal').classList.remove('hidden');
+            document.getElementById('print-modal').classList.flex;
+            document.getElementById('print-modal').classList.add('flex');
+        }
+
+        function closePrintModal() {
+            document.getElementById('print-modal').classList.add('hidden');
+            document.getElementById('print-modal').classList.remove('flex');
+        }
+
+        function triggerPrint() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
