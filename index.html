@@ -167,8 +167,8 @@
         <div class="glass-card rounded-3xl p-8 sm:p-10 w-full max-w-lg shadow-2xl shadow-sky-950/80 relative z-10 border border-slate-700/50 my-6">
             
             <div class="flex justify-center mb-6">
-                <div class="w-24 h-24 bg-white/95 rounded-2xl shadow-2xl ring-4 ring-sky-500/30 p-3 flex items-center justify-center transition hover:scale-105 duration-300">
-                    <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain">
+                <div class="w-24 h-24 bg-white/95 rounded-2xl shadow-2xl ring-4 ring-sky-500/30 p-1 flex items-center justify-center transition hover:scale-105 duration-300 overflow-hidden">
+                    <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-cover rounded-xl">
                 </div>
             </div>
 
@@ -239,8 +239,8 @@
         <header class="glass-nav text-white sticky top-0 z-40 border-b border-slate-800/80 shadow-lg no-print">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
                 <div class="flex items-center space-x-3.5">
-                    <div class="w-10 h-10 bg-white rounded-xl p-1.5 shadow-md flex items-center justify-center">
-                        <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain">
+                    <div class="w-10 h-10 bg-white rounded-xl p-1 shadow-md flex items-center justify-center overflow-hidden">
+                        <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div>
                         <h1 class="font-extrabold text-base sm:text-lg tracking-tight leading-tight bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent">ASOSIASI UPK NKRI</h1>
@@ -284,10 +284,8 @@
                     <i class="fa-solid fa-bullhorn mr-1.5 text-amber-400"></i> MOTTO ASOSIASI
                 </span>
                 <div class="overflow-hidden whitespace-nowrap w-full">
-                    <div class="animate-marquee inline-block text-slate-300 font-medium tracking-wide">
-                        <span class="mr-16">🌟 <b>BERSAMA MEMBANGUN NEGERI:</b> Menguatkan Kelembagaan, Mengembangkan Aset Keuangan untuk Kesejahteraan Masyarakat SELURUH INDONESIA.</span>
-                        <span class="mr-16">🇮🇩 <b>ASOSIASI UPK NKRI:</b> Dari Rakyat, Oleh Rakyat, Untuk Kemandirian Ekonomi Bangsa.</span>
-                        <span class="mr-16">🤝 <b>INTEGRITAS & TRANSPARANSI:</b> Menjaga Amanah Pengelolaan Aset Kelembagaan UPK 34 Provinsi.</span>
+                    <div id="header-marquee-text" class="animate-marquee inline-block text-slate-300 font-medium tracking-wide">
+                        🌟 BERSAMA MEMBANGUN NEGERI: Menguatkan Kelembagaan, Mengembangkan Aset Keuangan untuk Kesejahteraan Masyarakat SELURUH INDONESIA.
                     </div>
                 </div>
             </div>
@@ -301,7 +299,7 @@
                         <i class="fa-solid fa-circle-info text-base"></i>
                     </div>
                     <div>
-                        <b class="text-slate-900 dark:text-white">Pengumuman Resmi Pusat:</b> Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.
+                        <b class="text-slate-900 dark:text-white">Pengumuman Resmi Pusat:</b> <span id="announcement-text-banner">Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.</span>
                     </div>
                 </div>
             </div>
@@ -359,6 +357,10 @@
                     <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-amber-500/10 text-amber-700 dark:text-amber-400 hidden">
                         <i class="fa-solid fa-users-gear"></i>
                         <span>Kelola User</span>
+                    </button>
+                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Pengaturan Website</span>
                     </button>
                     <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
                         <i class="fa-solid fa-clock-rotate-left"></i>
@@ -424,13 +426,13 @@
             </div>
 
             <!-- ADVANCED FILTER BAR -->
-            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div id="filter-section-card" class="bg-white dark:bg-slate-900 rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div>
                     <h2 id="section-title" class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Database UPK</h2>
                     <p id="section-subtitle" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
                 </div>
                 
-                <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end">
+                <div id="filter-actions-wrapper" class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end">
                     <div class="flex items-center space-x-1.5 text-xs bg-slate-50 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
                         <span class="text-slate-400 font-bold px-1">Dari:</span>
                         <input type="date" id="filter-date-start" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
@@ -456,7 +458,7 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
+            <div id="main-table-container" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
                         <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
@@ -464,6 +466,31 @@
                         </thead>
                         <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- PANEL PENGATURAN WEBSITE (KHUSUS ADMIN PUSAT) -->
+            <div id="settings-panel-view" class="hidden bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 max-w-2xl mx-auto space-y-6">
+                <div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white"><i class="fa-solid fa-gear text-sky-500 mr-2"></i> Panel Pengaturan Website & Teks Informasi</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Perbarui teks motto berjalan di header dan pengumuman resmi pusat secara real-time</p>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Motto Berjalan (Marquee Header)</label>
+                        <textarea id="setting-marquee-input" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none font-medium text-slate-800 dark:text-white"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Pengumuman Resmi Pusat (Banner Dashboard)</label>
+                        <textarea id="setting-announcement-input" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none font-medium text-slate-800 dark:text-white"></textarea>
+                    </div>
+
+                    <button type="button" onclick="saveWebsiteSettings()" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Simpan Perubahan Pengaturan</span>
+                    </button>
                 </div>
             </div>
         </main>
@@ -486,18 +513,18 @@
                 </button>
             </div>
 
-            <form id="active-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+            <div class="space-y-4">
                 <input type="hidden" id="entry-id">
                 <div id="dynamic-form-fields" class="space-y-4"></div>
 
                 <div class="flex justify-end space-x-3 pt-5 border-t border-slate-100 dark:border-slate-800 mt-6">
                     <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 transition">Batal</button>
-                    <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs rounded-xl shadow-md flex items-center space-x-2">
+                    <button type="button" onclick="handleFormSubmit()" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs rounded-xl shadow-md flex items-center space-x-2">
                         <i class="fa-solid fa-floppy-disk"></i>
                         <span>Simpan Data</span>
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -542,8 +569,8 @@
             <div id="print-area" class="p-2 bg-white">
                 <div class="text-center border-b border-slate-200 pb-5 mb-5">
                     <div class="flex justify-center mb-3">
-                        <div class="w-14 h-14 bg-slate-50 rounded-2xl p-2 border border-slate-200 flex items-center justify-center">
-                            <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain">
+                        <div class="w-14 h-14 bg-slate-50 rounded-2xl p-2 border border-slate-200 flex items-center justify-center overflow-hidden">
+                            <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-cover rounded-xl">
                         </div>
                     </div>
                     <h2 class="text-lg font-black text-slate-900 tracking-tight">ASOSIASI UPK NKRI</h2>
@@ -584,6 +611,10 @@
         let modalAsetChartInstance = null;
 
         let database = {
+            settings: {
+                marqueeText: "🌟 BERSAMA MEMBANGUN NEGERI: Menguatkan Kelembagaan, Mengembangkan Aset Keuangan untuk Kesejahteraan Masyarakat SELURUH INDONESIA.",
+                announcementText: "Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing."
+            },
             users: [
                 { id: 1, username: 'upk_nkri', hp: '085398087772', password: 'upknkri2026', nama: 'Admin Pusat', role: 'PUSAT', provinsi: '', kabupaten: '' },
                 { id: 2, username: 'dpw_sulsel', hp: '081234567890', password: 'dpw123', nama: 'DPW Sulawesi Selatan', role: 'DPW', provinsi: 'SULAWESI SELATAN', kabupaten: '' },
@@ -682,8 +713,12 @@
 
                     if (loggedUser.role === 'PUSAT' || loggedUser.role === 'DPW') {
                         document.getElementById('tab-btn-users').classList.remove('hidden');
+                        if (loggedUser.role === 'PUSAT') {
+                            document.getElementById('tab-btn-settings').classList.remove('hidden');
+                        }
                     } else {
                         document.getElementById('tab-btn-users').classList.add('hidden');
+                        document.getElementById('tab-btn-settings').classList.add('hidden');
                     }
 
                     fetchFromCloud();
@@ -707,6 +742,7 @@
                         const parsedData = JSON.parse(textData);
                         if (parsedData.aset || parsedData.iuran || parsedData.kas) {
                             database = {
+                                settings: parsedData.settings || database.settings,
                                 users: Array.isArray(parsedData.users) ? parsedData.users : database.users,
                                 iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : [],
                                 kas: Array.isArray(parsedData.kas) ? parsedData.kas : [],
@@ -724,6 +760,7 @@
                 statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Offline`;
             }
 
+            applyDynamicSettings();
             updateDashboardStats();
             renderTable();
         }
@@ -746,6 +783,29 @@
             } catch (err) {
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
                 statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Save Failed`;
+            }
+        }
+
+        function applyDynamicSettings() {
+            if (database.settings) {
+                document.getElementById('header-marquee-text').innerHTML = database.settings.marqueeText || '';
+                document.getElementById('announcement-text-banner').innerText = database.settings.announcementText || '';
+            }
+        }
+
+        async function saveWebsiteSettings() {
+            const newMarquee = document.getElementById('setting-marquee-input').value.trim();
+            const newAnnouncement = document.getElementById('setting-announcement-input').value.trim();
+
+            if (newMarquee && newAnnouncement) {
+                database.settings.marqueeText = newMarquee;
+                database.settings.announcementText = newAnnouncement;
+                logAudit('Memperbarui Pengaturan Website (Motto & Pengumuman)');
+                applyDynamicSettings();
+                alert('Pengaturan Website berhasil diperbarui!');
+                await pushToCloud();
+            } else {
+                alert('Semua kolom pengaturan wajib diisi!');
             }
         }
 
@@ -829,7 +889,7 @@
             const passVal = document.getElementById('password').value.trim();
             const errorDiv = document.getElementById('login-error');
 
-            const foundUser = database.users.find(u => (u.username === userVal || u.hp === userVal) && u.password === passVal);
+            const foundUser = database.users.find(u => u.username === userVal && u.password === passVal);
 
             if (foundUser) {
                 loggedUser = foundUser;
@@ -844,8 +904,12 @@
 
                 if (loggedUser.role === 'PUSAT' || loggedUser.role === 'DPW') {
                     document.getElementById('tab-btn-users').classList.remove('hidden');
+                    if (loggedUser.role === 'PUSAT') {
+                        document.getElementById('tab-btn-settings').classList.remove('hidden');
+                    }
                 } else {
                     document.getElementById('tab-btn-users').classList.add('hidden');
+                    document.getElementById('tab-btn-settings').classList.add('hidden');
                 }
 
                 logAudit('Login ke Sistem');
@@ -974,7 +1038,7 @@
             }
 
             currentTab = tab;
-            const tabs = ['iuran', 'kas', 'aset', 'docs', 'users', 'audit'];
+            const tabs = ['iuran', 'kas', 'aset', 'docs', 'users', 'settings', 'audit'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (btn) {
@@ -989,6 +1053,23 @@
             const komulatifContainer = document.getElementById('komulatif-aset-container');
             const addBtn = document.getElementById('add-data-main-btn');
             const printReportBtn = document.getElementById('print-report-btn');
+            const filterCard = document.getElementById('filter-section-card');
+            const tableContainer = document.getElementById('main-table-container');
+            const settingsView = document.getElementById('settings-panel-view');
+
+            if (tab === 'settings') {
+                filterCard.classList.add('hidden');
+                tableContainer.classList.add('hidden');
+                settingsView.classList.remove('hidden');
+                komulatifContainer.classList.add('hidden');
+                document.getElementById('setting-marquee-input').value = database.settings.marqueeText;
+                document.getElementById('setting-announcement-input').value = database.settings.announcementText;
+                return;
+            } else {
+                settingsView.classList.add('hidden');
+                filterCard.classList.remove('hidden');
+                tableContainer.classList.remove('hidden');
+            }
 
             if (tab === 'aset') {
                 komulatifContainer.classList.remove('hidden');
@@ -1021,6 +1102,7 @@
         }
 
         function renderTable() {
+            if (currentTab === 'settings') return;
             const headRow = document.getElementById('table-head-row');
             const bodyRows = document.getElementById('table-body-rows');
             const searchQuery = (document.getElementById('search-input').value || '').toLowerCase();
@@ -1140,7 +1222,12 @@
         function getActionButtons(id, tab, targetUser = null) {
             if (tab === 'users' && targetUser) {
                 if (targetUser.role === 'PUSAT') {
-                    return `<span class="text-[11px] font-semibold text-sky-600 dark:text-sky-400 cursor-pointer hover:underline" onclick="editEntry(${id})"><i class="fa-solid fa-shield-halved mr-1"></i> Edit (Verifikasi)</span>`;
+                    return `
+                        <div class="flex items-center justify-center space-x-1.5">
+                            <button onclick="editEntry(${id})" title="Edit Admin Pusat" class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition border border-amber-200/60 hover:bg-amber-100 shadow-sm">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                            </button>
+                        </div>`;
                 }
                 if (loggedUser.role === 'DPW' && targetUser.role === 'DPW') {
                     return `<span class="text-[11px] font-semibold text-slate-400 italic"><i class="fa-solid fa-lock text-xs mr-1"></i> Terkunci</span>`;
@@ -1299,7 +1386,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Kecamatan</label>
-                        <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium uppercase outline-none" placeholder="Contoh: AMALI">
+                        <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none" placeholder="Contoh: AMALI">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
@@ -1361,8 +1448,7 @@
             document.getElementById('form-modal').classList.remove('flex');
         }
 
-        async function handleFormSubmit(e) {
-            e.preventDefault();
+        async function handleFormSubmit() {
             const id = document.getElementById('entry-id').value;
 
             if (currentTab === 'users') {
@@ -1567,7 +1653,7 @@
                 typeBadge.innerText = 'DATABASE UPK - BUKTI DATA';
                 html += `
                     <div class="flex justify-between"><span>Provinsi:</span><span class="font-bold">${item.provinsi}</span></div>
-                    <div class="flex justify-between"><span>Kabupaten:</span><span class="font-bold">${item.kabupaten}</span></div>
+                    <div class="flex justify-between"><span>Kabupaten:</span><span>${item.kabupaten}</span></div>
                     <div class="flex justify-between"><span>Nama UPK:</span><span class="font-bold text-slate-900">${item.namaUPK}</span></div>
                     <div class="flex justify-between"><span>Total Aset:</span><span class="font-bold text-sky-700">${formatRupiah(item.totalAset)}</span></div>`;
             }
