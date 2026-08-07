@@ -44,7 +44,12 @@
 
             <!-- Title & Subtitle -->
             <h1 class="text-2xl font-black text-[#0c2340] tracking-wide mb-1">ASOSIASI UPK NKRI</h1>
-            <p class="text-xs font-bold text-[#0284c7] tracking-wider uppercase mb-8">Sistem Kelembagaan, Aset & Keuangan</p>
+            <p class="text-xs font-bold text-[#0284c7] tracking-wider uppercase mb-6">Sistem Kelembagaan, Aset & Keuangan</p>
+
+            <!-- Pesan Error Login -->
+            <div id="login-error" class="hidden mb-4 p-3 bg-red-100 border border-red-300 text-red-700 text-xs rounded-xl font-medium text-center">
+                Username atau Password salah!
+            </div>
 
             <!-- Form Login -->
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5 text-left">
@@ -106,7 +111,7 @@
             
             <!-- Navigation Tabs -->
             <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
-                <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-[#0073ab] text-white shadow">
+                <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-white text-gray-600 hover:bg-gray-50 border">
                     <i class="fa-solid fa-hand-holding-dollar"></i>
                     <span>Data Iuran</span>
                 </button>
@@ -114,7 +119,7 @@
                     <i class="fa-solid fa-wallet"></i>
                     <span>Kas Keuangan</span>
                 </button>
-                <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-white text-gray-600 hover:bg-gray-50 border">
+                <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-5 py-2.5 rounded-lg font-medium text-sm flex items-center space-x-2 bg-[#0073ab] text-white shadow">
                     <i class="fa-solid fa-boxes-packing"></i>
                     <span>Data Aset Semua UPK</span>
                 </button>
@@ -123,8 +128,8 @@
             <!-- Header Panel & Add Button -->
             <div class="bg-white rounded-xl p-5 shadow-sm mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h2 id="section-title" class="text-xl font-bold text-gray-800">Manajemen Data Iuran</h2>
-                    <p id="section-subtitle" class="text-sm text-gray-500">Kelola dan catat transaksi iuran anggota UPK</p>
+                    <h2 id="section-title" class="text-xl font-bold text-gray-800">Data Aset Semua UPK</h2>
+                    <p id="section-subtitle" class="text-sm text-gray-500">Inventarisasi dan pencatatan nilai aset seluruh unit UPK</p>
                 </div>
                 <button onclick="openFormModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow flex items-center space-x-2 transition">
                     <i class="fa-solid fa-plus"></i>
@@ -222,57 +227,93 @@
 
     <!-- ================= 5. JAVASCRIPT LOGIC ================= -->
     <script>
-        // State Data Lokal
-        let currentTab = 'iuran';
+        // Default Tab Set to 'aset'
+        let currentTab = 'aset';
         
         let database = {
             iuran: [
-                { id: 101, upk: 'UPK Kec. Mandiri', tanggal: '2026-08-01', nominal: 500000, keterangan: 'Iuran Bulanan Agustus' },
-                { id: 102, upk: 'UPK Sejahtera', tanggal: '2026-08-03', nominal: 750000, keterangan: 'Iuran Tahunan & Organisasi' }
+                { id: 101, upk: 'UPK DAPM AMALI', tanggal: '2026-08-01', nominal: 500000, keterangan: 'Iuran Bulanan Agustus' },
+                { id: 102, upk: 'UPK DAPM TONRA', tanggal: '2026-08-03', nominal: 750000, keterangan: 'Iuran Tahunan & Organisasi' }
             ],
             kas: [
                 { id: 201, tanggal: '2026-08-01', keterangan: 'Pemasukan Iuran Anggota', jenis: 'Masuk', nominal: 1250000 },
                 { id: 202, tanggal: '2026-08-05', keterangan: 'Biaya Operasional Rapat', jenis: 'Keluar', nominal: 300000 }
             ],
             aset: [
-                { 
-                    id: 301, 
-                    namaUPK: 'UPK Kec. Mandiri', 
-                    kecamatan: 'Tanete Riattang', 
-                    kabupaten: 'Bone', 
-                    provinsi: 'Sulawesi Selatan', 
-                    modalAwal: 500000000, 
-                    totalAset: 1250000000, 
-                    tanggalInput: '2026-08-01' 
-                },
-                { 
-                    id: 302, 
-                    namaUPK: 'UPK Sejahtera', 
-                    kecamatan: 'Palakka', 
-                    kabupaten: 'Bone', 
-                    provinsi: 'Sulawesi Selatan', 
-                    modalAwal: 750000000, 
-                    totalAset: 2100000000, 
-                    tanggalInput: '2026-08-03' 
-                }
+                // Kalimantan Selatan - Tanah Bumbu
+                { id: 1, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'SATUI', namaUPK: 'UPK PDPM SATUI MANDIRI', modalAwal: 1394554011, totalAset: 4135170445.62, tanggalInput: '2026-08-07' },
+                { id: 2, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'SUNGAI LOBAN', namaUPK: 'UPK DAPM MAKMUR BERSAMA', modalAwal: 2473445143, totalAset: 10397124635.07, tanggalInput: '2026-08-07' },
+                { id: 3, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'KURANJI', namaUPK: 'UPK DPM JAYA MANDIRI', modalAwal: 1731820250, totalAset: 3791946960.00, tanggalInput: '2026-08-07' },
+                { id: 4, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'KUSAN HULU', namaUPK: 'UPK DAPM KUSAN MAKMUR', modalAwal: 1094063635, totalAset: 4264271608.00, tanggalInput: '2026-08-07' },
+                { id: 5, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'KUSAN HILIR', namaUPK: 'UPK DAPM MADANI', modalAwal: 1105383350, totalAset: 1006010743.00, tanggalInput: '2026-08-07' },
+                { id: 6, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'BATULICIN', namaUPK: 'UPK DPM MAKMUR MANDIRI', modalAwal: 543177006, totalAset: 4825230546.00, tanggalInput: '2026-08-07' },
+                { id: 7, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'SIMPANG EMPAT', namaUPK: 'UPK DPM CAHAYA MAKMUR', modalAwal: 1469320150, totalAset: 4719789912.37, tanggalInput: '2026-08-07' },
+                { id: 8, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'KARANG BINTANG', namaUPK: 'UPK PPK BINTANG MANDIRI', modalAwal: 1662622569, totalAset: 1453117134.00, tanggalInput: '2026-08-07' },
+                { id: 9, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'MENTEWE', namaUPK: 'UPK PPDM SETYA BHAKTI', modalAwal: 2075095703, totalAset: 5333009873.00, tanggalInput: '2026-08-07' },
+
+                // Sulawesi Selatan - Bone
+                { id: 10, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'AMALI', namaUPK: 'UPK DAPM AMALI', modalAwal: 297000000, totalAset: 780750398.00, tanggalInput: '2026-08-07' },
+                { id: 11, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TONRA', namaUPK: 'UPK DAPM TONRA', modalAwal: 948000000, totalAset: 1423481605.00, tanggalInput: '2026-08-07' },
+                { id: 12, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TR.BARAT', namaUPK: 'UPK DAPM TR.BARAT', modalAwal: 1236000000, totalAset: 2062390930.00, tanggalInput: '2026-08-07' },
+                { id: 13, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TR.TIMUR', namaUPK: 'UPK DAPM TR.TIMUR', modalAwal: 2107624900, totalAset: 4383140114.00, tanggalInput: '2026-08-07' },
+                { id: 14, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'SIBULUE', namaUPK: 'UPK DAPM SIBULUE', modalAwal: 352000000, totalAset: 521762159.00, tanggalInput: '2026-08-07' },
+                { id: 15, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'PATIMPENG', namaUPK: 'UPK DAPM PATIMPENG', modalAwal: 1365670000, totalAset: 2839455732.00, tanggalInput: '2026-08-07' },
+                { id: 16, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'CINA', namaUPK: 'UPK DAPM CINA', modalAwal: 259000000, totalAset: 419743706.00, tanggalInput: '2026-08-07' },
+                { id: 17, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'KAJUARA', namaUPK: 'UPK DAPM KAJUARA', modalAwal: 2040751100, totalAset: 4103386498.00, tanggalInput: '2026-08-07' },
+                { id: 18, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'BAREBBO', namaUPK: 'UPK DAPM BAREBBO', modalAwal: 1284500000, totalAset: 2025790131.00, tanggalInput: '2026-08-07' },
+                { id: 19, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'AWANGPONE', namaUPK: 'UPK DAPM AWANGPONE', modalAwal: 1248250000, totalAset: 3017455341.00, tanggalInput: '2026-08-07' },
+                { id: 20, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'KAHU', namaUPK: 'UPK DAPM KAHU', modalAwal: 1644750000, totalAset: 4613213352.00, tanggalInput: '2026-08-07' },
+                { id: 21, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'PALAKKA', namaUPK: 'UPK DAPM PALAKKA', modalAwal: 1663048200, totalAset: 3975706088.00, tanggalInput: '2026-08-07' },
+                { id: 22, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'LIBURENG', namaUPK: 'UPK DAPM LIBURENG', modalAwal: 380000000, totalAset: 1081516058.00, tanggalInput: '2026-08-07' },
+                { id: 23, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'BONTOCANI', namaUPK: 'UPK DAPM BONTOCANI', modalAwal: 2097500000, totalAset: 4357359550.00, tanggalInput: '2026-08-07' },
+                { id: 24, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'ULAWENG', namaUPK: 'UPK DAPM ULAWENG', modalAwal: 208500000, totalAset: 425712702.00, tanggalInput: '2026-08-07' },
+                { id: 25, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'CENRANA', namaUPK: 'UPK DAPM CENRANA', modalAwal: 1717500000, totalAset: 3778227642.00, tanggalInput: '2026-08-07' },
+                { id: 26, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TELLU LIMPOE', namaUPK: 'UPK DAPM TELLU LIMPOE', modalAwal: 1806000000, totalAset: 3429443111.00, tanggalInput: '2026-08-07' },
+
+                // Muko Muko
+                { id: 27, provinsi: 'SULAWESI TENGGARA', kabupaten: 'MUKO MUKO', kecamatan: 'LUBUK PINANG', namaUPK: 'UPK DAPM TIGO SEPAKAT', modalAwal: 1271500000, totalAset: 2854605323.00, tanggalInput: '2026-08-07' },
+                { id: 28, provinsi: 'SULAWESI TENGGARA', kabupaten: 'MUKO MUKO', kecamatan: 'TERAS TERUNJAM', namaUPK: 'UPK DAPM DUTA ARTA MANDIRI', modalAwal: 1046000000, totalAset: 3802926564.00, tanggalInput: '2026-08-07' },
+                { id: 29, provinsi: 'SULAWESI TENGGARA', kabupaten: 'MUKO MUKO', kecamatan: 'PONDOK SUGUH', namaUPK: 'UPK DAPM TIGA MANDIRI', modalAwal: 1064600000, totalAset: 4562010167.00, tanggalInput: '2026-08-07' },
+                { id: 30, provinsi: 'SULAWESI TENGGARA', kabupaten: 'MUKO MUKO', kecamatan: 'IPUH', namaUPK: 'UPK DAPM MITRA MANDIRI BERSAMA', modalAwal: 1247000000, totalAset: 3350465000.00, tanggalInput: '2026-08-07' },
+
+                // Sumatera Barat
+                { id: 31, provinsi: 'SUMATERA BARAT', kabupaten: 'PESISIR SELATAN', kecamatan: 'IV JURAI', namaUPK: 'DAPM IV JURAI MANDIRI BERSAMA', modalAwal: 2296250000, totalAset: 3540463973.00, tanggalInput: '2026-08-07' },
+
+                // Sumatera Selatan
+                { id: 32, provinsi: 'SUMATERA SELATAN', kabupaten: 'OGAN KOMERING ILIR', kecamatan: 'PEDAMARAN TIMUR', namaUPK: 'PPM PEDAMARAN TIMUR', modalAwal: 1377500000, totalAset: 6661764624.00, tanggalInput: '2026-08-07' },
+
+                // Sulawesi Tenggara - Bombana
+                { id: 33, provinsi: 'SULAWESI TENGGARA', kabupaten: 'BOMBANA', kecamatan: 'RUMBIA TENGAH', namaUPK: 'DAPM MANDIRI SEJAHTERA', modalAwal: 1170000000, totalAset: 2248058673.00, tanggalInput: '2026-08-07' },
+                { id: 34, provinsi: 'SULAWESI TENGGARA', kabupaten: 'BOMBANA', kecamatan: 'KABAENA BARAT', namaUPK: 'DAPM PONDOK INDAH', modalAwal: 1541000000, totalAset: 2681401379.00, tanggalInput: '2026-08-07' }
             ]
         };
 
         // Format Rupiah Helper
         function formatRupiah(val) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 2 }).format(val);
         }
 
-        // Login Handler
+        // Login Handler dengan Akun Khusus (admin : admin2026)
         function handleLogin(e) {
             e.preventDefault();
-            document.getElementById('login-view').classList.add('hidden');
-            document.getElementById('dashboard-view').classList.remove('hidden');
-            renderTable();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('login-error');
+
+            if (user === 'admin' && pass === 'admin2026') {
+                errorDiv.classList.add('hidden');
+                document.getElementById('login-view').classList.add('hidden');
+                document.getElementById('dashboard-view').classList.remove('hidden');
+                switchTab('aset'); // Default langsung masuk ke Aset UPK
+            } else {
+                errorDiv.innerText = 'Username atau Password salah!';
+                errorDiv.classList.remove('hidden');
+            }
         }
 
         // Logout Handler
         function handleLogout() {
+            document.getElementById('password').value = '';
             document.getElementById('dashboard-view').classList.add('hidden');
             document.getElementById('login-view').classList.remove('hidden');
         }
@@ -355,27 +396,23 @@
                 });
             } else if (currentTab === 'aset') {
                 headRow.innerHTML = `
-                    <th class="p-3">ID</th>
-                    <th class="p-3">Nama UPK</th>
-                    <th class="p-3">Kecamatan</th>
-                    <th class="p-3">Kabupaten</th>
                     <th class="p-3">Provinsi</th>
+                    <th class="p-3">Kabupaten</th>
+                    <th class="p-3">Kecamatan</th>
+                    <th class="p-3">Nama UPK</th>
                     <th class="p-3">Modal Awal</th>
-                    <th class="p-3">Total Aset</th>
-                    <th class="p-3">Tgl Input</th>
+                    <th class="p-3">Total Aset Sekarang</th>
                     <th class="p-3 text-center">Aksi</th>
                 `;
                 database.aset.forEach(item => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-3 font-mono text-xs">#${item.id}</td>
-                            <td class="p-3 font-medium text-gray-900">${item.namaUPK}</td>
-                            <td class="p-3">${item.kecamatan}</td>
-                            <td class="p-3">${item.kabupaten}</td>
-                            <td class="p-3">${item.provinsi}</td>
-                            <td class="p-3 font-semibold text-gray-700">${formatRupiah(item.modalAwal)}</td>
-                            <td class="p-3 font-semibold text-blue-600">${formatRupiah(item.totalAset)}</td>
-                            <td class="p-3 text-xs">${item.tanggalInput}</td>
+                        <tr class="hover:bg-gray-50 transition border-b">
+                            <td class="p-3 font-medium text-xs text-purple-900">${item.provinsi}</td>
+                            <td class="p-3 font-medium text-xs text-emerald-800">${item.kabupaten}</td>
+                            <td class="p-3 font-semibold text-xs text-gray-700">${item.kecamatan}</td>
+                            <td class="p-3 font-bold text-gray-900">${item.namaUPK}</td>
+                            <td class="p-3 font-mono text-gray-700">${formatRupiah(item.modalAwal)}</td>
+                            <td class="p-3 font-mono font-bold text-blue-700">${formatRupiah(item.totalAset)}</td>
                             <td class="p-3 text-center">${getActionButtons(item.id)}</td>
                         </tr>
                     `;
@@ -386,7 +423,7 @@
         // Generate Tombol Action
         function getActionButtons(id) {
             return `
-                <div class="flex items-center justify-center space-x-1 sm:space-x-2">
+                <div class="flex items-center justify-center space-x-1">
                     <button onclick="editEntry(${id})" title="Edit Data" class="p-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg transition">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
@@ -400,7 +437,7 @@
             `;
         }
 
-        // Open Form Modal (Add / Edit)
+        // Open Form Modal
         function openFormModal(id = null) {
             const fieldsContainer = document.getElementById('dynamic-form-fields');
             const entryIdField = document.getElementById('entry-id');
@@ -456,31 +493,31 @@
             } else if (currentTab === 'aset') {
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama UPK</label>
-                        <input type="text" id="field-namaUPK" value="${item.namaUPK || ''}" required class="w-full p-2.5 border rounded-lg text-sm" placeholder="Contoh: UPK Kec. Mandiri">
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Kecamatan</label>
-                            <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Kabupaten</label>
-                            <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
-                        </div>
-                    </div>
-                    <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">Provinsi</label>
                         <input type="text" id="field-provinsi" value="${item.provinsi || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Modal Awal (Rp)</label>
-                            <input type="number" id="field-modalAwal" value="${item.modalAwal || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Kabupaten</label>
+                            <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Total Aset (Rp)</label>
-                            <input type="number" id="field-totalAset" value="${item.totalAset || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Kecamatan</label>
+                            <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama UPK</label>
+                        <input type="text" id="field-namaUPK" value="${item.namaUPK || ''}" required class="w-full p-2.5 border rounded-lg text-sm" placeholder="Contoh: UPK DAPM AMALI">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Modal Awal (Rp)</label>
+                            <input type="number" step="any" id="field-modalAwal" value="${item.modalAwal || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Total Aset Sekarang (Rp)</label>
+                            <input type="number" step="any" id="field-totalAset" value="${item.totalAset || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
                         </div>
                     </div>
                     <div>
@@ -525,10 +562,10 @@
             } else if (currentTab === 'aset') {
                 const dataObj = {
                     id: id ? parseInt(id) : Date.now(),
-                    namaUPK: document.getElementById('field-namaUPK').value,
-                    kecamatan: document.getElementById('field-kecamatan').value,
-                    kabupaten: document.getElementById('field-kabupaten').value,
                     provinsi: document.getElementById('field-provinsi').value,
+                    kabupaten: document.getElementById('field-kabupaten').value,
+                    kecamatan: document.getElementById('field-kecamatan').value,
+                    namaUPK: document.getElementById('field-namaUPK').value,
                     modalAwal: parseFloat(document.getElementById('field-modalAwal').value),
                     totalAset: parseFloat(document.getElementById('field-totalAset').value),
                     tanggalInput: document.getElementById('field-tanggalInput').value
@@ -586,14 +623,14 @@
                     <div class="flex justify-between"><span>Nominal:</span><span class="font-bold">${formatRupiah(item.nominal)}</span></div>
                 `;
             } else if (currentTab === 'aset') {
-                typeBadge.innerText = 'LAPORAN DATA ASET UPK';
+                typeBadge.innerText = 'LAPORAN ASET UPK';
                 html += `
-                    <div class="flex justify-between"><span>Nama UPK:</span><span class="font-bold">${item.namaUPK}</span></div>
-                    <div class="flex justify-between"><span>Kecamatan:</span><span>${item.kecamatan}</span></div>
-                    <div class="flex justify-between"><span>Kabupaten:</span><span>${item.kabupaten}</span></div>
                     <div class="flex justify-between"><span>Provinsi:</span><span>${item.provinsi}</span></div>
-                    <div class="flex justify-between"><span>Modal Awal:</span><span class="font-bold">${formatRupiah(item.modalAwal)}</span></div>
-                    <div class="flex justify-between"><span>Total Aset:</span><span class="font-bold text-blue-700">${formatRupiah(item.totalAset)}</span></div>
+                    <div class="flex justify-between"><span>Kabupaten:</span><span>${item.kabupaten}</span></div>
+                    <div class="flex justify-between"><span>Kecamatan:</span><span>${item.kecamatan}</span></div>
+                    <div class="flex justify-between"><span>Nama UPK:</span><span class="font-bold">${item.namaUPK}</span></div>
+                    <div class="flex justify-between"><span>Modal Awal:</span><span>${formatRupiah(item.modalAwal)}</span></div>
+                    <div class="flex justify-between"><span>Total Aset Sekarang:</span><span class="font-bold text-blue-700">${formatRupiah(item.totalAset)}</span></div>
                     <div class="flex justify-between"><span>Tanggal Input:</span><span>${item.tanggalInput}</span></div>
                 `;
             }
