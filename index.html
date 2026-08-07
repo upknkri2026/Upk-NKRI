@@ -144,7 +144,7 @@
         <option value="PAPUA"></option>
     </datalist>
 
-    <!-- ================= 1. TAMPILAN LOGIN (PREMIUM GLASS UI) ================= -->
+    <!-- ================= 1. TAMPILAN LOGIN ================= -->
     <div id="login-view" class="relative min-h-screen flex items-center justify-center p-4 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black no-print">
         
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
@@ -200,7 +200,7 @@
         </div>
     </div>
 
-    <!-- ================= 2. DASHBOARD APLIKASI (PREMIUM ENTERPRISE UI) ================= -->
+    <!-- ================= 2. DASHBOARD APLIKASI ================= -->
     <div id="dashboard-view" class="hidden min-h-screen bg-slate-100 flex flex-col">
         
         <header class="glass-nav text-white sticky top-0 z-40 border-b border-slate-800/80 shadow-lg no-print">
@@ -213,10 +213,10 @@
                         <h1 class="font-extrabold text-base sm:text-lg tracking-tight leading-tight bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent">ASOSIASI UPK NKRI</h1>
                         <div class="flex items-center space-x-2">
                             <p class="text-[11px] font-semibold text-sky-400 tracking-wider">Sistem Kelembagaan, Aset & Keuangan</p>
-                            <!-- Cloud Sync Indicator Badge -->
-                            <span id="sync-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all duration-300">
+                            <!-- Status Indicator Badge -->
+                            <button onclick="fetchFromCloud()" title="Klik untuk Refresh Manual" id="sync-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all duration-300">
                                 <i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Connecting Cloud...
-                            </span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -335,7 +335,7 @@
         </footer>
     </div>
 
-    <!-- ================= 3. MODAL FORM (INPUT / EDIT DATA) ================= -->
+    <!-- ================= 3. MODAL FORM ================= -->
     <div id="form-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-5">
@@ -365,7 +365,7 @@
         </div>
     </div>
 
-    <!-- ================= 4. AREA CETAK / STRUK PRINT TEMPLATE ================= -->
+    <!-- ================= 4. AREA CETAK ================= -->
     <div id="print-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div id="print-modal-container" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 max-h-[90vh] overflow-y-auto">
             
@@ -407,14 +407,15 @@
 
     <!-- ================= 5. JAVASCRIPT & ONLINE CLOUD SYNC LOGIC ================= -->
     <script>
-        // Endpoint REST Cloud Database Publik (Khusus Aplikasi Asosiasi UPK NKRI)
-        const CLOUD_API_URL = "https://api.jsonbin.io/v3/b/66b42021e41b4d34e41cf23a";
-        const CLOUD_MASTER_URL = "https://api.jsonstorage.net/v1/json/8a92f871-3810-4412-9c3f-2026upknkri";
+        // Endpoint Storage Publik Bebas Akses (MyJSON Online REST Storage)
+        const CLOUD_BIN_ID = "upk_nkri_master_db_2026";
+        const CLOUD_GET_URL = `https://myjson.online/v1/records/${CLOUD_BIN_ID}`;
+        const CLOUD_PUT_URL = `https://myjson.online/v1/records/${CLOUD_BIN_ID}`;
 
         let currentTab = 'aset';
         let syncTimer = null;
 
-        // Data Awal Lengkap Sistem (Seed Data)
+        // Structure Master Data Initial (63 UPK Data Lengkap)
         let database = {
             iuran: [
                 { id: 101, upk: 'UPK DAPM AMALI', tanggal: '2026-08-01', nominal: 500000, keterangan: 'Iuran Bulanan Agustus' },
@@ -504,72 +505,63 @@
             ]
         };
 
-        // Mengambil Data dari Cloud (Fetch Online Data)
+        // Memuat Data Cloud Server
         async function fetchFromCloud() {
             const statusEl = document.getElementById('sync-status');
+            statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Syncing...`;
+
             try {
-                // Utamakan Ambil Data dari LocalStorage terlebih dahulu agar responsif
-                const localData = localStorage.getItem('upk_nkri_db');
-                if (localData) {
-                    database = JSON.parse(localData);
-                    updateDashboardStats();
-                    renderTable();
-                }
-
-                // Ambil Data Terbaru dari Cloud Server
-                const response = await fetch(CLOUD_API_URL + '/latest', {
-                    headers: { 'X-Bin-Meta': 'false' }
-                });
-
+                const response = await fetch(CLOUD_GET_URL, { cache: "no-store" });
                 if (response.ok) {
-                    const cloudData = await response.json();
+                    const result = await response.json();
+                    const cloudData = result.data || result;
                     if (cloudData && (cloudData.aset || cloudData.iuran || cloudData.kas)) {
-                        database = cloudData;
-                        localStorage.setItem('upk_nkri_db', JSON.stringify(database));
+                        database = {
+                            iuran: Array.isArray(cloudData.iuran) ? cloudData.iuran.filter(Boolean) : [],
+                            kas: Array.isArray(cloudData.kas) ? cloudData.kas.filter(Boolean) : [],
+                            aset: Array.isArray(cloudData.aset) ? cloudData.aset.filter(Boolean) : []
+                        };
+                        statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                        statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
+                    } else {
+                        await pushToCloud();
                     }
-                } else if (!localData) {
-                    // Upload Seed Data jika Cloud belum terisi
-                    pushToCloud();
+                } else {
+                    await pushToCloud();
                 }
-
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
-
-                updateDashboardStats();
-                renderTable();
             } catch (err) {
-                console.warn("Cloud Fetch Warning, using local fallback:", err);
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Local Cache Active`;
-                updateDashboardStats();
-                renderTable();
+                console.warn("Gagal terhubung Cloud Server, mengunggah master data...", err);
+                await pushToCloud();
             }
+
+            updateDashboardStats();
+            renderTable();
         }
 
-        // Menyimpan Data Ke Cloud secara Realtime (Push Data)
+        // Menyimpan / Memperbaharui Data Cloud Server (Cross Device Push)
         async function pushToCloud() {
             const statusEl = document.getElementById('sync-status');
             statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Saving...`;
 
-            // Simpan ke LocalStorage perangkat
-            localStorage.setItem('upk_nkri_db', JSON.stringify(database));
-
             try {
-                await fetch(CLOUD_API_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(database)
+                const response = await fetch(CLOUD_PUT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jsonData: database })
                 });
 
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
+                if (response.ok) {
+                    statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                    statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
+                } else {
+                    throw new Error("Push error status: " + response.status);
+                }
             } catch (err) {
-                console.error("Cloud Save Error:", err);
-                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-hard-drive mr-1 text-[9px]"></i> Saved Locally`;
+                console.error("Gagal push ke Cloud:", err);
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Retry`;
             }
         }
 
@@ -592,9 +584,9 @@
                 
                 fetchFromCloud();
 
-                // Auto Sync ulang dari Cloud setiap 15 detik agar perubahan antar perangkat selalu update
+                // Auto Sync Realtime antar Perangkat setiap 4 detik
                 if (!syncTimer) {
-                    syncTimer = setInterval(fetchFromCloud, 15000);
+                    syncTimer = setInterval(fetchFromCloud, 4000);
                 }
                 
                 switchTab('aset');
@@ -889,8 +881,8 @@
             document.getElementById('form-modal').classList.remove('flex');
         }
 
-        // Handle Save / Edit Form Data & Push to Cloud
-        function handleFormSubmit(e) {
+        // Handle Save / Edit Form Data & Sync Cloud
+        async function handleFormSubmit(e) {
             e.preventDefault();
             const id = document.getElementById('entry-id').value;
 
@@ -930,13 +922,13 @@
             closeFormModal();
             updateDashboardStats();
             renderTable();
-            pushToCloud();
+            await pushToCloud();
         }
 
         function saveToDatabase(dataObj, id) {
             if (id) {
                 const index = database[currentTab].findIndex(x => x.id == id);
-                database[currentTab][index] = dataObj;
+                if (index !== -1) database[currentTab][index] = dataObj;
             } else {
                 database[currentTab].push(dataObj);
             }
@@ -946,12 +938,12 @@
             openFormModal(id);
         }
 
-        function deleteEntry(id) {
+        async function deleteEntry(id) {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 database[currentTab] = database[currentTab].filter(x => x.id !== id);
                 updateDashboardStats();
                 renderTable();
-                pushToCloud();
+                await pushToCloud();
             }
         }
 
