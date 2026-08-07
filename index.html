@@ -344,33 +344,42 @@
                 </div>
             </div>
 
+            <!-- TABS NAVIGATION MENU -->
             <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                 <div class="bg-slate-200/80 dark:bg-slate-800 p-1.5 rounded-2xl flex flex-wrap gap-1 shadow-inner">
-                    <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                    <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
                         <i class="fa-solid fa-hand-holding-dollar"></i>
                         <span>Data Iuran</span>
                     </button>
-                    <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                    <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
                         <i class="fa-solid fa-wallet"></i>
                         <span>Kas Keuangan</span>
                     </button>
-                    <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                    <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
                         <i class="fa-solid fa-database"></i>
                         <span>Database UPK</span>
                     </button>
-                    <button id="tab-btn-docs" onclick="switchTab('docs')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                    <button id="tab-btn-struktur" onclick="switchTab('struktur')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                        <i class="fa-solid fa-sitemap"></i>
+                        <span>Struktur Pimpinan</span>
+                    </button>
+                    <button id="tab-btn-galeri" onclick="switchTab('galeri')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                        <i class="fa-solid fa-images"></i>
+                        <span>Galeri & Berita</span>
+                    </button>
+                    <button id="tab-btn-docs" onclick="switchTab('docs')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
                         <i class="fa-solid fa-folder-open"></i>
                         <span>Dokumen & SK</span>
                     </button>
-                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-amber-500/10 text-amber-700 dark:text-amber-400 hidden">
+                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-amber-500/10 text-amber-700 dark:text-amber-400 hidden">
                         <i class="fa-solid fa-users-gear"></i>
                         <span>Kelola User</span>
                     </button>
-                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
+                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
                         <i class="fa-solid fa-gear"></i>
-                        <span>Pengaturan Website</span>
+                        <span>Pengaturan</span>
                     </button>
-                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
+                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
                         <i class="fa-solid fa-clock-rotate-left"></i>
                         <span>Log Aktivitas</span>
                     </button>
@@ -641,6 +650,13 @@
                 { id: 4, username: 'dpw_kalsel', hp: '083456789012', password: 'dpw123', nama: 'DPW Kalimantan Selatan', role: 'DPW', provinsi: 'KALIMANTAN SELATAN', kabupaten: '' },
                 { id: 5, username: 'dpd_tanbu', hp: '084567890123', password: 'dpd123', nama: 'DPD Tanah Bumbu', role: 'DPD', provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU' }
             ],
+            struktur: [
+                { id: 1, nama: 'Dr. H. Harman, S.E., M.M.', jabatan: 'Ketua Umum Pusat', wilayah: 'Nasional (DPP)', hp: '085398087772', foto: '' },
+                { id: 2, nama: 'Drs. H. Ahmad Fauzi', jabatan: 'Ketua DPW Sulawesi Selatan', wilayah: 'Sulawesi Selatan', hp: '081234567890', foto: '' }
+            ],
+            galeri: [
+                { id: 1, judul: 'Rapat Kerja Nasional (Rakernas) Asosiasi UPK NKRI 2026', kategori: 'Kegiatan Nasional', tanggal: '15/01/2026', deskripsi: 'Rakernas dihadiri oleh seluruh pengurus DPW dan DPD se-Indonesia di Jakarta.', foto: '' }
+            ],
             iuran: [
                 { id: 101, upk: 'UPK DAPM AMALI', tanggal: '01/08/2026', nominal: 500000, keterangan: 'Iuran Bulanan Agustus', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'AMALI' },
                 { id: 102, upk: 'UPK DAPM TONRA', tanggal: '03/08/2026', nominal: 750000, keterangan: 'Iuran Tahunan & Organisasi', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TONRA' }
@@ -775,6 +791,8 @@
                     database = {
                         settings: parsedData.settings || defaultDatabase.settings,
                         users: Array.isArray(parsedData.users) && parsedData.users.length > 0 ? parsedData.users : defaultDatabase.users,
+                        struktur: Array.isArray(parsedData.struktur) ? parsedData.struktur : defaultDatabase.struktur,
+                        galeri: Array.isArray(parsedData.galeri) ? parsedData.galeri : defaultDatabase.galeri,
                         iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : [],
                         kas: Array.isArray(parsedData.kas) ? parsedData.kas : [],
                         aset: Array.isArray(parsedData.aset) ? parsedData.aset : [],
@@ -871,6 +889,21 @@
             }
         }
 
+        function toggleTablePassword(id) {
+            const span = document.getElementById(`pass-span-${id}`);
+            const icon = document.getElementById(`pass-icon-${id}`);
+            const targetUser = database.users.find(u => u.id === id);
+            if (!targetUser) return;
+
+            if (span.innerText === '••••••••') {
+                span.innerText = targetUser.password;
+                icon.className = 'fa-solid fa-eye-slash text-xs';
+            } else {
+                span.innerText = '••••••••';
+                icon.className = 'fa-solid fa-eye text-xs';
+            }
+        }
+
         function openForgotPassword() {
             document.getElementById('forgot-modal').classList.remove('hidden');
             document.getElementById('forgot-modal').classList.add('flex');
@@ -897,6 +930,10 @@
         }
 
         function exportToExcel() {
+            if (currentTab === 'struktur' || currentTab === 'galeri') {
+                alert('Ekspor Excel tersedia untuk data Iuran, Kas, dan Database UPK.');
+                return;
+            }
             let table = document.querySelector('table');
             let cloneTable = table.cloneNode(true);
             
@@ -984,7 +1021,7 @@
                 return [];
             }
 
-            if (tabName === 'docs' || tabName === 'audit') {
+            if (tabName === 'docs' || tabName === 'audit' || tabName === 'struktur' || tabName === 'galeri') {
                 return list;
             }
 
@@ -1092,14 +1129,14 @@
             }
 
             currentTab = tab;
-            const tabs = ['iuran', 'kas', 'aset', 'docs', 'users', 'settings', 'audit'];
+            const tabs = ['iuran', 'kas', 'aset', 'struktur', 'galeri', 'docs', 'users', 'settings', 'audit'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (btn) {
                     if(t === tab) {
-                        btn.className = "tab-btn px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm flex items-center space-x-2 bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-md shadow-sky-600/30";
+                        btn.className = "tab-btn px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm flex items-center space-x-2 bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-md shadow-sky-600/30";
                     } else {
-                        btn.className = "tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:bg-slate-300/50 dark:hover:bg-slate-800";
+                        btn.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:bg-slate-300/50 dark:hover:bg-slate-800";
                     }
                 }
             });
@@ -1131,11 +1168,9 @@
                 komulatifContainer.classList.add('hidden');
             }
 
-            if (tab === 'audit') {
-                addBtn.classList.add('hidden');
+            if (tab === 'audit' || tab === 'struktur' || tab === 'galeri') {
                 printReportBtn.classList.add('hidden');
             } else {
-                addBtn.classList.remove('hidden');
                 printReportBtn.classList.remove('hidden');
             }
 
@@ -1143,6 +1178,8 @@
                 iuran: { title: "Manajemen Data Iuran", sub: "Kelola pencatatan data iuran anggota UPK" },
                 kas: { title: "Data Kas Keuangan", sub: "Kelola arus kas masuk dan keluar kelembagaan" },
                 aset: { title: "Database UPK", sub: "Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK" },
+                struktur: { title: "Struktur Organisasi & Pimpinan", sub: "Direktori pimpinan pusat, wilayah, dan daerah Asosiasi UPK NKRI" },
+                galeri: { title: "Galeri & Berita Kegiatan", sub: "Dokumentasi kegiatan resmi, rakernas, dan informasi publik asosiasi" },
                 docs: { title: "Dokumen & SK Legalitas", sub: "Arsip surat keputusan, SOP, dan sertifikat kelembagaan resmi" },
                 users: { title: "Kelola User Pengurus (DPW / DPD)", sub: "Tambah dan kelola akun pengguna Dewan Pengurus Wilayah & Daerah" },
                 audit: { title: "Log Aktivitas Sistem (Audit Trail)", sub: "Riwayat jejak aktivitas seluruh pengguna yang terhubung secara real-time" }
@@ -1150,7 +1187,7 @@
             document.getElementById('section-title').innerText = titles[tab].title;
             document.getElementById('section-subtitle').innerText = titles[tab].sub;
 
-            document.getElementById('add-data-btn-text').innerText = tab === 'users' ? 'Tambah User Baru' : (tab === 'docs' ? 'Unggah Dokumen' : 'Tambah Data');
+            document.getElementById('add-data-btn-text').innerText = tab === 'users' ? 'Tambah User Baru' : (tab === 'docs' ? 'Unggah Dokumen' : (tab === 'struktur' ? 'Tambah Pimpinan' : (tab === 'galeri' ? 'Tambah Berita' : 'Tambah Data')));
             document.getElementById('search-input').value = '';
             renderTable();
         }
@@ -1162,7 +1199,37 @@
             const searchQuery = (document.getElementById('search-input').value || '').toLowerCase();
             bodyRows.innerHTML = '';
 
-            if (currentTab === 'iuran') {
+            if (currentTab === 'struktur') {
+                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Nama Lengkap & Gelar</th><th class="p-4">Jabatan</th><th class="p-4">Wilayah Kerja</th><th class="p-4">No WhatsApp</th><th class="p-4 text-center">Aksi</th>`;
+                const filtered = getFilteredData('struktur').filter(s => s.nama.toLowerCase().includes(searchQuery) || s.jabatan.toLowerCase().includes(searchQuery));
+
+                filtered.forEach(s => {
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${s.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-user-tie text-sky-500 mr-2"></i>${s.nama}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-extrabold bg-sky-100 text-sky-800 rounded-lg">${s.jabatan}</span></td>
+                            <td class="p-4 text-xs font-semibold">${s.wilayah}</td>
+                            <td class="p-4 font-mono text-xs text-emerald-600 font-bold">${s.hp || '-'}</td>
+                            <td class="p-4 text-center">${getActionButtons(s.id, 'struktur')}</td>
+                        </tr>`;
+                });
+            } else if (currentTab === 'galeri') {
+                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Judul Kegiatan / Berita</th><th class="p-4">Kategori</th><th class="p-4">Tanggal</th><th class="p-4">Deskripsi Singkat</th><th class="p-4 text-center">Aksi</th>`;
+                const filtered = getFilteredData('galeri').filter(g => g.judul.toLowerCase().includes(searchQuery) || g.kategori.toLowerCase().includes(searchQuery));
+
+                filtered.forEach(g => {
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${g.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-newspaper text-amber-500 mr-2"></i>${g.judul}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-bold bg-amber-100 text-amber-800 rounded-lg">${g.kategori}</span></td>
+                            <td class="p-4 text-xs">${g.tanggal}</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400 max-w-xs truncate">${g.deskripsi}</td>
+                            <td class="p-4 text-center">${getActionButtons(g.id, 'galeri')}</td>
+                        </tr>`;
+                });
+            } else if (currentTab === 'iuran') {
                 headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Nama UPK</th><th class="p-4">Wilayah (Prov/Kab/Kec)</th><th class="p-4">Tanggal</th><th class="p-4">Nominal</th><th class="p-4">Keterangan</th><th class="p-4 text-center">Aksi</th>`;
                 const filtered = getFilteredData('iuran').filter(item => 
                     item.upk.toLowerCase().includes(searchQuery) || (item.keterangan && item.keterangan.toLowerCase().includes(searchQuery))
@@ -1249,7 +1316,12 @@
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
                             <td class="p-4 font-mono font-bold text-slate-900 dark:text-white">${u.username}</td>
                             <td class="p-4 font-mono text-xs text-emerald-700 dark:text-emerald-400 font-bold">${u.hp || '-'}</td>
-                            <td class="p-4 font-mono text-xs text-rose-600 dark:text-rose-400 font-bold">${u.password}</td>
+                            <td class="p-4 font-mono text-xs text-rose-600 dark:text-rose-400 font-bold flex items-center space-x-2">
+                                <span id="pass-span-${u.id}">••••••••</span>
+                                <button type="button" onclick="toggleTablePassword(${u.id})" class="text-slate-400 hover:text-slate-600 transition">
+                                    <i id="pass-icon-${u.id}" class="fa-solid fa-eye text-xs"></i>
+                                </button>
+                            </td>
                             <td class="p-4 font-bold text-slate-800 dark:text-slate-200">${u.nama}</td>
                             <td class="p-4"><span class="px-3 py-1 text-[10px] font-extrabold rounded-full ${u.role === 'PUSAT' ? 'bg-amber-100 text-amber-800' : u.role === 'DPW' ? 'bg-sky-100 text-sky-800' : 'bg-emerald-100 text-emerald-800'}">${u.role}</span></td>
                             <td class="p-4 text-xs">${u.provinsi || '-'}</td>
@@ -1293,7 +1365,7 @@
                     <button onclick="editEntry(${id})" title="Edit Data" class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition border border-amber-200/60 hover:bg-amber-100">
                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                     </button>
-                    ${tab !== 'users' && tab !== 'docs' && tab !== 'audit' ? `
+                    ${tab !== 'users' && tab !== 'docs' && tab !== 'audit' && tab !== 'struktur' && tab !== 'galeri' ? `
                     <button onclick="openPrintModal(${id})" title="Cetak Bukti" class="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center transition border border-sky-200/60 hover:bg-sky-100">
                         <i class="fa-solid fa-print text-xs"></i>
                     </button>` : ''}
@@ -1315,7 +1387,47 @@
             let dbKey = getDbKey(currentTab);
             let item = id ? database[dbKey].find(x => x.id === id) : {};
 
-            if (currentTab === 'users') {
+            if (currentTab === 'struktur') {
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Nama Lengkap & Gelar</label>
+                        <input type="text" id="field-nama" value="${item.nama || ''}" required placeholder="Contoh: Dr. H. Harman, S.E., M.M." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Jabatan</label>
+                        <input type="text" id="field-jabatan" value="${item.jabatan || ''}" required placeholder="Contoh: Ketua Umum / Ketua DPW" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Wilayah Kerja</label>
+                        <input type="text" id="field-wilayah" value="${item.wilayah || ''}" required placeholder="Contoh: Nasional / Sulawesi Selatan" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Nomor WhatsApp</label>
+                        <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>`;
+            } else if (currentTab === 'galeri') {
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Judul Kegiatan / Berita</label>
+                        <input type="text" id="field-judul" value="${item.judul || ''}" required placeholder="Contoh: Rapat Kerja Nasional 2026" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Kategori</label>
+                        <select id="field-kategori" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                            <option value="Kegiatan Nasional" ${item.kategori === 'Kegiatan Nasional' ? 'selected' : ''}>Kegiatan Nasional</option>
+                            <option value="Penyerahan SK" ${item.kategori === 'Penyerahan SK' ? 'selected' : ''}>Penyerahan SK</option>
+                            <option value="Bakti Sosial" ${item.kategori === 'Bakti Sosial' ? 'selected' : ''}>Bakti Sosial</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Tanggal (DD/MM/YYYY)</label>
+                        <input type="date" id="field-tanggal" value="${formatDateToISO(item.tanggal)}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Deskripsi Singkat</label>
+                        <textarea id="field-deskripsi" rows="3" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">${item.deskripsi || ''}</textarea>
+                    </div>`;
+            } else if (currentTab === 'users') {
                 const defaultProvUser = loggedUser.role === 'DPW' ? loggedUser.provinsi : (item.provinsi || '');
                 const currentRole = item.role || (loggedUser.role === 'DPW' ? 'DPD' : 'DPW');
 
@@ -1506,7 +1618,32 @@
         async function handleFormSubmit() {
             const id = document.getElementById('entry-id').value;
 
-            if (currentTab === 'users') {
+            if (currentTab === 'struktur') {
+                const dataObj = {
+                    id: id ? parseInt(id) : Date.now(),
+                    nama: document.getElementById('field-nama').value.trim(),
+                    jabatan: document.getElementById('field-jabatan').value.trim(),
+                    wilayah: document.getElementById('field-wilayah').value.trim(),
+                    hp: document.getElementById('field-hp').value.trim(),
+                    foto: ''
+                };
+                saveToDatabase(dataObj, id);
+                logAudit(`Menambah/Mengubah Pimpinan: ${dataObj.nama}`);
+                await finishFormSubmit();
+            } else if (currentTab === 'galeri') {
+                const tglRaw = document.getElementById('field-tanggal').value;
+                const dataObj = {
+                    id: id ? parseInt(id) : Date.now(),
+                    judul: document.getElementById('field-judul').value.trim(),
+                    kategori: document.getElementById('field-kategori').value,
+                    tanggal: formatDateToID(tglRaw),
+                    deskripsi: document.getElementById('field-deskripsi').value.trim(),
+                    foto: ''
+                };
+                saveToDatabase(dataObj, id);
+                logAudit(`Menambah/Mengubah Berita/Galeri: ${dataObj.judul}`);
+                await finishFormSubmit();
+            } else if (currentTab === 'users') {
                 const targetUser = id ? database.users.find(u => u.id == id) : null;
                 const isEditingAdminPusat = targetUser && targetUser.role === 'PUSAT';
 
@@ -1606,7 +1743,6 @@
                 };
                 saveToDatabase(dataObj, id);
 
-                // OTOMATIS MASUK KAS KEUANGAN SEBAGAI PEMASUKAN
                 if (!database.kas) database.kas = [];
                 const kasObj = {
                     id: dataObj.id + 1,
