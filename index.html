@@ -603,7 +603,7 @@
 
     <!-- ================= 5. JAVASCRIPT & LOGIC ================= -->
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_ixUUn5OvXAE0XZ_pp4EUzhqV-pzrxN3HwwNMs69Uufx1VRyX5F-CU3CRPUgz1Jru9A/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCj0HXjVGEuaRlwqeApIfAbfGMnjU7V6RYyohKOeW70TnDW7ohAKVoPw7k1UJMD7KX/exec";
 
         let currentTab = 'aset';
         let loggedUser = null;
@@ -751,7 +751,6 @@
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Syncing Sheets...`;
 
             try {
-                // Menambahkan parameter timestamp (?t=...) agar browser tidak mengambil data dari cache lama
                 const response = await fetch(GOOGLE_SCRIPT_URL + "?t=" + new Date().getTime(), { method: "GET" });
                 
                 if (response.ok) {
@@ -794,10 +793,10 @@
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Saving...`;
 
             try {
+                // Diperbaiki: Hapus header application/json agar body tidak diblokir oleh mode no-cors browser
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(database)
                 });
 
