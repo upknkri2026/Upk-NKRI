@@ -746,17 +746,15 @@
                     const textData = await response.text();
                     if (textData && textData !== "{}" && textData.trim() !== "") {
                         const parsedData = JSON.parse(textData);
-                        if (parsedData.aset || parsedData.iuran || parsedData.kas) {
-                            database = {
-                                settings: parsedData.settings || database.settings,
-                                users: Array.isArray(parsedData.users) ? parsedData.users : database.users,
-                                iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : [],
-                                kas: Array.isArray(parsedData.kas) ? parsedData.kas : [],
-                                aset: Array.isArray(parsedData.aset) ? parsedData.aset : [],
-                                documents: Array.isArray(parsedData.documents) ? parsedData.documents : database.documents,
-                                auditLogs: Array.isArray(parsedData.auditLogs) ? parsedData.auditLogs : database.auditLogs
-                            };
-                        }
+                        database = {
+                            settings: parsedData.settings || database.settings,
+                            users: Array.isArray(parsedData.users) ? parsedData.users : database.users,
+                            iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : database.iuran,
+                            kas: Array.isArray(parsedData.kas) ? parsedData.kas : database.kas,
+                            aset: Array.isArray(parsedData.aset) ? parsedData.aset : database.aset,
+                            documents: Array.isArray(parsedData.documents) ? parsedData.documents : database.documents,
+                            auditLogs: Array.isArray(parsedData.auditLogs) ? parsedData.auditLogs : database.auditLogs
+                        };
                     }
                     statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
                     statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Sheets Synced`;
@@ -1609,9 +1607,11 @@
 
         function saveToDatabase(dataObj, id) {
             let dbKey = getDbKey(currentTab);
+            if (!database[dbKey]) database[dbKey] = [];
             if (id) {
                 const index = database[dbKey].findIndex(x => x.id == id);
                 if (index !== -1) database[dbKey][index] = dataObj;
+                else database[dbKey].push(dataObj);
             } else {
                 database[dbKey].push(dataObj);
             }
