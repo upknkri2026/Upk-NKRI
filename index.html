@@ -676,7 +676,7 @@
             ]
         };
 
-        // Muat database dari LocalStorage jika ada sebagai cache lokal
+        // Muat database dari LocalStorage jika ada
         let savedDatabase = localStorage.getItem('upk_nkri_database');
         let database = savedDatabase ? JSON.parse(savedDatabase) : defaultDatabase;
 
@@ -751,46 +751,36 @@
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Syncing Sheets...`;
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, { method: "GET" });
+                // Menambahkan parameter timestamp (?t=...) agar browser tidak mengambil data dari cache lama
+                const response = await fetch(GOOGLE_SCRIPT_URL + "?t=" + new Date().getTime(), { method: "GET" });
+                
                 if (response.ok) {
                     const textData = await response.text();
                     if (textData && textData !== "{}" && textData.trim() !== "") {
                         const parsedData = JSON.parse(textData);
                         
-                        // Smart merging untuk dokumen dan log agar dokumen antar perangkat tergabung (tidak tertimpa kosong)
-                        let mergedDocs = database.documents || [];
-                        if (Array.isArray(parsedData.documents)) {
-                            let docMap = new Map();
-                            mergedDocs.forEach(d => docMap.set(d.id, d));
-                            parsedData.documents.forEach(d => docMap.set(d.id, d));
-                            mergedDocs = Array.from(docMap.values());
-                        }
-
-                        let mergedLogs = database.auditLogs || [];
-                        if (Array.isArray(parsedData.auditLogs)) {
-                            let logMap = new Map();
-                            mergedLogs.forEach(l => logMap.set(l.id, l));
-                            parsedData.auditLogs.forEach(l => logMap.set(l.id, l));
-                            mergedLogs = Array.from(logMap.values());
-                        }
-
                         database = {
-                            settings: parsedData.settings || database.settings,
-                            users: Array.isArray(parsedData.users) && parsedData.users.length > 0 ? parsedData.users : database.users,
-                            iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : database.iuran,
-                            kas: Array.isArray(parsedData.kas) ? parsedData.kas : database.kas,
-                            aset: Array.isArray(parsedData.aset) && parsedData.aset.length > 0 ? parsedData.aset : database.aset,
-                            documents: mergedDocs,
-                            auditLogs: mergedLogs
+                            settings: parsedData.settings || defaultDatabase.settings,
+                            users: Array.isArray(parsedData.users) && parsedData.users.length > 0 ? parsedData.users : defaultDatabase.users,
+                            iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : [],
+                            kas: Array.isArray(parsedData.kas) ? parsedData.kas : [],
+                            aset: Array.isArray(parsedData.aset) ? parsedData.aset : [],
+                            documents: Array.isArray(parsedData.documents) ? parsedData.documents : [],
+                            auditLogs: Array.isArray(parsedData.auditLogs) ? parsedData.auditLogs : []
                         };
+
                         localStorage.setItem('upk_nkri_database', JSON.stringify(database));
                     }
+                    
                     statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
                     statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Sheets Synced`;
+                } else {
+                    throw new Error("Gagal terhubung ke server cloud");
                 }
             } catch (err) {
+                console.error("Sync error:", err);
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Offline (Local Active)`;
+                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Offline`;
             }
 
             applyDynamicSettings();
@@ -1365,7 +1355,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Unggah Berkas File (PDF/Foto)</label>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Unggah Berkas File (PDF/Foto - Maks 700KB)</label>
                         <input type="file" id="field-file" accept=".pdf,image/*" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
                     </div>
                     <div>
@@ -1558,11 +1548,17 @@
                 };
 
                 if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const file = fileInput.files[0];
+                    if (file.size > 700 * 1024) {
+                        alert('Ukuran file terlalu besar! Harap unggah file PDF atau gambar di bawah 700 KB.');
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = function (uploadEvent) {
                         processAndSaveDoc(uploadEvent.target.result);
                     };
-                    reader.readAsDataURL(fileInput.files[0]);
+                    reader.readAsDataURL(file);
                 } else {
                     processAndSaveDoc();
                 }
