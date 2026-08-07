@@ -6,12 +6,17 @@
     <title>Sistem Kelembagaan, Aset & Keuangan - ASOSIASI UPK NKRI</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {
@@ -44,6 +49,19 @@
             background: rgba(10, 25, 47, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 35s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
         }
 
         @media print {
@@ -101,7 +119,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-800 antialiased min-h-screen selection:bg-sky-500 selection:text-white">
+<body class="bg-slate-950 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased min-h-screen selection:bg-sky-500 selection:text-white transition-colors duration-300">
 
     <datalist id="provinsi-list">
         <option value="ACEH"></option>
@@ -178,7 +196,7 @@
 
             <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 tracking-wider uppercase mb-2">USERNAME / NOMOR HP</label>
+                    <label class="block text-xs font-bold text-slate-400 tracking-wider uppercase mb-2">USERNAME</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
                             <i class="fa-solid fa-user text-sm"></i>
@@ -195,11 +213,18 @@
                             <i class="fa-solid fa-lock text-sm"></i>
                         </div>
                         <input type="password" id="password" required placeholder="••••••••" 
-                            class="w-full pl-11 pr-4 py-3.5 bg-slate-900/90 text-white text-sm rounded-xl border border-slate-700/80 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition font-medium shadow-sm placeholder:text-slate-600">
+                            class="w-full pl-11 pr-12 py-3.5 bg-slate-900/90 text-white text-sm rounded-xl border border-slate-700/80 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition font-medium shadow-sm placeholder:text-slate-600">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-white transition">
+                            <i id="eye-icon" class="fa-solid fa-eye text-sm"></i>
+                        </button>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-4 px-4 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 hover:from-sky-500 hover:to-indigo-600 active:scale-[0.99] text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 flex items-center justify-center space-x-2 transition duration-200 text-sm tracking-wide mt-5">
+                <div class="flex justify-end">
+                    <button type="button" onclick="openForgotPassword()" class="text-xs text-sky-400 hover:text-sky-300 font-semibold transition">Lupa Password?</button>
+                </div>
+
+                <button type="submit" class="w-full py-4 px-4 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 hover:from-sky-500 hover:to-indigo-600 active:scale-[0.99] text-white font-bold rounded-xl shadow-lg shadow-sky-600/30 flex items-center justify-center space-x-2 transition duration-200 text-sm tracking-wide mt-2">
                     <span>Masuk Ke Sistem</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
@@ -210,9 +235,9 @@
     </div>
 
     <!-- ================= 2. DASHBOARD VIEW ================= -->
-    <div id="dashboard-view" class="hidden min-h-screen bg-slate-100 flex flex-col">
+    <div id="dashboard-view" class="hidden min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col transition-colors duration-300">
         <header class="glass-nav text-white sticky top-0 z-40 border-b border-slate-800/80 shadow-lg no-print">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
                 <div class="flex items-center space-x-3.5">
                     <div class="w-10 h-10 bg-white rounded-xl p-1.5 shadow-md flex items-center justify-center">
                         <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain">
@@ -229,9 +254,17 @@
                 </div>
                 
                 <div class="flex items-center space-x-3">
+                    <button onclick="toggleDarkMode()" class="w-9 h-9 rounded-xl bg-slate-800 text-sky-400 hover:bg-slate-700 flex items-center justify-center border border-slate-700 transition" title="Ganti Tema Terang/Gelap">
+                        <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
+                    </button>
+
+                    <button onclick="sendWhatsAppNotification()" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition" title="Kirim Laporan via WhatsApp">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>Kirim WA</span>
+                    </button>
+
                     <div class="hidden lg:flex items-center space-x-3 text-xs border-r border-slate-800 pr-3 mr-1 text-slate-400">
                         <span><i class="fa-solid fa-phone text-sky-400 mr-1"></i>085398087772</span>
-                        <span><i class="fa-solid fa-envelope text-sky-400 mr-1"></i>upknkri2026@gmail.com</span>
                     </div>
 
                     <div class="hidden md:flex items-center space-x-2 bg-slate-800/60 border border-slate-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-300">
@@ -245,111 +278,210 @@
                     </button>
                 </div>
             </div>
+
+            <div class="bg-slate-900/90 border-t border-slate-800/60 py-2 px-4 text-xs overflow-hidden flex items-center relative">
+                <span class="bg-sky-500/20 text-sky-300 border border-sky-500/30 font-bold px-2 py-0.5 rounded text-[10px] mr-3 whitespace-nowrap uppercase tracking-wider flex items-center z-10 relative">
+                    <i class="fa-solid fa-bullhorn mr-1.5 text-amber-400"></i> MOTTO ASOSIASI
+                </span>
+                <div class="overflow-hidden whitespace-nowrap w-full">
+                    <div class="animate-marquee inline-block text-slate-300 font-medium tracking-wide">
+                        <span class="mr-16">🌟 <b>BERSAMA MEMBANGUN NEGERI:</b> Menguatkan Kelembagaan, Mengembangkan Aset Keuangan untuk Kesejahteraan Masyarakat SELURUH INDONESIA.</span>
+                        <span class="mr-16">🇮🇩 <b>ASOSIASI UPK NKRI:</b> Dari Rakyat, Oleh Rakyat, Untuk Kemandirian Ekonomi Bangsa.</span>
+                        <span class="mr-16">🤝 <b>INTEGRITAS & TRANSPARANSI:</b> Menjaga Amanah Pengelolaan Aset Kelembagaan UPK 34 Provinsi.</span>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8 no-print">
+            
+            <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-sky-600/10 via-blue-600/10 to-indigo-600/10 border border-sky-500/30 flex items-center justify-between text-xs sm:text-sm text-slate-700 dark:text-slate-300 shadow-sm">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-500 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-circle-info text-base"></i>
+                    </div>
+                    <div>
+                        <b class="text-slate-900 dark:text-white">Pengumuman Resmi Pusat:</b> Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25 Agustus 2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex items-center justify-between relative overflow-hidden group">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
                     <div class="relative z-10">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Iuran Masuk</p>
-                        <h3 id="stat-total-iuran" class="text-2xl font-black text-emerald-600 mt-1.5 tracking-tight">Rp 0</h3>
+                        <h3 id="stat-total-iuran" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1.5 tracking-tight">Rp 0</h3>
                     </div>
-                    <div class="relative z-10 w-13 h-13 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl">
+                    <div class="relative z-10 w-13 h-13 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
                         <i class="fa-solid fa-hand-holding-dollar"></i>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex items-center justify-between relative overflow-hidden group">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
                     <div class="relative z-10">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Posisi Saldo Kas</p>
-                        <h3 id="stat-saldo-kas" class="text-2xl font-black text-sky-600 mt-1.5 tracking-tight">Rp 0</h3>
+                        <h3 id="stat-saldo-kas" class="text-2xl font-black text-sky-600 dark:text-sky-400 mt-1.5 tracking-tight">Rp 0</h3>
                     </div>
-                    <div class="relative z-10 w-13 h-13 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center text-xl">
+                    <div class="relative z-10 w-13 h-13 bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center text-xl">
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex items-center justify-between relative overflow-hidden group">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
                     <div class="relative z-10">
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">UPK Terdaftar</p>
-                        <h3 id="stat-total-upk" class="text-2xl font-black text-amber-600 mt-1.5 tracking-tight">0 UPK</h3>
+                        <h3 id="stat-total-upk" class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1.5 tracking-tight">0 UPK</h3>
                     </div>
-                    <div class="relative z-10 w-13 h-13 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl">
+                    <div class="relative z-10 w-13 h-13 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-xl">
                         <i class="fa-solid fa-building-columns"></i>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-slate-200/80 p-1.5 rounded-2xl flex flex-wrap gap-1 mb-6 max-w-fit shadow-inner">
-                <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
-                    <span>Data Iuran</span>
-                </button>
-                <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                    <i class="fa-solid fa-wallet"></i>
-                    <span>Kas Keuangan</span>
-                </button>
-                <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                    <i class="fa-solid fa-database"></i>
-                    <span>Database UPK</span>
-                </button>
-                <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-amber-500/10 text-amber-700 hidden">
-                    <i class="fa-solid fa-users-gear"></i>
-                    <span>Kelola User (DPW/DPD)</span>
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div class="bg-slate-200/80 dark:bg-slate-800 p-1.5 rounded-2xl flex flex-wrap gap-1 shadow-inner">
+                    <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                        <span>Data Iuran</span>
+                    </button>
+                    <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>Kas Keuangan</span>
+                    </button>
+                    <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                        <i class="fa-solid fa-database"></i>
+                        <span>Database UPK</span>
+                    </button>
+                    <button id="tab-btn-docs" onclick="switchTab('docs')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span>Dokumen & SK</span>
+                    </button>
+                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-amber-500/10 text-amber-700 dark:text-amber-400 hidden">
+                        <i class="fa-solid fa-users-gear"></i>
+                        <span>Kelola User</span>
+                    </button>
+                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Log Aktivitas</span>
+                    </button>
+                </div>
+
+                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span>Ekspor Excel (.XLS)</span>
                 </button>
             </div>
 
-            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200/80 mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <!-- KOMULATIF ASET -->
+            <div id="komulatif-aset-container" class="hidden mb-6 space-y-6">
+                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-2xl p-5 text-white shadow-lg border border-slate-700/80">
+                    <div class="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-chart-pie text-sky-400 text-base"></i>
+                            <h3 class="font-extrabold text-sm sm:text-base text-white tracking-tight">RINGKASAN KOMULATIF ASET & STATUS BADAN HUKUM</h3>
+                        </div>
+                        <span class="text-[11px] font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30 px-3 py-1 rounded-full">Akumulasi Real-Time</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                        <div class="bg-white/5 p-3.5 rounded-xl border border-white/10">
+                            <p class="text-slate-400 text-[10px] font-bold uppercase">Total Modal Awal</p>
+                            <p id="kom-modal-awal" class="text-sm sm:text-base font-black text-amber-400 mt-1">Rp 0</p>
+                        </div>
+
+                        <div class="bg-white/5 p-3.5 rounded-xl border border-white/10">
+                            <p class="text-slate-400 text-[10px] font-bold uppercase">Total Aset Sekarang</p>
+                            <p id="kom-total-aset" class="text-sm sm:text-base font-black text-sky-400 mt-1">Rp 0</p>
+                        </div>
+
+                        <div class="bg-white/5 p-3.5 rounded-xl border border-white/10 col-span-2 md:col-span-2">
+                            <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Rincian Status Badan Hukum</p>
+                            <div class="flex flex-wrap gap-2 text-[11px] font-bold">
+                                <span class="bg-sky-500/20 text-sky-300 border border-sky-500/40 px-2.5 py-1 rounded-lg" id="kom-status-pbh">PBH: 0</span>
+                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg" id="kom-status-koperasi">Koperasi: 0</span>
+                                <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 px-2.5 py-1 rounded-lg" id="kom-status-pt">PT: 0</span>
+                                <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg" id="kom-status-bumdesma">Proses Bumdesma: 0</span>
+                                <span class="bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2.5 py-1 rounded-lg" id="kom-status-belum">Belum: 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <h4 class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3"><i class="fa-solid fa-chart-column mr-1.5 text-sky-500"></i> Grafik Status Badan Hukum UPK</h4>
+                        <div class="h-64 flex justify-center items-center">
+                            <canvas id="statusHukumChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <h4 class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3"><i class="fa-solid fa-chart-line mr-1.5 text-emerald-500"></i> Perbandingan Modal vs Total Aset</h4>
+                        <div class="h-64 flex justify-center items-center">
+                            <canvas id="modalAsetChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADVANCED FILTER BAR -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div>
-                    <h2 id="section-title" class="text-xl font-extrabold text-slate-900 tracking-tight">Database UPK</h2>
-                    <p id="section-subtitle" class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
+                    <h2 id="section-title" class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Database UPK</h2>
+                    <p id="section-subtitle" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
                 </div>
                 
                 <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end">
-                    <div class="relative flex-1 lg:flex-none min-w-[220px]">
+                    <div class="flex items-center space-x-1.5 text-xs bg-slate-50 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <span class="text-slate-400 font-bold px-1">Dari:</span>
+                        <input type="date" id="filter-date-start" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
+                        <span class="text-slate-400 font-bold px-1">s/d</span>
+                        <input type="date" id="filter-date-end" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
+                    </div>
+
+                    <div class="relative flex-1 lg:flex-none min-w-[200px]">
                         <input type="text" id="search-input" onkeyup="renderTable()" placeholder="Cari Provinsi / UPK..." 
-                            class="w-full pl-9 pr-4 py-2.5 bg-slate-50 text-slate-800 text-xs rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-sky-500 focus:border-transparent transition outline-none font-medium">
+                            class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none font-medium">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
                     </div>
 
-                    <button onclick="printFullReport()" class="bg-slate-800 hover:bg-slate-900 active:scale-[0.98] text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
+                    <button id="print-report-btn" onclick="printFullReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
                         <i class="fa-solid fa-print"></i>
                         <span>Cetak Rekapan</span>
                     </button>
 
-                    <button onclick="openFormModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.98] text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center space-x-2">
+                    <button id="add-data-main-btn" onclick="openFormModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
                         <i class="fa-solid fa-plus"></i>
                         <span id="add-data-btn-text">Tambah Data</span>
                     </button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-600">
-                        <thead class="bg-slate-50/90 text-slate-700 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
                             <tr id="table-head-row"></tr>
                         </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-100 font-medium"></tbody>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
                     </table>
                 </div>
             </div>
         </main>
 
-        <footer class="bg-white border-t border-slate-200/80 py-5 text-center text-xs text-slate-400 font-medium no-print mt-auto">
+        <footer class="bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 py-5 text-center text-xs text-slate-400 font-medium no-print mt-auto">
             © 2026 Asosiasi UPK NKRI. All rights reserved.
         </footer>
     </div>
 
     <!-- ================= 3. MODAL FORM DATA ================= -->
     <div id="form-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-5">
+        <div class="bg-white dark:bg-slate-900 dark:text-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4 mb-5">
                 <div>
-                    <h3 id="modal-form-title" class="text-lg font-extrabold text-slate-900">Form Transaksi</h3>
+                    <h3 id="modal-form-title" class="text-lg font-extrabold text-slate-900 dark:text-white">Form Transaksi</h3>
                     <p class="text-xs text-slate-400 font-medium">Lengkapi rincian formulir di bawah ini</p>
                 </div>
-                <button onclick="closeFormModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 flex items-center justify-center transition">
+                <button onclick="closeFormModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
@@ -358,14 +490,49 @@
                 <input type="hidden" id="entry-id">
                 <div id="dynamic-form-fields" class="space-y-4"></div>
 
-                <div class="flex justify-end space-x-3 pt-5 border-t border-slate-100 mt-6">
-                    <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition">Batal</button>
+                <div class="flex justify-end space-x-3 pt-5 border-t border-slate-100 dark:border-slate-800 mt-6">
+                    <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 transition">Batal</button>
                     <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs rounded-xl shadow-md flex items-center space-x-2">
                         <i class="fa-solid fa-floppy-disk"></i>
                         <span>Simpan Data</span>
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- ================= 3.1 MODAL VERIFIKASI EMAIL ADMIN PUSAT ================= -->
+    <div id="verify-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
+        <div class="bg-white dark:bg-slate-900 dark:text-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 dark:border-slate-800 text-center">
+            <div class="w-14 h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm border border-sky-100">
+                <i class="fa-solid fa-envelope-circle-check"></i>
+            </div>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-1">Verifikasi Email Keamanan</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Untuk mengubah akun Admin Pusat, masukkan kode verifikasi yang dikirimkan ke <b class="text-slate-800 dark:text-slate-200">upknkri2026@gmail.com</b> <br><span class="text-[10px] text-sky-600 font-bold">(Gunakan kode demo: 2026)</span></p>
+
+            <input type="text" id="verify-code-input" placeholder="Masukkan Kode (2026)" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-center tracking-widest outline-none mb-4 focus:ring-2 focus:ring-sky-500">
+
+            <div class="flex space-x-2">
+                <button type="button" onclick="closeVerifyModal()" class="w-1/2 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 transition">Batal</button>
+                <button type="button" onclick="confirmVerifyCode()" class="w-1/2 py-3 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow-md transition">Verifikasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 3.2 MODAL LUPA PASSWORD ================= -->
+    <div id="forgot-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 no-print">
+        <div class="bg-white dark:bg-slate-900 dark:text-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100 dark:border-slate-800 text-center">
+            <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm border border-emerald-100">
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-1">Bantuan Lupa Password</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Silakan hubungi Admin Pusat melalui WhatsApp untuk melakukan reset password akun Anda.</p>
+
+            <a href="https://wa.me/6285398087772?text=Halo%20Admin%20Pusat,%20saya%20lupa%20password%20akun%20saya%20di%20Sistem%20Asosiasi%20UPK%20NKRI." target="_blank" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2 mb-3">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Hubungi Admin WhatsApp</span>
+            </a>
+            <button type="button" onclick="closeForgotPassword()" class="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 transition">Tutup</button>
         </div>
     </div>
 
@@ -412,14 +579,17 @@
 
         let currentTab = 'aset';
         let loggedUser = null;
+        let pendingUserObject = null;
+        let statusHukumChartInstance = null;
+        let modalAsetChartInstance = null;
 
         let database = {
             users: [
-                { id: 1, username: 'upk_nkri', password: 'upknkri2026', nama: 'Admin Pusat', role: 'PUSAT', provinsi: '', kabupaten: '' },
-                { id: 2, username: 'dpw_sulsel', password: 'dpw123', nama: 'DPW Sulawesi Selatan', role: 'DPW', provinsi: 'SULAWESI SELATAN', kabupaten: '' },
-                { id: 3, username: 'dpd_bone', password: 'dpd123', nama: 'DPD Kabupaten Bone', role: 'DPD', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE' },
-                { id: 4, username: 'dpw_kalsel', password: 'dpw123', nama: 'DPW Kalimantan Selatan', role: 'DPW', provinsi: 'KALIMANTAN SELATAN', kabupaten: '' },
-                { id: 5, username: 'dpd_tanbu', password: 'dpd123', nama: 'DPD Tanah Bumbu', role: 'DPD', provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU' }
+                { id: 1, username: 'upk_nkri', hp: '085398087772', password: 'upknkri2026', nama: 'Admin Pusat', role: 'PUSAT', provinsi: '', kabupaten: '' },
+                { id: 2, username: 'dpw_sulsel', hp: '081234567890', password: 'dpw123', nama: 'DPW Sulawesi Selatan', role: 'DPW', provinsi: 'SULAWESI SELATAN', kabupaten: '' },
+                { id: 3, username: 'dpd_bone', hp: '082345678901', password: 'dpd123', nama: 'DPD Kabupaten Bone', role: 'DPD', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE' },
+                { id: 4, username: 'dpw_kalsel', hp: '083456789012', password: 'dpw123', nama: 'DPW Kalimantan Selatan', role: 'DPW', provinsi: 'KALIMANTAN SELATAN', kabupaten: '' },
+                { id: 5, username: 'dpd_tanbu', hp: '084567890123', password: 'dpd123', nama: 'DPD Tanah Bumbu', role: 'DPD', provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU' }
             ],
             iuran: [
                 { id: 101, upk: 'UPK DAPM AMALI', tanggal: '2026-08-01', nominal: 500000, keterangan: 'Iuran Bulanan Agustus', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'AMALI' },
@@ -428,6 +598,13 @@
             kas: [
                 { id: 201, tanggal: '2026-08-01', keterangan: 'Pemasukan Iuran Anggota', jenis: 'Masuk', nominal: 1250000, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE' },
                 { id: 202, tanggal: '2026-08-05', keterangan: 'Biaya Operasional Rapat', jenis: 'Keluar', nominal: 300000, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE' }
+            ],
+            documents: [
+                { id: 1, judul: 'SK Pendirian Asosiasi UPK NKRI', kategori: 'Legalitas', tanggal: '2026-01-10', pembuat: 'Admin Pusat' },
+                { id: 2, judul: 'SOP Pengelolaan Keuangan & Aset', kategori: 'SOP', tanggal: '2026-02-15', pembuat: 'Admin Pusat' }
+            ],
+            auditLogs: [
+                { id: 1, waktu: '2026-08-07 10:00:00', user: 'Admin Pusat', aksi: 'Inisialisasi Sistem Kelembagaan & Aset' }
             ],
             aset: [
                 { id: 1, provinsi: 'KALIMANTAN SELATAN', kabupaten: 'TANAH BUMBU', kecamatan: 'SATUI', namaUPK: 'UPK PDPM SATUI MANDIRI', modalAwal: 1394554011, totalAset: 4135170445.62, statusBadanHukum: 'proses Bumdesma', tanggalInput: '2026-08-07' },
@@ -467,6 +644,35 @@
             ]
         };
 
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingSession();
+        });
+
+        function checkExistingSession() {
+            const savedSession = sessionStorage.getItem('upk_nkri_user');
+            if (savedSession) {
+                try {
+                    loggedUser = JSON.parse(savedSession);
+                    document.getElementById('login-view').classList.add('hidden');
+                    document.getElementById('dashboard-view').classList.remove('hidden');
+                    
+                    document.getElementById('logged-user-name').innerText = loggedUser.nama;
+                    document.getElementById('user-role-label').innerText = `${loggedUser.role} ${loggedUser.provinsi ? '- ' + loggedUser.provinsi : ''} ${loggedUser.kabupaten ? '(' + loggedUser.kabupaten + ')' : ''}`;
+
+                    if (loggedUser.role === 'PUSAT' || loggedUser.role === 'DPW') {
+                        document.getElementById('tab-btn-users').classList.remove('hidden');
+                    } else {
+                        document.getElementById('tab-btn-users').classList.add('hidden');
+                    }
+
+                    fetchFromCloud();
+                    switchTab('aset');
+                } catch (e) {
+                    console.error("Gagal memuat sesi:", e);
+                }
+            }
+        }
+
         async function fetchFromCloud() {
             const statusEl = document.getElementById('sync-status');
             statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
@@ -483,7 +689,9 @@
                                 users: Array.isArray(parsedData.users) ? parsedData.users : database.users,
                                 iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : [],
                                 kas: Array.isArray(parsedData.kas) ? parsedData.kas : [],
-                                aset: Array.isArray(parsedData.aset) ? parsedData.aset : []
+                                aset: Array.isArray(parsedData.aset) ? parsedData.aset : [],
+                                documents: Array.isArray(parsedData.documents) ? parsedData.documents : database.documents,
+                                auditLogs: Array.isArray(parsedData.auditLogs) ? parsedData.auditLogs : database.auditLogs
                             };
                         }
                     }
@@ -520,8 +728,78 @@
             }
         }
 
+        function logAudit(aksi) {
+            const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            database.auditLogs.unshift({
+                id: Date.now(),
+                waktu: now,
+                user: loggedUser ? loggedUser.nama : 'Sistem',
+                aksi: aksi
+            });
+            if (database.auditLogs.length > 50) database.auditLogs.pop();
+        }
+
         function formatRupiah(val) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 2 }).format(val || 0);
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.className = 'fa-solid fa-eye-slash text-sm';
+            } else {
+                passInput.type = 'password';
+                eyeIcon.className = 'fa-solid fa-eye text-sm';
+            }
+        }
+
+        function openForgotPassword() {
+            document.getElementById('forgot-modal').classList.remove('hidden');
+            document.getElementById('forgot-modal').classList.add('flex');
+        }
+
+        function closeForgotPassword() {
+            document.getElementById('forgot-modal').classList.add('hidden');
+            document.getElementById('forgot-modal').classList.remove('flex');
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-xs text-amber-400';
+            } else {
+                icon.className = 'fa-solid fa-moon text-xs text-sky-400';
+            }
+        }
+
+        function sendWhatsAppNotification() {
+            const pesan = `Halo Admin Pusat Asosiasi UPK NKRI, laporan terkini per tanggal ${new Date().toLocaleDateString('id-ID')} telah diperbarui oleh ${loggedUser.nama}. Silakan cek sistem untuk melihat rekapan data terbaru.`;
+            window.open(`https://wa.me/6285398087772?text=${encodeURIComponent(pesan)}`, '_blank');
+        }
+
+        function exportToExcel() {
+            let table = document.querySelector('table');
+            let cloneTable = table.cloneNode(true);
+            
+            let rows = cloneTable.rows;
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].cells.length > 0) {
+                    rows[i].deleteCell(-1);
+                }
+            }
+
+            let html = cloneTable.outerHTML;
+            let blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = `Rekapan_Asosiasi_UPK_NKRI_${currentTab}_${new Date().toISOString().split('T')[0]}.xls`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function handleLogin(e) {
@@ -530,10 +808,12 @@
             const passVal = document.getElementById('password').value.trim();
             const errorDiv = document.getElementById('login-error');
 
-            const foundUser = database.users.find(u => u.username === userVal && u.password === passVal);
+            const foundUser = database.users.find(u => (u.username === userVal || u.hp === userVal) && u.password === passVal);
 
             if (foundUser) {
                 loggedUser = foundUser;
+                sessionStorage.setItem('upk_nkri_user', JSON.stringify(loggedUser));
+
                 errorDiv.classList.add('hidden');
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('dashboard-view').classList.remove('hidden');
@@ -547,6 +827,7 @@
                     document.getElementById('tab-btn-users').classList.add('hidden');
                 }
 
+                logAudit('Login ke Sistem');
                 fetchFromCloud();
                 switchTab('aset');
             } else {
@@ -556,7 +837,11 @@
         }
 
         function handleLogout() {
+            logAudit('Logout dari Sistem');
+            pushToCloud();
             loggedUser = null;
+            sessionStorage.removeItem('upk_nkri_user');
+
             document.getElementById('password').value = '';
             document.getElementById('dashboard-view').classList.add('hidden');
             document.getElementById('login-view').classList.remove('hidden');
@@ -571,6 +856,16 @@
                     return list.filter(u => u.role === 'DPD' && u.provinsi && u.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase());
                 }
                 return [];
+            }
+
+            const startDate = document.getElementById('filter-date-start').value;
+            const endDate = document.getElementById('filter-date-end').value;
+
+            if (startDate && endDate) {
+                list = list.filter(item => {
+                    const tgl = item.tanggal || item.tanggalInput || '';
+                    return tgl >= startDate && tgl <= endDate;
+                });
             }
 
             if (loggedUser.role === 'DPW') {
@@ -597,6 +892,59 @@
             document.getElementById('stat-total-iuran').innerText = formatRupiah(totalIuran);
             document.getElementById('stat-saldo-kas').innerText = formatRupiah(saldoKas);
             document.getElementById('stat-total-upk').innerText = asetList.length + ' UPK';
+
+            const totalModal = asetList.reduce((acc, curr) => acc + (curr.modalAwal || 0), 0);
+            const totalAset = asetList.reduce((acc, curr) => acc + (curr.totalAset || 0), 0);
+
+            const countPBH = asetList.filter(x => (x.statusBadanHukum || '').toUpperCase() === 'PBH').length;
+            const countKoperasi = asetList.filter(x => (x.statusBadanHukum || '').toUpperCase() === 'KOPERASI').length;
+            const countPT = asetList.filter(x => (x.statusBadanHukum || '').toUpperCase() === 'PT').length;
+            const countBumdesma = asetList.filter(x => (x.statusBadanHukum || '').toLowerCase().includes('bumdesma')).length;
+            const countBelum = asetList.filter(x => !x.statusBadanHukum || (x.statusBadanHukum || '').toUpperCase() === 'BELUM').length;
+
+            document.getElementById('kom-modal-awal').innerText = formatRupiah(totalModal);
+            document.getElementById('kom-total-aset').innerText = formatRupiah(totalAset);
+
+            document.getElementById('kom-status-pbh').innerText = `PBH: ${countPBH}`;
+            document.getElementById('kom-status-koperasi').innerText = `Koperasi: ${countKoperasi}`;
+            document.getElementById('kom-status-pt').innerText = `PT: ${countPT}`;
+            document.getElementById('kom-status-bumdesma').innerText = `Proses Bumdesma: ${countBumdesma}`;
+            document.getElementById('kom-status-belum').innerText = `Belum: ${countBelum}`;
+
+            updateCharts(countPBH, countKoperasi, countPT, countBumdesma, countBelum, totalModal, totalAset);
+        }
+
+        function updateCharts(pbh, kop, pt, bumdes, belum, modal, aset) {
+            const ctx1 = document.getElementById('statusHukumChart').getContext('2d');
+            const ctx2 = document.getElementById('modalAsetChart').getContext('2d');
+
+            if (statusHukumChartInstance) statusHukumChartInstance.destroy();
+            if (modalAsetChartInstance) modalAsetChartInstance.destroy();
+
+            statusHukumChartInstance = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['PBH', 'Koperasi', 'PT', 'Bumdesma', 'Belum'],
+                    datasets: [{
+                        data: [pbh, kop, pt, bumdes, belum],
+                        backgroundColor: ['#0ea5e9', '#10b981', '#6366f1', '#f59e0b', '#f43f5e']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            modalAsetChartInstance = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Modal Awal', 'Total Aset'],
+                    datasets: [{
+                        label: 'Akumulasi Rupiah',
+                        data: [modal, aset],
+                        backgroundColor: ['#f59e0b', '#0ea5e9']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
         }
 
         function switchTab(tab) {
@@ -605,28 +953,48 @@
             }
 
             currentTab = tab;
-            const tabs = ['iuran', 'kas', 'aset', 'users'];
+            const tabs = ['iuran', 'kas', 'aset', 'docs', 'users', 'audit'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (btn) {
                     if(t === tab) {
                         btn.className = "tab-btn px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm flex items-center space-x-2 bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-md shadow-sky-600/30";
                     } else {
-                        btn.className = "tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 text-slate-600 hover:text-slate-900 hover:bg-slate-300/50";
+                        btn.className = "tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:bg-slate-300/50 dark:hover:bg-slate-800";
                     }
                 }
             });
+
+            const komulatifContainer = document.getElementById('komulatif-aset-container');
+            const addBtn = document.getElementById('add-data-main-btn');
+            const printReportBtn = document.getElementById('print-report-btn');
+
+            if (tab === 'aset') {
+                komulatifContainer.classList.remove('hidden');
+            } else {
+                komulatifContainer.classList.add('hidden');
+            }
+
+            if (tab === 'audit') {
+                addBtn.classList.add('hidden');
+                printReportBtn.classList.add('hidden');
+            } else {
+                addBtn.classList.remove('hidden');
+                printReportBtn.classList.remove('hidden');
+            }
 
             const titles = {
                 iuran: { title: "Manajemen Data Iuran", sub: "Kelola pencatatan data iuran anggota UPK" },
                 kas: { title: "Data Kas Keuangan", sub: "Kelola arus kas masuk dan keluar kelembagaan" },
                 aset: { title: "Database UPK", sub: "Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK" },
-                users: { title: "Kelola User Pengurus (DPW / DPD)", sub: "Tambah dan kelola akun pengguna Dewan Pengurus Wilayah & Daerah" }
+                docs: { title: "Dokumen & SK Legalitas", sub: "Arsip surat keputusan, SOP, dan sertifikat kelembagaan resmi" },
+                users: { title: "Kelola User Pengurus (DPW / DPD)", sub: "Tambah dan kelola akun pengguna Dewan Pengurus Wilayah & Daerah" },
+                audit: { title: "Log Aktivitas Sistem (Audit Trail)", sub: "Riwayat jejak aktivitas seluruh pengguna yang terhubung secara real-time" }
             };
             document.getElementById('section-title').innerText = titles[tab].title;
             document.getElementById('section-subtitle').innerText = titles[tab].sub;
 
-            document.getElementById('add-data-btn-text').innerText = tab === 'users' ? 'Tambah User Baru' : 'Tambah Data';
+            document.getElementById('add-data-btn-text').innerText = tab === 'users' ? 'Tambah User Baru' : (tab === 'docs' ? 'Unggah Dokumen' : 'Tambah Data');
             document.getElementById('search-input').value = '';
             renderTable();
         }
@@ -645,13 +1013,13 @@
                 
                 filtered.forEach(item => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100">
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
                             <td class="p-4 font-mono text-xs text-slate-400">#${item.id}</td>
-                            <td class="p-4 font-bold text-slate-900">${item.upk}</td>
-                            <td class="p-4 text-xs font-semibold text-slate-600">${item.provinsi || '-'} / ${item.kabupaten || '-'} / ${item.kecamatan || '-'}</td>
-                            <td class="p-4 text-slate-600">${item.tanggal}</td>
-                            <td class="p-4 font-extrabold text-emerald-600">${formatRupiah(item.nominal)}</td>
-                            <td class="p-4 text-slate-600">${item.keterangan}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">${item.upk}</td>
+                            <td class="p-4 text-xs font-semibold text-slate-600 dark:text-slate-400">${item.provinsi || '-'} / ${item.kabupaten || '-'} / ${item.kecamatan || '-'}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${item.tanggal}</td>
+                            <td class="p-4 font-extrabold text-emerald-600 dark:text-emerald-400">${formatRupiah(item.nominal)}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${item.keterangan}</td>
                             <td class="p-4 text-center">${getActionButtons(item.id, 'iuran')}</td>
                         </tr>`;
                 });
@@ -662,17 +1030,17 @@
                 filtered.forEach(item => {
                     const badgeClass = item.jenis === 'Masuk' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100">
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
                             <td class="p-4 font-mono text-xs text-slate-400">#${item.id}</td>
-                            <td class="p-4 text-slate-600">${item.tanggal}</td>
-                            <td class="p-4 font-bold text-slate-900">${item.keterangan}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${item.tanggal}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white">${item.keterangan}</td>
                             <td class="p-4"><span class="px-3 py-1 text-[11px] font-bold rounded-full border ${badgeClass}">${item.jenis}</span></td>
-                            <td class="p-4 font-extrabold text-slate-800">${formatRupiah(item.nominal)}</td>
+                            <td class="p-4 font-extrabold text-slate-800 dark:text-slate-200">${formatRupiah(item.nominal)}</td>
                             <td class="p-4 text-center">${getActionButtons(item.id, 'kas')}</td>
                         </tr>`;
                 });
             } else if (currentTab === 'aset') {
-                headRow.innerHTML = `<th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4">Kecamatan</th><th class="p-4">Nama UPK</th><th class="p-4">Modal Awal</th><th class="p-4">Total Aset</th><th class="p-4">Status Hukum</th><th class="p-4 text-center">Aksi</th>`;
+                headRow.innerHTML = `<th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4">Kecamatan</th><th class="p-4">Nama UPK</th><th class="p-4">Modal Awal</th><th class="p-4">Total Aset</th><th class="p-4">Pertumbuhan</th><th class="p-4">Status Hukum</th><th class="p-4 text-center">Aksi</th>`;
                 
                 const filtered = getFilteredData('aset').filter(item => 
                     item.provinsi.toLowerCase().includes(searchQuery) ||
@@ -681,31 +1049,68 @@
                 );
 
                 filtered.forEach(item => {
+                    const growth = item.modalAwal > 0 ? (((item.totalAset - item.modalAwal) / item.modalAwal) * 100).toFixed(1) : 0;
+                    const growthBadge = growth >= 0 ? `<span class="text-emerald-600 dark:text-emerald-400 font-bold">+${growth}%</span>` : `<span class="text-rose-600 font-bold">${growth}%</span>`;
+
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100">
-                            <td class="p-4 font-extrabold text-xs text-indigo-900">${item.provinsi}</td>
-                            <td class="p-4 font-bold text-xs text-slate-700">${item.kabupaten}</td>
-                            <td class="p-4 text-xs text-slate-600">${item.kecamatan || '-'}</td>
-                            <td class="p-4 font-extrabold text-slate-900">${item.namaUPK}</td>
-                            <td class="p-4 font-mono text-xs text-slate-600">${formatRupiah(item.modalAwal)}</td>
-                            <td class="p-4 font-mono text-xs font-black text-sky-700">${formatRupiah(item.totalAset)}</td>
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+                            <td class="p-4 font-extrabold text-xs text-indigo-900 dark:text-indigo-400">${item.provinsi}</td>
+                            <td class="p-4 font-bold text-xs text-slate-700 dark:text-slate-300">${item.kabupaten}</td>
+                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">${item.kecamatan || '-'}</td>
+                            <td class="p-4 font-extrabold text-slate-900 dark:text-white">${item.namaUPK}</td>
+                            <td class="p-4 font-mono text-xs text-slate-600 dark:text-slate-400">${formatRupiah(item.modalAwal)}</td>
+                            <td class="p-4 font-mono text-xs font-black text-sky-700 dark:text-sky-400">${formatRupiah(item.totalAset)}</td>
+                            <td class="p-4 font-mono text-xs">${growthBadge}</td>
                             <td class="p-4"><span class="px-3 py-1 text-[11px] font-bold rounded-full border bg-sky-50 text-sky-700 border-sky-200">${item.statusBadanHukum || 'Belum'}</span></td>
                             <td class="p-4 text-center">${getActionButtons(item.id, 'aset')}</td>
                         </tr>`;
                 });
+            } else if (currentTab === 'docs') {
+                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Judul Dokumen</th><th class="p-4">Kategori</th><th class="p-4">Tanggal Unggah</th><th class="p-4">Pengunggah</th><th class="p-4 text-center">Berkas File</th><th class="p-4 text-center">Aksi</th>`;
+                const filtered = (database.documents || []).filter(d => d.judul.toLowerCase().includes(searchQuery) || d.kategori.toLowerCase().includes(searchQuery));
+
+                filtered.forEach(d => {
+                    const fileLink = d.fileData ? `<a href="${d.fileData}" target="_blank" download="${d.judul}" class="px-3 py-1.5 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 border border-sky-200 rounded-lg text-xs font-bold inline-flex items-center hover:bg-sky-100 transition"><i class="fa-solid fa-download mr-1.5"></i> Unduh Berkas</a>` : `<span class="text-slate-400 italic text-xs">Tidak ada file</span>`;
+
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${d.id}</td>
+                            <td class="p-4 font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-file-pdf text-rose-500 mr-2"></i>${d.judul}</td>
+                            <td class="p-4"><span class="px-2.5 py-1 text-[10px] font-bold bg-sky-100 text-sky-800 rounded-lg">${d.kategori}</span></td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${d.tanggal}</td>
+                            <td class="p-4 text-slate-600 dark:text-slate-400">${d.pembuat}</td>
+                            <td class="p-4 text-center">${fileLink}</td>
+                            <td class="p-4 text-center">${getActionButtons(d.id, 'docs')}</td>
+                        </tr>`;
+                });
             } else if (currentTab === 'users') {
-                headRow.innerHTML = `<th class="p-4">Username / HP</th><th class="p-4">Nama Akun</th><th class="p-4">Role</th><th class="p-4">Wilayah Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4 text-center">Aksi</th>`;
-                const filtered = getFilteredData('users').filter(u => u.nama.toLowerCase().includes(searchQuery) || u.username.includes(searchQuery));
+                headRow.innerHTML = `<th class="p-4">Username</th><th class="p-4">No HP</th><th class="p-4">Password</th><th class="p-4">Nama Akun</th><th class="p-4">Role</th><th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4 text-center">Aksi</th>`;
+                const filtered = getFilteredData('users').filter(u => u.nama.toLowerCase().includes(searchQuery) || u.username.includes(searchQuery) || (u.hp && u.hp.includes(searchQuery)));
 
                 filtered.forEach(u => {
                     bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-50/80 transition border-b border-slate-100">
-                            <td class="p-4 font-mono font-bold text-slate-900">${u.username}</td>
-                            <td class="p-4 font-bold text-slate-800">${u.nama}</td>
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+                            <td class="p-4 font-mono font-bold text-slate-900 dark:text-white">${u.username}</td>
+                            <td class="p-4 font-mono text-xs text-emerald-700 dark:text-emerald-400 font-bold">${u.hp || '-'}</td>
+                            <td class="p-4 font-mono text-xs text-rose-600 dark:text-rose-400 font-bold">${u.password}</td>
+                            <td class="p-4 font-bold text-slate-800 dark:text-slate-200">${u.nama}</td>
                             <td class="p-4"><span class="px-3 py-1 text-[10px] font-extrabold rounded-full ${u.role === 'PUSAT' ? 'bg-amber-100 text-amber-800' : u.role === 'DPW' ? 'bg-sky-100 text-sky-800' : 'bg-emerald-100 text-emerald-800'}">${u.role}</span></td>
                             <td class="p-4 text-xs">${u.provinsi || '-'}</td>
                             <td class="p-4 text-xs">${u.kabupaten || '-'}</td>
                             <td class="p-4 text-center">${getActionButtons(u.id, 'users', u)}</td>
+                        </tr>`;
+                });
+            } else if (currentTab === 'audit') {
+                headRow.innerHTML = `<th class="p-4">ID Log</th><th class="p-4">Waktu Aktivitas</th><th class="p-4">Pengguna</th><th class="p-4">Aksi / Keterangan</th>`;
+                const filtered = (database.auditLogs || []).filter(a => a.aksi.toLowerCase().includes(searchQuery) || a.user.toLowerCase().includes(searchQuery));
+
+                filtered.forEach(a => {
+                    bodyRows.innerHTML += `
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+                            <td class="p-4 font-mono text-xs text-slate-400">#${a.id}</td>
+                            <td class="p-4 text-xs font-mono text-slate-500 dark:text-slate-400">${a.waktu}</td>
+                            <td class="p-4 font-bold text-slate-800 dark:text-slate-200">${a.user}</td>
+                            <td class="p-4 font-medium text-slate-700 dark:text-slate-300">${a.aksi}</td>
                         </tr>`;
                 });
             }
@@ -713,7 +1118,10 @@
 
         function getActionButtons(id, tab, targetUser = null) {
             if (tab === 'users' && targetUser) {
-                if (targetUser.role === 'PUSAT' || (loggedUser.role === 'DPW' && targetUser.role === 'DPW')) {
+                if (targetUser.role === 'PUSAT') {
+                    return `<span class="text-[11px] font-semibold text-sky-600 dark:text-sky-400 cursor-pointer hover:underline" onclick="editEntry(${id})"><i class="fa-solid fa-shield-halved mr-1"></i> Edit (Verifikasi)</span>`;
+                }
+                if (loggedUser.role === 'DPW' && targetUser.role === 'DPW') {
                     return `<span class="text-[11px] font-semibold text-slate-400 italic"><i class="fa-solid fa-lock text-xs mr-1"></i> Terkunci</span>`;
                 }
             }
@@ -723,7 +1131,7 @@
                     <button onclick="editEntry(${id})" title="Edit Data" class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition border border-amber-200/60 hover:bg-amber-100">
                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                     </button>
-                    ${tab !== 'users' ? `
+                    ${tab !== 'users' && tab !== 'docs' ? `
                     <button onclick="openPrintModal(${id})" title="Cetak Bukti" class="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center transition border border-sky-200/60 hover:bg-sky-100">
                         <i class="fa-solid fa-print text-xs"></i>
                     </button>` : ''}
@@ -746,14 +1154,20 @@
 
             if (currentTab === 'users') {
                 const defaultProvUser = loggedUser.role === 'DPW' ? loggedUser.provinsi : (item.provinsi || '');
+                const currentRole = item.role || (loggedUser.role === 'DPW' ? 'DPD' : 'DPW');
+
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Username / Nomor HP</label>
-                        <input type="text" id="field-username" value="${item.username || ''}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Username</label>
+                        <input type="text" id="field-username" value="${item.username || ''}" required placeholder="Contoh: upk_nkri" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Nomor HP</label>
+                        <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Password</label>
-                        <input type="password" id="field-password" value="${item.password || ''}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                        <input type="text" id="field-password" value="${item.password || ''}" required placeholder="Masukkan Password Akun" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Nama Pengguna / Pengurus</label>
@@ -761,19 +1175,44 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Role Pengurus</label>
-                        <select id="field-role" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
-                            ${loggedUser.role === 'PUSAT' ? '<option value="DPW" ' + (item.role === 'DPW' ? 'selected' : '') + '>DPW (Dewan Pengurus Wilayah / Provinsi)</option>' : ''}
-                            <option value="DPD" ${item.role === 'DPD' || loggedUser.role === 'DPW' ? 'selected' : ''}>DPD (Dewan Pengurus Daerah / Kabupaten)</option>
-                            ${loggedUser.role === 'PUSAT' ? '<option value="PUSAT" ' + (item.role === 'PUSAT' ? 'selected' : '') + '>Admin Pusat</option>' : ''}
+                        <select id="field-role" onchange="toggleKabupatenField()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                            ${loggedUser.role === 'PUSAT' ? '<option value="DPW" ' + (currentRole === 'DPW' ? 'selected' : '') + '>DPW (Dewan Pengurus Wilayah / Provinsi)</option>' : ''}
+                            <option value="DPD" ${currentRole === 'DPD' || loggedUser.role === 'DPW' ? 'selected' : ''}>DPD (Dewan Pengurus Daerah / Kabupaten)</option>
+                            ${loggedUser.role === 'PUSAT' ? '<option value="PUSAT" ' + (currentRole === 'PUSAT' ? 'selected' : '') + '>Admin Pusat</option>' : ''}
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Provinsi</label>
                         <input type="text" id="field-provinsi" list="provinsi-list" value="${defaultProvUser}" ${loggedUser.role === 'DPW' ? 'readonly' : ''} required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium uppercase outline-none">
                     </div>
-                    <div>
+                    <div id="kabupaten-field-wrapper">
                         <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Kabupaten</label>
-                        <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" required placeholder="Contoh: BONE" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium uppercase outline-none">
+                        <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" placeholder="Contoh: BONE" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium uppercase outline-none">
+                    </div>`;
+
+                setTimeout(() => toggleKabupatenField(), 50);
+
+            } else if (currentTab === 'docs') {
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Judul Dokumen / SK</label>
+                        <input type="text" id="field-judul" value="${item.judul || ''}" required placeholder="Contoh: SK Pengurus DPD" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Kategori</label>
+                        <select id="field-kategori" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
+                            <option value="Legalitas" ${item.kategori === 'Legalitas' ? 'selected' : ''}>Legalitas</option>
+                            <option value="SOP" ${item.kategori === 'SOP' ? 'selected' : ''}>SOP</option>
+                            <option value="Surat Edaran" ${item.kategori === 'Surat Edaran' ? 'selected' : ''}>Surat Edaran</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Unggah Berkas File (PDF/Foto)</label>
+                        <input type="file" id="field-file" accept=".pdf,image/*" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Tanggal</label>
+                        <input type="date" id="field-tgl-doc" value="${item.tanggal || new Date().toISOString().split('T')[0]}" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none">
                     </div>`;
             } else if (currentTab === 'aset') {
                 const defaultProv = loggedUser.role !== 'PUSAT' ? loggedUser.provinsi : (item.provinsi || '');
@@ -880,6 +1319,22 @@
             document.getElementById('form-modal').classList.add('flex');
         }
 
+        function toggleKabupatenField() {
+            const roleSelect = document.getElementById('field-role');
+            const kabWrapper = document.getElementById('kabupaten-field-wrapper');
+            const kabInput = document.getElementById('field-kabupaten');
+            if (!roleSelect || !kabWrapper) return;
+
+            if (roleSelect.value === 'DPW') {
+                kabWrapper.style.display = 'none';
+                kabInput.value = '';
+                kabInput.removeAttribute('required');
+            } else {
+                kabWrapper.style.display = 'block';
+                kabInput.setAttribute('required', 'true');
+            }
+        }
+
         function closeFormModal() {
             document.getElementById('form-modal').classList.add('hidden');
             document.getElementById('form-modal').classList.remove('flex');
@@ -890,16 +1345,68 @@
             const id = document.getElementById('entry-id').value;
 
             if (currentTab === 'users') {
+                const targetUser = id ? database.users.find(u => u.id == id) : null;
+                const isEditingAdminPusat = targetUser && targetUser.role === 'PUSAT';
+
+                if (isEditingAdminPusat) {
+                    pendingUserObject = {
+                        id: parseInt(id),
+                        username: document.getElementById('field-username').value.trim(),
+                        hp: document.getElementById('field-hp').value.trim(),
+                        password: document.getElementById('field-password').value.trim(),
+                        nama: document.getElementById('field-nama').value.trim(),
+                        role: 'PUSAT',
+                        provinsi: '',
+                        kabupaten: ''
+                    };
+                    closeFormModal();
+                    document.getElementById('verify-modal').classList.remove('hidden');
+                    document.getElementById('verify-modal').classList.add('flex');
+                    return;
+                }
+
+                const roleVal = document.getElementById('field-role').value;
                 const userObj = {
                     id: id ? parseInt(id) : Date.now(),
                     username: document.getElementById('field-username').value.trim(),
+                    hp: document.getElementById('field-hp').value.trim(),
                     password: document.getElementById('field-password').value.trim(),
                     nama: document.getElementById('field-nama').value.trim(),
-                    role: document.getElementById('field-role').value,
+                    role: roleVal,
                     provinsi: document.getElementById('field-provinsi').value.toUpperCase().trim(),
-                    kabupaten: document.getElementById('field-kabupaten').value.toUpperCase().trim()
+                    kabupaten: roleVal === 'DPW' ? '' : document.getElementById('field-kabupaten').value.toUpperCase().trim()
                 };
                 saveToDatabase(userObj, id);
+                logAudit(`Menambah/Mengubah User: ${userObj.username}`);
+            } else if (currentTab === 'docs') {
+                const fileInput = document.getElementById('field-file');
+                let fileData = '';
+
+                const processAndSaveDoc = (base64String = '') => {
+                    const docObj = {
+                        id: id ? parseInt(id) : Date.now(),
+                        judul: document.getElementById('field-judul').value,
+                        kategori: document.getElementById('field-kategori').value,
+                        tanggal: document.getElementById('field-tgl-doc').value,
+                        pembuat: loggedUser.nama,
+                        fileData: base64String || (id ? (database.documents.find(d => d.id == id)?.fileData || '') : '')
+                    };
+                    saveToDatabase(docObj, id);
+                    logAudit(`Mengunggah/Mengubah Dokumen: ${docObj.judul}`);
+                    finishFormSubmit();
+                };
+
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (uploadEvent) {
+                        processAndSaveDoc(uploadEvent.target.result);
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                    return; // Menunggu file terbaca
+                } else {
+                    processAndSaveDoc();
+                    return;
+                }
             } else if (currentTab === 'aset') {
                 const dataObj = {
                     id: id ? parseInt(id) : Date.now(),
@@ -913,6 +1420,7 @@
                     tanggalInput: new Date().toISOString().split('T')[0]
                 };
                 saveToDatabase(dataObj, id);
+                logAudit(`Menambah/Mengubah UPK: ${dataObj.namaUPK}`);
             } else if (currentTab === 'iuran') {
                 const dataObj = {
                     id: id ? parseInt(id) : Date.now(),
@@ -925,6 +1433,7 @@
                     keterangan: document.getElementById('field-keterangan').value
                 };
                 saveToDatabase(dataObj, id);
+                logAudit(`Menambah/Mengubah Iuran: ${dataObj.upk}`);
             } else if (currentTab === 'kas') {
                 const dataObj = {
                     id: id ? parseInt(id) : Date.now(),
@@ -936,12 +1445,42 @@
                     kabupaten: loggedUser.kabupaten || ''
                 };
                 saveToDatabase(dataObj, id);
+                logAudit(`Menambah/Mengubah Kas: ${dataObj.keterangan}`);
             }
 
+            finishFormSubmit();
+        }
+
+        async function finishFormSubmit() {
             closeFormModal();
             updateDashboardStats();
             renderTable();
             await pushToCloud();
+        }
+
+        async function confirmVerifyCode() {
+            const code = document.getElementById('verify-code-input').value.trim();
+            if (code === '2026') {
+                if (pendingUserObject) {
+                    saveToDatabase(pendingUserObject, pendingUserObject.id);
+                    logAudit(`Verifikasi Email Berhasil: Mengubah Akun Admin Pusat`);
+                    pendingUserObject = null;
+                }
+                closeVerifyModal();
+                document.getElementById('verify-code-input').value = '';
+                alert('Verifikasi Berhasil! Akun Admin Pusat telah diperbarui.');
+                updateDashboardStats();
+                renderTable();
+                await pushToCloud();
+            } else {
+                alert('Kode verifikasi salah! Gunakan kode demo: 2026');
+            }
+        }
+
+        function closeVerifyModal() {
+            document.getElementById('verify-modal').classList.add('hidden');
+            document.getElementById('verify-modal').classList.remove('flex');
+            pendingUserObject = null;
         }
 
         function saveToDatabase(dataObj, id) {
@@ -955,11 +1494,11 @@
 
         function editEntry(id) {
             const targetUser = database.users.find(u => u.id === id);
-            if (currentTab === 'users' && targetUser) {
-                if (targetUser.role === 'PUSAT' || (loggedUser.role === 'DPW' && targetUser.role === 'DPW')) {
-                    alert('Anda tidak memiliki akses untuk mengubah akun ini!');
-                    return;
-                }
+            if (currentTab === 'users' && targetUser && targetUser.role === 'PUSAT') {
+                pendingUserObject = targetUser;
+                document.getElementById('verify-modal').classList.remove('hidden');
+                document.getElementById('verify-modal').classList.add('flex');
+                return;
             }
             openFormModal(id);
         }
@@ -967,7 +1506,11 @@
         async function deleteEntry(id) {
             const targetUser = database.users.find(u => u.id === id);
             if (currentTab === 'users' && targetUser) {
-                if (targetUser.role === 'PUSAT' || (loggedUser.role === 'DPW' && targetUser.role === 'DPW')) {
+                if (targetUser.role === 'PUSAT') {
+                    alert('Akun Admin Pusat tidak dapat dihapus!');
+                    return;
+                }
+                if (loggedUser.role === 'DPW' && targetUser.role === 'DPW') {
                     alert('Anda tidak memiliki akses untuk menghapus akun ini!');
                     return;
                 }
@@ -975,6 +1518,7 @@
 
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 database[currentTab] = database[currentTab].filter(x => x.id !== id);
+                logAudit(`Menghapus data ID: #${id} pada tab ${currentTab}`);
                 updateDashboardStats();
                 renderTable();
                 await pushToCloud();
@@ -999,7 +1543,7 @@
                 typeBadge.innerText = 'DATABASE UPK - BUKTI DATA';
                 html += `
                     <div class="flex justify-between"><span>Provinsi:</span><span class="font-bold">${item.provinsi}</span></div>
-                    <div class="flex justify-between"><span>Kabupaten:</span><span>${item.kabupaten}</span></div>
+                    <div class="flex justify-between"><span>Kabupaten:</span><span class="font-bold">${item.kabupaten}</span></div>
                     <div class="flex justify-between"><span>Nama UPK:</span><span class="font-bold text-slate-900">${item.namaUPK}</span></div>
                     <div class="flex justify-between"><span>Total Aset:</span><span class="font-bold text-sky-700">${formatRupiah(item.totalAset)}</span></div>`;
             }
@@ -1119,7 +1663,9 @@
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr class="border-b border-slate-300 bg-slate-100 font-bold uppercase">
-                                <th class="p-2">Username / HP</th>
+                                <th class="p-2">Username</th>
+                                <th class="p-2">No HP</th>
+                                <th class="p-2">Password</th>
                                 <th class="p-2">Nama Akun</th>
                                 <th class="p-2">Role</th>
                                 <th class="p-2">Provinsi</th>
@@ -1130,6 +1676,8 @@
                             ${filteredData.map(u => `
                                 <tr class="border-b border-slate-100">
                                     <td class="p-2 font-mono font-bold">${u.username}</td>
+                                    <td class="p-2 font-mono">${u.hp || '-'}</td>
+                                    <td class="p-2 font-mono">${u.password}</td>
                                     <td class="p-2 font-bold">${u.nama}</td>
                                     <td class="p-2">${u.role}</td>
                                     <td class="p-2">${u.provinsi || '-'}</td>
