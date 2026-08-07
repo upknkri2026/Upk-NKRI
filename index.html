@@ -610,7 +610,7 @@
         let statusHukumChartInstance = null;
         let modalAsetChartInstance = null;
 
-        let database = {
+        let defaultDatabase = {
             settings: {
                 marqueeText: "🌟 BERSAMA MEMBANGUN NEGERI: Menguatkan Kelembagaan, Mengembangkan Aset Keuangan untuk Kesejahteraan Masyarakat SELURUH INDONESIA.",
                 announcementText: "Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing."
@@ -674,6 +674,15 @@
                 { id: 34, provinsi: 'SULAWESI TENGGARA', kabupaten: 'BOMBANA', kecamatan: 'KABAENA BARAT', namaUPK: 'DAPM PONDOK INDAH', modalAwal: 1541000000, totalAset: 2681401379.00, statusBadanHukum: 'PT', tanggalInput: '07/08/2026' }
             ]
         };
+
+        // Muat database dari LocalStorage jika ada, agar data dokumen/SK tidak hilang saat refresh
+        let savedDatabase = localStorage.getItem('upk_nkri_database');
+        let database = savedDatabase ? JSON.parse(savedDatabase) : defaultDatabase;
+
+        function saveLocalAndSync() {
+            localStorage.setItem('upk_nkri_database', JSON.stringify(database));
+            pushToCloud();
+        }
 
         function getDbKey(tab) {
             if (tab === 'docs') return 'documents';
@@ -752,16 +761,17 @@
                             iuran: Array.isArray(parsedData.iuran) ? parsedData.iuran : database.iuran,
                             kas: Array.isArray(parsedData.kas) ? parsedData.kas : database.kas,
                             aset: Array.isArray(parsedData.aset) ? parsedData.aset : database.aset,
-                            documents: Array.isArray(parsedData.documents) ? parsedData.documents : database.documents,
-                            auditLogs: Array.isArray(parsedData.auditLogs) ? parsedData.auditLogs : database.auditLogs
+                            documents: Array.isArray(parsedData.documents) && parsedData.documents.length > 0 ? parsedData.documents : database.documents,
+                            auditLogs: Array.isArray(parsedData.auditLogs) && parsedData.auditLogs.length > 0 ? parsedData.auditLogs : database.auditLogs
                         };
+                        localStorage.setItem('upk_nkri_database', JSON.stringify(database));
                     }
                     statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
                     statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Sheets Synced`;
                 }
             } catch (err) {
                 statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Offline`;
+                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1 text-[9px]"></i> Sync Offline (Local Active)`;
             }
 
             applyDynamicSettings();
@@ -807,7 +817,7 @@
                 logAudit('Memperbarui Pengaturan Website (Motto & Pengumuman)');
                 applyDynamicSettings();
                 alert('Pengaturan Website berhasil diperbarui!');
-                await pushToCloud();
+                saveLocalAndSync();
             } else {
                 alert('Semua kolom pengaturan wajib diisi!');
             }
@@ -822,6 +832,7 @@
                 aksi: aksi
             });
             if (database.auditLogs.length > 50) database.auditLogs.pop();
+            localStorage.setItem('upk_nkri_database', JSON.stringify(database));
         }
 
         function formatRupiah(val) {
@@ -927,7 +938,7 @@
 
         function handleLogout() {
             logAudit('Logout dari Sistem');
-            pushToCloud();
+            saveLocalAndSync();
             loggedUser = null;
             sessionStorage.removeItem('upk_nkri_user');
 
@@ -1577,7 +1588,7 @@
             closeFormModal();
             updateDashboardStats();
             renderTable();
-            await pushToCloud();
+            saveLocalAndSync();
         }
 
         async function confirmVerifyCode() {
@@ -1593,7 +1604,7 @@
                 alert('Verifikasi Berhasil! Akun Admin Pusat telah diperbarui.');
                 updateDashboardStats();
                 renderTable();
-                await pushToCloud();
+                saveLocalAndSync();
             } else {
                 alert('Kode verifikasi salah! Gunakan kode demo: 2026');
             }
@@ -1615,6 +1626,7 @@
             } else {
                 database[dbKey].push(dataObj);
             }
+            localStorage.setItem('upk_nkri_database', JSON.stringify(database));
         }
 
         function editEntry(id) {
@@ -1640,7 +1652,7 @@
                 logAudit(`Menghapus data ID: #${id} pada tab ${currentTab}`);
                 updateDashboardStats();
                 renderTable();
-                await pushToCloud();
+                saveLocalAndSync();
             }
         }
 
