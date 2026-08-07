@@ -362,7 +362,6 @@
                         <i class="fa-solid fa-users-gear"></i>
                         <span>Kelola User</span>
                     </button>
-                    <!-- Tombol Pengaturan Website (Hanya untuk PUSAT) -->
                     <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
                         <i class="fa-solid fa-gear"></i>
                         <span>Pengaturan Website</span>
@@ -967,7 +966,13 @@
         function getFilteredData(tabName) {
             let dbKey = getDbKey(tabName);
             let list = database[dbKey] || [];
-            if (!loggedUser || loggedUser.role === 'PUSAT') return list;
+            if (!loggedUser || loggedUser.role === 'PUSAT') {
+                // Urutkan Kas berdasarkan tanggal terbaru (descending)
+                if (tabName === 'kas') {
+                    return [...list].sort((a, b) => formatDateToISO(b.tanggal).localeCompare(formatDateToISO(a.tanggal)));
+                }
+                return list;
+            }
 
             if (tabName === 'users') {
                 if (loggedUser.role === 'DPW') {
@@ -991,14 +996,18 @@
             }
 
             if (loggedUser.role === 'DPW') {
-                return list.filter(item => item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase());
+                list = list.filter(item => item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase());
             } else if (loggedUser.role === 'DPD') {
-                return list.filter(item => 
+                list = list.filter(item => 
                     item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase() &&
                     item.kabupaten && item.kabupaten.toUpperCase() === loggedUser.kabupaten.toUpperCase()
                 );
             }
-            return [];
+
+            if (tabName === 'kas') {
+                return [...list].sort((a, b) => formatDateToISO(b.tanggal).localeCompare(formatDateToISO(a.tanggal)));
+            }
+            return list;
         }
 
         function updateDashboardStats() {
@@ -1593,7 +1602,27 @@
                     keterangan: document.getElementById('field-keterangan').value
                 };
                 saveToDatabase(dataObj, id);
-                logAudit(`Menambah/Mengubah Iuran: ${dataObj.upk}`);
+
+                // OTOMATIS MASUK KAS KEUANGAN SEBAGAI PEMASUKAN
+                if (!database.kas) database.kas = [];
+                const kasObj = {
+                    id: dataObj.id + 1, // Unique ID turunan dari iuran
+                    tanggal: dataObj.tanggal,
+                    keterangan: `Penerimaan Iuran dari ${dataObj.upk} (${dataObj.keterangan})`,
+                    jenis: 'Masuk',
+                    nominal: dataObj.nominal,
+                    provinsi: dataObj.provinsi,
+                    kabupaten: dataObj.kabupaten
+                };
+                // Jika sedang edit, ganti yang lama atau tambahkan baru
+                const existingKasIndex = database.kas.findIndex(k => k.id === dataObj.id + 1);
+                if (existingKasIndex !== -1) {
+                    database.kas[existingKasIndex] = kasObj;
+                } else {
+                    database.kas.push(kasObj);
+                }
+
+                logAudit(`Menambah/Mengubah Iuran & Otomatis Masuk Kas: ${dataObj.upk}`);
                 await finishFormSubmit();
             } else if (currentTab === 'kas') {
                 const tglRaw = document.getElementById('field-tanggal').value;
