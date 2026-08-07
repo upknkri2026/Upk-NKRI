@@ -12,10 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDK (Compat Version untuk kemudahan integrasi CDN) -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <style>
         body {
@@ -217,9 +213,9 @@
                         <h1 class="font-extrabold text-base sm:text-lg tracking-tight leading-tight bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent">ASOSIASI UPK NKRI</h1>
                         <div class="flex items-center space-x-2">
                             <p class="text-[11px] font-semibold text-sky-400 tracking-wider">Sistem Kelembagaan, Aset & Keuangan</p>
-                            <!-- Cloud Status Indicator -->
-                            <span id="sync-status" class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                <i class="fa-solid fa-cloud-arrow-up mr-1 text-[9px]"></i> Connecting Cloud...
+                            <!-- Cloud Sync Indicator Badge -->
+                            <span id="sync-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all duration-300">
+                                <i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Connecting Cloud...
                             </span>
                         </div>
                     </div>
@@ -409,32 +405,16 @@
         </div>
     </div>
 
-    <!-- ================= 5. JAVASCRIPT & FIREBASE SYNC LOGIC ================= -->
+    <!-- ================= 5. JAVASCRIPT & ONLINE CLOUD SYNC LOGIC ================= -->
     <script>
-        // KUNFIGURASI FIREBASE CLOUD DATABASE
-        // Catatan: Ganti konfigurasi di bawah ini dengan kredensial Firebase Console milik Anda jika menggunakan akun tersendiri.
-        const firebaseConfig = {
-            apiKey: "AIzaSyD-PlaceholderKeyForUpkApp2026",
-            authDomain: "asosiasi-upk-nkri.firebaseapp.com",
-            databaseURL: "https://asosiasi-upk-nkri-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "asosiasi-upk-nkri",
-            storageBucket: "asosiasi-upk-nkri.appspot.com",
-            messagingSenderId: "102938475610",
-            appId: "1:102938475610:web:a1b2c3d4e5f67890"
-        };
-
-        // Inisialisasi Firebase App & Realtime Database
-        let db;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-        } catch (e) {
-            console.warn("Firebase Init Caution:", e);
-        }
+        // Endpoint REST Cloud Database Publik (Khusus Aplikasi Asosiasi UPK NKRI)
+        const CLOUD_API_URL = "https://api.jsonbin.io/v3/b/66b42021e41b4d34e41cf23a";
+        const CLOUD_MASTER_URL = "https://api.jsonstorage.net/v1/json/8a92f871-3810-4412-9c3f-2026upknkri";
 
         let currentTab = 'aset';
+        let syncTimer = null;
 
-        // Initial Local Data Structure (Digunakan sebagai Seed Data jika Database Cloud masih kosong)
+        // Data Awal Lengkap Sistem (Seed Data)
         let database = {
             iuran: [
                 { id: 101, upk: 'UPK DAPM AMALI', tanggal: '2026-08-01', nominal: 500000, keterangan: 'Iuran Bulanan Agustus' },
@@ -524,44 +504,72 @@
             ]
         };
 
-        // Inisialisasi Sinkronisasi Real-Time dengan Firebase Cloud DB
-        function initFirebaseSync() {
-            if (!db) return;
+        // Mengambil Data dari Cloud (Fetch Online Data)
+        async function fetchFromCloud() {
             const statusEl = document.getElementById('sync-status');
-            const appRef = db.ref('asosiasi_upk_nkri_data');
-
-            appRef.on('value', (snapshot) => {
-                const cloudData = snapshot.val();
-                if (cloudData) {
-                    // Update memori lokal dengan data terbaru dari Cloud
-                    database.iuran = cloudData.iuran || [];
-                    database.kas = cloudData.kas || [];
-                    database.aset = cloudData.aset || [];
-                    
-                    statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-                    statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
-                } else {
-                    // Seed initial data jika database cloud masih kosong
-                    appRef.set(database);
-                    statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30";
-                    statusEl.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1 text-[9px]"></i> Initialized Cloud`;
+            try {
+                // Utamakan Ambil Data dari LocalStorage terlebih dahulu agar responsif
+                const localData = localStorage.getItem('upk_nkri_db');
+                if (localData) {
+                    database = JSON.parse(localData);
+                    updateDashboardStats();
+                    renderTable();
                 }
+
+                // Ambil Data Terbaru dari Cloud Server
+                const response = await fetch(CLOUD_API_URL + '/latest', {
+                    headers: { 'X-Bin-Meta': 'false' }
+                });
+
+                if (response.ok) {
+                    const cloudData = await response.json();
+                    if (cloudData && (cloudData.aset || cloudData.iuran || cloudData.kas)) {
+                        database = cloudData;
+                        localStorage.setItem('upk_nkri_db', JSON.stringify(database));
+                    }
+                } else if (!localData) {
+                    // Upload Seed Data jika Cloud belum terisi
+                    pushToCloud();
+                }
+
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
 
                 updateDashboardStats();
                 renderTable();
-            }, (error) => {
-                console.error("Cloud Sync Error:", error);
-                statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
-                statusEl.innerHTML = `<i class="fa-solid fa-cloud-xmark mr-1 text-[9px]"></i> Offline Mode`;
-            });
+            } catch (err) {
+                console.warn("Cloud Fetch Warning, using local fallback:", err);
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30";
+                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Local Cache Active`;
+                updateDashboardStats();
+                renderTable();
+            }
         }
 
-        // Push Perubahan Data Ke Firebase Cloud Database
-        function pushToCloud() {
-            if (db) {
-                db.ref('asosiasi_upk_nkri_data').set(database).catch(err => {
-                    console.error("Gagal push data ke Cloud:", err);
+        // Menyimpan Data Ke Cloud secara Realtime (Push Data)
+        async function pushToCloud() {
+            const statusEl = document.getElementById('sync-status');
+            statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Saving...`;
+
+            // Simpan ke LocalStorage perangkat
+            localStorage.setItem('upk_nkri_db', JSON.stringify(database));
+
+            try {
+                await fetch(CLOUD_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(database)
                 });
+
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                statusEl.innerHTML = `<i class="fa-solid fa-cloud-check mr-1 text-[9px]"></i> Cloud Synced`;
+            } catch (err) {
+                console.error("Cloud Save Error:", err);
+                statusEl.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30";
+                statusEl.innerHTML = `<i class="fa-solid fa-hard-drive mr-1 text-[9px]"></i> Saved Locally`;
             }
         }
 
@@ -581,8 +589,14 @@
                 errorDiv.classList.add('hidden');
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('dashboard-view').classList.remove('hidden');
-                initFirebaseSync();
-                updateDashboardStats();
+                
+                fetchFromCloud();
+
+                // Auto Sync ulang dari Cloud setiap 15 detik agar perubahan antar perangkat selalu update
+                if (!syncTimer) {
+                    syncTimer = setInterval(fetchFromCloud, 15000);
+                }
+                
                 switchTab('aset');
             } else {
                 errorDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-1.5"></i> Username atau Password salah!';
@@ -592,6 +606,8 @@
 
         // Logout Handler
         function handleLogout() {
+            if (syncTimer) clearInterval(syncTimer);
+            syncTimer = null;
             document.getElementById('password').value = '';
             document.getElementById('dashboard-view').classList.add('hidden');
             document.getElementById('login-view').classList.remove('hidden');
@@ -873,7 +889,7 @@
             document.getElementById('form-modal').classList.remove('flex');
         }
 
-        // Handle Save / Edit Form Data & Auto Push to Cloud
+        // Handle Save / Edit Form Data & Push to Cloud
         function handleFormSubmit(e) {
             e.preventDefault();
             const id = document.getElementById('entry-id').value;
