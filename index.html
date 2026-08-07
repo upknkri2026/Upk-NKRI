@@ -31,17 +31,14 @@
 </head>
 <body class="bg-[#032d4d] font-sans antialiased text-gray-800 min-h-screen">
 
-    <!-- ================= 1. TAMPILAN LOGIN (Persis Seperti Gambar) ================= -->
+    <!-- ================= 1. TAMPILAN LOGIN ================= -->
     <div id="login-view" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-[#f0f4f8] rounded-3xl p-8 sm:p-10 w-full max-w-md shadow-2xl relative text-center border border-white/20">
             
-            <!-- Logo Container -->
+            <!-- Logo DAPM -->
             <div class="flex justify-center mb-4">
                 <div class="w-20 h-20 bg-white rounded-2xl shadow-md border-2 border-cyan-500 p-2 flex items-center justify-center">
-                    <!-- Logo Icon placeholder/custom SVG -->
-                    <div class="w-full h-full rounded-xl bg-gradient-to-tr from-cyan-600 via-emerald-500 to-amber-500 flex items-center justify-center text-white font-bold text-2xl shadow-inner">
-                        UPK
-                    </div>
+                    <img src="logo-dapm.png" alt="Logo DAPM" class="w-full h-full object-contain">
                 </div>
             </div>
 
@@ -84,14 +81,14 @@
         </div>
     </div>
 
-    <!-- ================= 2. DASHBOARD APLIKASI (Setelah Login) ================= -->
+    <!-- ================= 2. DASHBOARD APLIKASI ================= -->
     <div id="dashboard-view" class="hidden min-h-screen bg-gray-100 flex flex-col">
         
         <!-- Navbar Header -->
         <header class="bg-[#032d4d] text-white shadow-md no-print">
             <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-lg p-1 flex items-center justify-center font-bold text-[#032d4d] text-xs">UPK</div>
+                    <img src="logo-dapm.png" alt="Logo DAPM" class="w-10 h-10 object-contain bg-white rounded-lg p-1">
                     <div>
                         <h1 class="font-bold text-lg leading-tight">ASOSIASI UPK NKRI</h1>
                         <p class="text-xs text-cyan-300">Sistem Kelembagaan, Aset & Keuangan</p>
@@ -160,7 +157,7 @@
 
     <!-- ================= 3. MODAL FORM (INPUT / EDIT & SIMPAN) ================= -->
     <div id="form-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50 no-print">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h3 id="modal-form-title" class="text-lg font-bold text-gray-800">Form Transaksi</h3>
                 <button onclick="closeFormModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -190,6 +187,9 @@
             <!-- Struk/Bukti Cetak Container -->
             <div id="print-area" class="p-4 bg-white">
                 <div class="text-center border-b pb-4 mb-4">
+                    <div class="flex justify-center mb-2">
+                        <img src="logo-dapm.png" alt="Logo DAPM" class="w-12 h-12 object-contain">
+                    </div>
                     <h2 class="text-lg font-black text-gray-900">ASOSIASI UPK NKRI</h2>
                     <p class="text-xs text-gray-500">Sistem Kelembagaan, Aset & Keuangan</p>
                     <p class="text-xs font-mono text-gray-400 mt-1" id="print-date"></p>
@@ -209,7 +209,7 @@
                 </div>
             </div>
 
-            <!-- Button Action (Disembunyikan saat mencetak) -->
+            <!-- Button Action -->
             <div class="flex justify-between items-center mt-6 pt-4 border-t no-print">
                 <button onclick="closePrintModal()" class="px-4 py-2 border rounded-lg text-sm text-gray-600 hover:bg-gray-50">Tutup</button>
                 <button onclick="triggerPrint()" class="px-5 py-2 bg-[#0073ab] hover:bg-[#005f8d] text-white font-medium text-sm rounded-lg shadow flex items-center space-x-2">
@@ -235,8 +235,26 @@
                 { id: 202, tanggal: '2026-08-05', keterangan: 'Biaya Operasional Rapat', jenis: 'Keluar', nominal: 300000 }
             ],
             aset: [
-                { id: 301, upk: 'UPK Kec. Mandiri', namaAset: 'Laptop Kantor Core i5', kategori: 'Elektronik', nilai: 8500000, kondisi: 'Baik' },
-                { id: 302, upk: 'UPK Sejahtera', namaAset: 'Sepeda Motor Dinas', kategori: 'Kendaraan', nilai: 17000000, kondisi: 'Baik' }
+                { 
+                    id: 301, 
+                    namaUPK: 'UPK Kec. Mandiri', 
+                    kecamatan: 'Tanete Riattang', 
+                    kabupaten: 'Bone', 
+                    provinsi: 'Sulawesi Selatan', 
+                    modalAwal: 500000000, 
+                    totalAset: 1250000000, 
+                    tanggalInput: '2026-08-01' 
+                },
+                { 
+                    id: 302, 
+                    namaUPK: 'UPK Sejahtera', 
+                    kecamatan: 'Palakka', 
+                    kabupaten: 'Bone', 
+                    provinsi: 'Sulawesi Selatan', 
+                    modalAwal: 750000000, 
+                    totalAset: 2100000000, 
+                    tanggalInput: '2026-08-03' 
+                }
             ]
         };
 
@@ -278,7 +296,7 @@
             const titles = {
                 iuran: { title: "Manajemen Data Iuran", sub: "Kelola pencatatan data iuran anggota UPK" },
                 kas: { title: "Data Kas Keuangan", sub: "Kelola arus kas masuk dan keluar kelembagaan" },
-                aset: { title: "Data Aset Semua UPK", sub: "Inventarisasi dan pencatatan aset seluruh unit UPK" }
+                aset: { title: "Data Aset Semua UPK", sub: "Inventarisasi dan pencatatan nilai aset seluruh unit UPK" }
             };
             document.getElementById('section-title').innerText = titles[tab].title;
             document.getElementById('section-subtitle').innerText = titles[tab].sub;
@@ -294,91 +312,95 @@
 
             if (currentTab === 'iuran') {
                 headRow.innerHTML = `
-                    <th class="p-4">ID</th>
-                    <th class="p-4">Nama UPK</th>
-                    <th class="p-4">Tanggal</th>
-                    <th class="p-4">Nominal</th>
-                    <th class="p-4">Keterangan</th>
-                    <th class="p-4 text-center">Aksi</th>
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Nama UPK</th>
+                    <th class="p-3">Tanggal</th>
+                    <th class="p-3">Nominal</th>
+                    <th class="p-3">Keterangan</th>
+                    <th class="p-3 text-center">Aksi</th>
                 `;
                 database.iuran.forEach(item => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-mono text-xs">#${item.id}</td>
-                            <td class="p-4 font-medium text-gray-900">${item.upk}</td>
-                            <td class="p-4">${item.tanggal}</td>
-                            <td class="p-4 font-semibold text-emerald-600">${formatRupiah(item.nominal)}</td>
-                            <td class="p-4">${item.keterangan}</td>
-                            <td class="p-4 text-center">${getActionButtons(item.id)}</td>
+                            <td class="p-3 font-mono text-xs">#${item.id}</td>
+                            <td class="p-3 font-medium text-gray-900">${item.upk}</td>
+                            <td class="p-3">${item.tanggal}</td>
+                            <td class="p-3 font-semibold text-emerald-600">${formatRupiah(item.nominal)}</td>
+                            <td class="p-3">${item.keterangan}</td>
+                            <td class="p-3 text-center">${getActionButtons(item.id)}</td>
                         </tr>
                     `;
                 });
             } else if (currentTab === 'kas') {
                 headRow.innerHTML = `
-                    <th class="p-4">ID</th>
-                    <th class="p-4">Tanggal</th>
-                    <th class="p-4">Keterangan</th>
-                    <th class="p-4">Jenis</th>
-                    <th class="p-4">Nominal</th>
-                    <th class="p-4 text-center">Aksi</th>
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Tanggal</th>
+                    <th class="p-3">Keterangan</th>
+                    <th class="p-3">Jenis</th>
+                    <th class="p-3">Nominal</th>
+                    <th class="p-3 text-center">Aksi</th>
                 `;
                 database.kas.forEach(item => {
                     const badgeClass = item.jenis === 'Masuk' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800';
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-mono text-xs">#${item.id}</td>
-                            <td class="p-4">${item.tanggal}</td>
-                            <td class="p-4 font-medium text-gray-900">${item.keterangan}</td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-semibold rounded-full ${badgeClass}">${item.jenis}</span></td>
-                            <td class="p-4 font-semibold">${formatRupiah(item.nominal)}</td>
-                            <td class="p-4 text-center">${getActionButtons(item.id)}</td>
+                            <td class="p-3 font-mono text-xs">#${item.id}</td>
+                            <td class="p-3">${item.tanggal}</td>
+                            <td class="p-3 font-medium text-gray-900">${item.keterangan}</td>
+                            <td class="p-3"><span class="px-2.5 py-1 text-xs font-semibold rounded-full ${badgeClass}">${item.jenis}</span></td>
+                            <td class="p-3 font-semibold">${formatRupiah(item.nominal)}</td>
+                            <td class="p-3 text-center">${getActionButtons(item.id)}</td>
                         </tr>
                     `;
                 });
             } else if (currentTab === 'aset') {
                 headRow.innerHTML = `
-                    <th class="p-4">ID</th>
-                    <th class="p-4">UPK Pemilik</th>
-                    <th class="p-4">Nama Aset</th>
-                    <th class="p-4">Kategori</th>
-                    <th class="p-4">Nilai Aset</th>
-                    <th class="p-4">Kondisi</th>
-                    <th class="p-4 text-center">Aksi</th>
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Nama UPK</th>
+                    <th class="p-3">Kecamatan</th>
+                    <th class="p-3">Kabupaten</th>
+                    <th class="p-3">Provinsi</th>
+                    <th class="p-3">Modal Awal</th>
+                    <th class="p-3">Total Aset</th>
+                    <th class="p-3">Tgl Input</th>
+                    <th class="p-3 text-center">Aksi</th>
                 `;
                 database.aset.forEach(item => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-mono text-xs">#${item.id}</td>
-                            <td class="p-4 font-medium text-gray-900">${item.upk}</td>
-                            <td class="p-4">${item.namaAset}</td>
-                            <td class="p-4">${item.kategori}</td>
-                            <td class="p-4 font-semibold text-blue-600">${formatRupiah(item.nilai)}</td>
-                            <td class="p-4"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">${item.kondisi}</span></td>
-                            <td class="p-4 text-center">${getActionButtons(item.id)}</td>
+                            <td class="p-3 font-mono text-xs">#${item.id}</td>
+                            <td class="p-3 font-medium text-gray-900">${item.namaUPK}</td>
+                            <td class="p-3">${item.kecamatan}</td>
+                            <td class="p-3">${item.kabupaten}</td>
+                            <td class="p-3">${item.provinsi}</td>
+                            <td class="p-3 font-semibold text-gray-700">${formatRupiah(item.modalAwal)}</td>
+                            <td class="p-3 font-semibold text-blue-600">${formatRupiah(item.totalAset)}</td>
+                            <td class="p-3 text-xs">${item.tanggalInput}</td>
+                            <td class="p-3 text-center">${getActionButtons(item.id)}</td>
                         </tr>
                     `;
                 });
             }
         }
 
-        // Generate Tombol Edit, Cetak, dan Hapus
+        // Generate Tombol Action
         function getActionButtons(id) {
             return `
-                <div class="flex items-center justify-center space-x-2">
-                    <button onclick="editEntry(${id})" title="Edit Data" class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg transition">
+                <div class="flex items-center justify-center space-x-1 sm:space-x-2">
+                    <button onclick="editEntry(${id})" title="Edit Data" class="p-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg transition">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <button onclick="openPrintModal(${id})" title="Cetak Item" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition">
+                    <button onclick="openPrintModal(${id})" title="Cetak Item" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition">
                         <i class="fa-solid fa-print"></i>
                     </button>
-                    <button onclick="deleteEntry(${id})" title="Hapus Data" class="p-2 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg transition">
+                    <button onclick="deleteEntry(${id})" title="Hapus Data" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg transition">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
             `;
         }
 
-        // Open Form Modal (Add or Edit)
+        // Open Form Modal (Add / Edit)
         function openFormModal(id = null) {
             const fieldsContainer = document.getElementById('dynamic-form-fields');
             const entryIdField = document.getElementById('entry-id');
@@ -434,28 +456,36 @@
             } else if (currentTab === 'aset') {
                 fieldsContainer.innerHTML = `
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">UPK Pemilik</label>
-                        <input type="text" id="field-upk" value="${item.upk || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama UPK</label>
+                        <input type="text" id="field-namaUPK" value="${item.namaUPK || ''}" required class="w-full p-2.5 border rounded-lg text-sm" placeholder="Contoh: UPK Kec. Mandiri">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Kecamatan</label>
+                            <input type="text" id="field-kecamatan" value="${item.kecamatan || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Kabupaten</label>
+                            <input type="text" id="field-kabupaten" value="${item.kabupaten || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Aset</label>
-                        <input type="text" id="field-namaAset" value="${item.namaAset || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Provinsi</label>
+                        <input type="text" id="field-provinsi" value="${item.provinsi || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Modal Awal (Rp)</label>
+                            <input type="number" id="field-modalAwal" value="${item.modalAwal || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Total Aset (Rp)</label>
+                            <input type="number" id="field-totalAset" value="${item.totalAset || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kategori Aset</label>
-                        <input type="text" id="field-kategori" value="${item.kategori || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nilai Aset (Rp)</label>
-                        <input type="number" id="field-nilai" value="${item.nilai || ''}" required class="w-full p-2.5 border rounded-lg text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kondisi</label>
-                        <select id="field-kondisi" class="w-full p-2.5 border rounded-lg text-sm">
-                            <option value="Baik" ${item.kondisi === 'Baik' ? 'selected' : ''}>Baik</option>
-                            <option value="Rusak Ringan" ${item.kondisi === 'Rusak Ringan' ? 'selected' : ''}>Rusak Ringan</option>
-                            <option value="Rusak Berat" ${item.kondisi === 'Rusak Berat' ? 'selected' : ''}>Rusak Berat</option>
-                        </select>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal Input Data</label>
+                        <input type="date" id="field-tanggalInput" value="${item.tanggalInput || new Date().toISOString().split('T')[0]}" required class="w-full p-2.5 border rounded-lg text-sm">
                     </div>
                 `;
             }
@@ -495,11 +525,13 @@
             } else if (currentTab === 'aset') {
                 const dataObj = {
                     id: id ? parseInt(id) : Date.now(),
-                    upk: document.getElementById('field-upk').value,
-                    namaAset: document.getElementById('field-namaAset').value,
-                    kategori: document.getElementById('field-kategori').value,
-                    nilai: parseFloat(document.getElementById('field-nilai').value),
-                    kondisi: document.getElementById('field-kondisi').value
+                    namaUPK: document.getElementById('field-namaUPK').value,
+                    kecamatan: document.getElementById('field-kecamatan').value,
+                    kabupaten: document.getElementById('field-kabupaten').value,
+                    provinsi: document.getElementById('field-provinsi').value,
+                    modalAwal: parseFloat(document.getElementById('field-modalAwal').value),
+                    totalAset: parseFloat(document.getElementById('field-totalAset').value),
+                    tanggalInput: document.getElementById('field-tanggalInput').value
                 };
                 saveToDatabase(dataObj, id);
             }
@@ -510,11 +542,9 @@
 
         function saveToDatabase(dataObj, id) {
             if (id) {
-                // Edit / Update Existing
                 const index = database[currentTab].findIndex(x => x.id == id);
                 database[currentTab][index] = dataObj;
             } else {
-                // Add New
                 database[currentTab].push(dataObj);
             }
         }
@@ -556,19 +586,20 @@
                     <div class="flex justify-between"><span>Nominal:</span><span class="font-bold">${formatRupiah(item.nominal)}</span></div>
                 `;
             } else if (currentTab === 'aset') {
-                typeBadge.innerText = 'LEMBAR INVENTARIS ASET';
+                typeBadge.innerText = 'LAPORAN DATA ASET UPK';
                 html += `
-                    <div class="flex justify-between"><span>UPK Pemilik:</span><span class="font-bold">${item.upk}</span></div>
-                    <div class="flex justify-between"><span>Nama Aset:</span><span>${item.namaAset}</span></div>
-                    <div class="flex justify-between"><span>Kategori:</span><span>${item.kategori}</span></div>
-                    <div class="flex justify-between"><span>Nilai Aset:</span><span class="font-bold">${formatRupiah(item.nilai)}</span></div>
-                    <div class="flex justify-between"><span>Kondisi:</span><span>${item.kondisi}</span></div>
+                    <div class="flex justify-between"><span>Nama UPK:</span><span class="font-bold">${item.namaUPK}</span></div>
+                    <div class="flex justify-between"><span>Kecamatan:</span><span>${item.kecamatan}</span></div>
+                    <div class="flex justify-between"><span>Kabupaten:</span><span>${item.kabupaten}</span></div>
+                    <div class="flex justify-between"><span>Provinsi:</span><span>${item.provinsi}</span></div>
+                    <div class="flex justify-between"><span>Modal Awal:</span><span class="font-bold">${formatRupiah(item.modalAwal)}</span></div>
+                    <div class="flex justify-between"><span>Total Aset:</span><span class="font-bold text-blue-700">${formatRupiah(item.totalAset)}</span></div>
+                    <div class="flex justify-between"><span>Tanggal Input:</span><span>${item.tanggalInput}</span></div>
                 `;
             }
 
             detailsDiv.innerHTML = html;
             document.getElementById('print-modal').classList.remove('hidden');
-            document.getElementById('print-modal').classList.flex;
             document.getElementById('print-modal').classList.add('flex');
         }
 
