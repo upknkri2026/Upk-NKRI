@@ -81,18 +81,21 @@
             }
 
             #print-modal {
-                position: static !important;
-                background: none !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                background: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 display: block !important;
                 width: 100% !important;
                 height: auto !important;
                 overflow: visible !important;
+                z-index: 99999 !important;
             }
 
             #print-modal-container {
-                position: static !important;
+                position: relative !important;
                 max-width: 100% !important;
                 width: 100% !important;
                 max-height: none !important;
@@ -110,6 +113,7 @@
                 background: white !important;
                 color: black !important;
                 padding: 0 !important;
+                margin: 0 !important;
             }
 
             .no-print {
@@ -118,7 +122,7 @@
 
             @page {
                 size: auto;
-                margin: 15mm;
+                margin: 10mm;
             }
         }
     </style>
@@ -967,7 +971,6 @@
             let dbKey = getDbKey(tabName);
             let list = database[dbKey] || [];
             if (!loggedUser || loggedUser.role === 'PUSAT') {
-                // Urutkan Kas berdasarkan tanggal terbaru (descending)
                 if (tabName === 'kas') {
                     return [...list].sort((a, b) => formatDateToISO(b.tanggal).localeCompare(formatDateToISO(a.tanggal)));
                 }
@@ -1606,7 +1609,7 @@
                 // OTOMATIS MASUK KAS KEUANGAN SEBAGAI PEMASUKAN
                 if (!database.kas) database.kas = [];
                 const kasObj = {
-                    id: dataObj.id + 1, // Unique ID turunan dari iuran
+                    id: dataObj.id + 1,
                     tanggal: dataObj.tanggal,
                     keterangan: `Penerimaan Iuran dari ${dataObj.upk} (${dataObj.keterangan})`,
                     jenis: 'Masuk',
@@ -1614,7 +1617,6 @@
                     provinsi: dataObj.provinsi,
                     kabupaten: dataObj.kabupaten
                 };
-                // Jika sedang edit, ganti yang lama atau tambahkan baru
                 const existingKasIndex = database.kas.findIndex(k => k.id === dataObj.id + 1);
                 if (existingKasIndex !== -1) {
                     database.kas[existingKasIndex] = kasObj;
