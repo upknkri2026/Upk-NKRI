@@ -299,218 +299,221 @@
             </div>
         </header>
 
-        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8 no-print">
+        <!-- MAIN LAYOUT DENGAN SIDEBAR PANEL DI KIRI -->
+        <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8 flex flex-col lg:flex-row gap-6 no-print">
             
-            <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-sky-600/10 via-blue-600/10 to-indigo-600/10 border border-sky-500/30 flex items-center justify-between text-xs sm:text-sm text-slate-700 dark:text-slate-300 shadow-sm">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-500 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-circle-info text-base"></i>
-                    </div>
-                    <div>
-                        <b class="text-slate-900 dark:text-white">Pengumuman Resmi Pusat:</b> <span id="announcement-text-banner">Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
-                    <div class="relative z-10">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Iuran Masuk</p>
-                        <h3 id="stat-total-iuran" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1.5 tracking-tight">Rp 0</h3>
-                    </div>
-                    <div class="relative z-10 w-13 h-13 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
-                    <div class="relative z-10">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Posisi Saldo Kas</p>
-                        <h3 id="stat-saldo-kas" class="text-2xl font-black text-sky-600 dark:text-sky-400 mt-1.5 tracking-tight">Rp 0</h3>
-                    </div>
-                    <div class="relative z-10 w-13 h-13 bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-wallet"></i>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
-                    <div class="relative z-10">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">UPK Terdaftar</p>
-                        <h3 id="stat-total-upk" class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1.5 tracking-tight">0 UPK</h3>
-                    </div>
-                    <div class="relative z-10 w-13 h-13 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-xl">
-                        <i class="fa-solid fa-building-columns"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TABS NAVIGATION MENU -->
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <div class="bg-slate-200/80 dark:bg-slate-800 p-1.5 rounded-2xl flex flex-wrap gap-1 shadow-inner">
-                    <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
+            <!-- PANEL SIDEBAR MENU KIRI -->
+            <aside class="w-full lg:w-64 shrink-0 space-y-4">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-1.5">
+                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 mb-2">Menu Navigasi Utama</p>
+                    
+                    <button id="tab-btn-iuran" onclick="switchTab('iuran')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left">
+                        <i class="fa-solid fa-hand-holding-dollar w-5"></i>
                         <span>Data Iuran</span>
                     </button>
-                    <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                        <i class="fa-solid fa-wallet"></i>
+                    <button id="tab-btn-kas" onclick="switchTab('kas')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left">
+                        <i class="fa-solid fa-wallet w-5"></i>
                         <span>Kas Keuangan</span>
                     </button>
-                    <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                        <i class="fa-solid fa-database"></i>
+                    <button id="tab-btn-aset" onclick="switchTab('aset')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left">
+                        <i class="fa-solid fa-database w-5"></i>
                         <span>Database UPK</span>
                     </button>
-                    <button id="tab-btn-struktur" onclick="switchTab('struktur')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                        <i class="fa-solid fa-sitemap"></i>
+                    <button id="tab-btn-struktur" onclick="switchTab('struktur')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left">
+                        <i class="fa-solid fa-sitemap w-5"></i>
                         <span>Struktur Pimpinan</span>
                     </button>
-                    <button id="tab-btn-galeri" onclick="switchTab('galeri')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                        <i class="fa-solid fa-images"></i>
+                    <button id="tab-btn-galeri" onclick="switchTab('galeri')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left">
+                        <i class="fa-solid fa-images w-5"></i>
                         <span>Galeri & Berita</span>
                     </button>
-                    <button id="tab-btn-docs" onclick="switchTab('docs')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200">
-                        <i class="fa-solid fa-folder-open"></i>
+                    <button id="tab-btn-docs" onclick="switchTab('docs')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left">
+                        <i class="fa-solid fa-folder-open w-5"></i>
                         <span>Dokumen & SK</span>
                     </button>
-                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-amber-500/10 text-amber-700 dark:text-amber-400 hidden">
-                        <i class="fa-solid fa-users-gear"></i>
+                    <button id="tab-btn-users" onclick="switchTab('users')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-amber-500/10 text-amber-700 dark:text-amber-400 hidden">
+                        <i class="fa-solid fa-users-gear w-5"></i>
                         <span>Kelola User</span>
                     </button>
-                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
-                        <i class="fa-solid fa-gear"></i>
+                    <button id="tab-btn-settings" onclick="switchTab('settings')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-sky-500/10 text-sky-700 dark:text-sky-400 hidden">
+                        <i class="fa-solid fa-gear w-5"></i>
                         <span>Pengaturan</span>
                     </button>
-                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 transition duration-200 bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
-                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    <button id="tab-btn-audit" onclick="switchTab('audit')" class="tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 transition duration-200 text-left bg-indigo-500/10 text-indigo-700 dark:text-indigo-400">
+                        <i class="fa-solid fa-clock-rotate-left w-5"></i>
                         <span>Log Aktivitas</span>
                     </button>
                 </div>
 
-                <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
-                    <i class="fa-solid fa-file-excel"></i>
-                    <span>Ekspor Excel (.XLS)</span>
-                </button>
-            </div>
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800">
+                    <button onclick="exportToExcel()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-file-excel"></i>
+                        <span>Ekspor Excel (.XLS)</span>
+                    </button>
+                </div>
+            </aside>
 
-            <!-- KOMULATIF ASET -->
-            <div id="komulatif-aset-container" class="hidden mb-6 space-y-6">
-                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-2xl p-5 text-white shadow-lg border border-slate-700/80">
-                    <div class="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-chart-pie text-sky-400 text-base"></i>
-                            <h3 class="font-extrabold text-sm sm:text-base text-white tracking-tight">RINGKASAN KOMULATIF ASET & STATUS BADAN HUKUM</h3>
+            <!-- KONTEN UTAMA KANAN -->
+            <div class="flex-1 space-y-6 min-w-0">
+                
+                <div class="p-4 rounded-2xl bg-gradient-to-r from-sky-600/10 via-blue-600/10 to-indigo-600/10 border border-sky-500/30 flex items-center justify-between text-xs sm:text-sm text-slate-700 dark:text-slate-300 shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-500 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-circle-info text-base"></i>
                         </div>
-                        <span class="text-[11px] font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30 px-3 py-1 rounded-full">Akumulasi Real-Time</span>
+                        <div>
+                            <b class="text-slate-900 dark:text-white">Pengumuman Resmi Pusat:</b> <span id="announcement-text-banner">Batas akhir pelaporan rekapitulasi iuran & aset triwulan ini adalah tanggal 25/08/2026. Harap seluruh DPD melakukan sinkronisasi data melalui DPW masing-masing.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Iuran Masuk</p>
+                            <h3 id="stat-total-iuran" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1.5 tracking-tight">Rp 0</h3>
+                        </div>
+                        <div class="relative z-10 w-13 h-13 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-                        <div class="bg-white/5 p-3.5 rounded-xl border border-white/10">
-                            <p class="text-slate-400 text-[10px] font-bold uppercase">Total Modal Awal</p>
-                            <p id="kom-modal-awal" class="text-sm sm:text-base font-black text-amber-400 mt-1">Rp 0</p>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Posisi Saldo Kas</p>
+                            <h3 id="stat-saldo-kas" class="text-2xl font-black text-sky-600 dark:text-sky-400 mt-1.5 tracking-tight">Rp 0</h3>
+                        </div>
+                        <div class="relative z-10 w-13 h-13 bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">UPK Terdaftar</p>
+                            <h3 id="stat-total-upk" class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1.5 tracking-tight">0 UPK</h3>
+                        </div>
+                        <div class="relative z-10 w-13 h-13 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOMULATIF ASET -->
+                <div id="komulatif-aset-container" class="hidden space-y-6">
+                    <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-2xl p-5 text-white shadow-lg border border-slate-700/80">
+                        <div class="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-chart-pie text-sky-400 text-base"></i>
+                                <h3 class="font-extrabold text-sm sm:text-base text-white tracking-tight">RINGKASAN KOMULATIF ASET & STATUS BADAN HUKUM</h3>
+                            </div>
+                            <span class="text-[11px] font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30 px-3 py-1 rounded-full">Akumulasi Real-Time</span>
                         </div>
 
-                        <div class="bg-white/5 p-3.5 rounded-xl border border-white/10">
-                            <p class="text-slate-400 text-[10px] font-bold uppercase">Total Aset Sekarang</p>
-                            <p id="kom-total-aset" class="text-sm sm:text-base font-black text-sky-400 mt-1">Rp 0</p>
-                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                            <div class="bg-white/5 p-3.5 rounded-xl border border-white/10">
+                                <p class="text-slate-400 text-[10px] font-bold uppercase">Total Modal Awal</p>
+                                <p id="kom-modal-awal" class="text-sm sm:text-base font-black text-amber-400 mt-1">Rp 0</p>
+                            </div>
 
-                        <div class="bg-white/5 p-3.5 rounded-xl border border-white/10 col-span-2 md:col-span-2">
-                            <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Rincian Status Badan Hukum</p>
-                            <div class="flex flex-wrap gap-2 text-[11px] font-bold">
-                                <span class="bg-sky-500/20 text-sky-300 border border-sky-500/40 px-2.5 py-1 rounded-lg" id="kom-status-pbh">PBH: 0</span>
-                                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg" id="kom-status-koperasi">Koperasi: 0</span>
-                                <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 px-2.5 py-1 rounded-lg" id="kom-status-pt">PT: 0</span>
-                                <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg" id="kom-status-bumdesma">Proses Bumdesma: 0</span>
-                                <span class="bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2.5 py-1 rounded-lg" id="kom-status-belum">Belum: 0</span>
+                            <div class="bg-white/5 p-3.5 rounded-xl border border-white/10">
+                                <p class="text-slate-400 text-[10px] font-bold uppercase">Total Aset Sekarang</p>
+                                <p id="kom-total-aset" class="text-sm sm:text-base font-black text-sky-400 mt-1">Rp 0</p>
+                            </div>
+
+                            <div class="bg-white/5 p-3.5 rounded-xl border border-white/10 col-span-2 md:col-span-2">
+                                <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Rincian Status Badan Hukum</p>
+                                <div class="flex flex-wrap gap-2 text-[11px] font-bold">
+                                    <span class="bg-sky-500/20 text-sky-300 border border-sky-500/40 px-2.5 py-1 rounded-lg" id="kom-status-pbh">PBH: 0</span>
+                                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg" id="kom-status-koperasi">Koperasi: 0</span>
+                                    <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 px-2.5 py-1 rounded-lg" id="kom-status-pt">PT: 0</span>
+                                    <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg" id="kom-status-bumdesma">Proses Bumdesma: 0</span>
+                                    <span class="bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2.5 py-1 rounded-lg" id="kom-status-belum">Belum: 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h4 class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3"><i class="fa-solid fa-chart-column mr-1.5 text-sky-500"></i> Grafik Status Badan Hukum UPK</h4>
+                            <div class="h-64 flex justify-center items-center">
+                                <canvas id="statusHukumChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+                            <h4 class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3"><i class="fa-solid fa-chart-line mr-1.5 text-emerald-500"></i> Perbandingan Modal vs Total Aset</h4>
+                            <div class="h-64 flex justify-center items-center">
+                                <canvas id="modalAsetChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-                        <h4 class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3"><i class="fa-solid fa-chart-column mr-1.5 text-sky-500"></i> Grafik Status Badan Hukum UPK</h4>
-                        <div class="h-64 flex justify-center items-center">
-                            <canvas id="statusHukumChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-                        <h4 class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-3"><i class="fa-solid fa-chart-line mr-1.5 text-emerald-500"></i> Perbandingan Modal vs Total Aset</h4>
-                        <div class="h-64 flex justify-center items-center">
-                            <canvas id="modalAsetChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ADVANCED FILTER BAR -->
-            <div id="filter-section-card" class="bg-white dark:bg-slate-900 rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                <div>
-                    <h2 id="section-title" class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Database UPK</h2>
-                    <p id="section-subtitle" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
-                </div>
-                
-                <div id="filter-actions-wrapper" class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end">
-                    <div class="flex items-center space-x-1.5 text-xs bg-slate-50 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <span class="text-slate-400 font-bold px-1">Dari:</span>
-                        <input type="date" id="filter-date-start" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
-                        <span class="text-slate-400 font-bold px-1">s/d</span>
-                        <input type="date" id="filter-date-end" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
-                    </div>
-
-                    <div class="relative flex-1 lg:flex-none min-w-[200px]">
-                        <input type="text" id="search-input" onkeyup="renderTable()" placeholder="Cari Provinsi / UPK..." 
-                            class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none font-medium">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-                    </div>
-
-                    <button id="print-report-btn" onclick="printFullReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
-                        <i class="fa-solid fa-print"></i>
-                        <span>Cetak Rekapan</span>
-                    </button>
-
-                    <button id="add-data-main-btn" onclick="openFormModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
-                        <i class="fa-solid fa-plus"></i>
-                        <span id="add-data-btn-text">Tambah Data</span>
-                    </button>
-                </div>
-            </div>
-
-            <div id="main-table-container" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
-                            <tr id="table-head-row"></tr>
-                        </thead>
-                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- PANEL PENGATURAN WEBSITE (KHUSUS ADMIN PUSAT) -->
-            <div id="settings-panel-view" class="hidden bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 max-w-2xl mx-auto space-y-6">
-                <div>
-                    <h3 class="text-lg font-black text-slate-900 dark:text-white"><i class="fa-solid fa-gear text-sky-500 mr-2"></i> Panel Pengaturan Website & Teks Informasi</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Perbarui teks motto berjalan di header dan pengumuman resmi pusat secara real-time</p>
-                </div>
-
-                <div class="space-y-4 text-xs">
+                <!-- ADVANCED FILTER BAR -->
+                <div id="filter-section-card" class="bg-white dark:bg-slate-900 rounded-2xl p-5 md:p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                     <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Motto Berjalan (Marquee Header)</label>
-                        <textarea id="setting-marquee-input" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none font-medium text-slate-800 dark:text-white"></textarea>
+                        <h2 id="section-title" class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Database UPK</h2>
+                        <p id="section-subtitle" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">Pencatatan data wilayah, modal, aset, dan status badan hukum seluruh unit UPK</p>
                     </div>
+                    
+                    <div id="filter-actions-wrapper" class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-start lg:justify-end">
+                        <div class="flex items-center space-x-1.5 text-xs bg-slate-50 dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <span class="text-slate-400 font-bold px-1">Dari:</span>
+                            <input type="date" id="filter-date-start" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
+                            <span class="text-slate-400 font-bold px-1">s/d</span>
+                            <input type="date" id="filter-date-end" onchange="renderTable()" class="bg-transparent text-slate-700 dark:text-slate-200 outline-none font-medium">
+                        </div>
 
-                    <div>
-                        <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Pengumuman Resmi Pusat (Banner Dashboard)</label>
-                        <textarea id="setting-announcement-input" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none font-medium text-slate-800 dark:text-white"></textarea>
+                        <div class="relative flex-1 lg:flex-none min-w-[200px]">
+                            <input type="text" id="search-input" onkeyup="renderTable()" placeholder="Cari Provinsi / UPK..." 
+                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-white text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none font-medium">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
+
+                        <button id="print-report-btn" onclick="printFullReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
+                            <i class="fa-solid fa-print"></i>
+                            <span>Cetak Rekapan</span>
+                        </button>
+
+                        <button id="add-data-main-btn" onclick="openFormModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span id="add-data-btn-text">Tambah Data</span>
+                        </button>
                     </div>
-
-                    <button type="button" onclick="saveWebsiteSettings()" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-floppy-disk"></i>
-                        <span>Simpan Perubahan Pengaturan</span>
-                    </button>
                 </div>
+
+                <div id="main-table-container" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden">
+                    <div id="table-content-area" class="overflow-x-auto"></div>
+                </div>
+
+                <!-- PANEL PENGATURAN WEBSITE -->
+                <div id="settings-panel-view" class="hidden bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 max-w-2xl mx-auto space-y-6">
+                    <div>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white"><i class="fa-solid fa-gear text-sky-500 mr-2"></i> Panel Pengaturan Website & Teks Informasi</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Perbarui teks motto berjalan di header dan pengumuman resmi pusat secara real-time</p>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Motto Berjalan (Marquee Header)</label>
+                            <textarea id="setting-marquee-input" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none font-medium text-slate-800 dark:text-white"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase mb-2">Teks Pengumuman Resmi Pusat (Banner Dashboard)</label>
+                            <textarea id="setting-announcement-input" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none font-medium text-slate-800 dark:text-white"></textarea>
+                        </div>
+
+                        <button type="button" onclick="saveWebsiteSettings()" class="w-full py-3.5 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-500 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Simpan Perubahan Pengaturan</span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
-        </main>
+        </div>
 
         <footer class="bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 py-5 text-center text-xs text-slate-400 font-medium no-print mt-auto">
             © 2026 Asosiasi UPK NKRI. All rights reserved.
@@ -935,6 +938,7 @@
                 return;
             }
             let table = document.querySelector('table');
+            if (!table) return;
             let cloneTable = table.cloneNode(true);
             
             let rows = cloneTable.rows;
@@ -1134,9 +1138,9 @@
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (btn) {
                     if(t === tab) {
-                        btn.className = "tab-btn px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm flex items-center space-x-2 bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-md shadow-sky-600/30";
+                        btn.className = "tab-btn w-full px-4 py-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center space-x-3 bg-gradient-to-r from-sky-600 to-blue-700 text-white shadow-md shadow-sky-600/30 text-left";
                     } else {
-                        btn.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-2 text-slate-600 dark:text-slate-300 hover:bg-slate-300/50 dark:hover:bg-slate-800";
+                        btn.className = "tab-btn w-full px-4 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center space-x-3 text-slate-600 dark:text-slate-300 hover:bg-slate-300/50 dark:hover:bg-slate-800 text-left";
                     }
                 }
             });
@@ -1194,15 +1198,20 @@
 
         function renderTable() {
             if (currentTab === 'settings') return;
-            const headRow = document.getElementById('table-head-row');
-            const bodyRows = document.getElementById('table-body-rows');
+            const container = document.getElementById('table-content-area');
             const searchQuery = (document.getElementById('search-input').value || '').toLowerCase();
-            bodyRows.innerHTML = '';
+            container.innerHTML = '';
 
             if (currentTab === 'struktur') {
-                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Nama Lengkap & Gelar</th><th class="p-4">Jabatan</th><th class="p-4">Wilayah Kerja</th><th class="p-4">No WhatsApp</th><th class="p-4 text-center">Aksi</th>`;
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">ID</th><th class="p-4">Nama Lengkap & Gelar</th><th class="p-4">Jabatan</th><th class="p-4">Wilayah Kerja</th><th class="p-4">No WhatsApp</th><th class="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('struktur').filter(s => s.nama.toLowerCase().includes(searchQuery) || s.jabatan.toLowerCase().includes(searchQuery));
-
                 filtered.forEach(s => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
@@ -1215,9 +1224,15 @@
                         </tr>`;
                 });
             } else if (currentTab === 'galeri') {
-                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Judul Kegiatan / Berita</th><th class="p-4">Kategori</th><th class="p-4">Tanggal</th><th class="p-4">Deskripsi Singkat</th><th class="p-4 text-center">Aksi</th>`;
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">ID</th><th class="p-4">Judul Kegiatan / Berita</th><th class="p-4">Kategori</th><th class="p-4">Tanggal</th><th class="p-4">Deskripsi Singkat</th><th class="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('galeri').filter(g => g.judul.toLowerCase().includes(searchQuery) || g.kategori.toLowerCase().includes(searchQuery));
-
                 filtered.forEach(g => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
@@ -1230,11 +1245,17 @@
                         </tr>`;
                 });
             } else if (currentTab === 'iuran') {
-                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Nama UPK</th><th class="p-4">Wilayah (Prov/Kab/Kec)</th><th class="p-4">Tanggal</th><th class="p-4">Nominal</th><th class="p-4">Keterangan</th><th class="p-4 text-center">Aksi</th>`;
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">ID</th><th class="p-4">Nama UPK</th><th class="p-4">Wilayah (Prov/Kab/Kec)</th><th class="p-4">Tanggal</th><th class="p-4">Nominal</th><th class="p-4">Keterangan</th><th class="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('iuran').filter(item => 
                     item.upk.toLowerCase().includes(searchQuery) || (item.keterangan && item.keterangan.toLowerCase().includes(searchQuery))
                 );
-                
                 filtered.forEach(item => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
@@ -1248,9 +1269,15 @@
                         </tr>`;
                 });
             } else if (currentTab === 'kas') {
-                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan</th><th class="p-4">Jenis</th><th class="p-4">Nominal</th><th class="p-4 text-center">Aksi</th>`;
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">ID</th><th class="p-4">Tanggal</th><th class="p-4">Keterangan</th><th class="p-4">Jenis</th><th class="p-4">Nominal</th><th class="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('kas').filter(item => item.keterangan.toLowerCase().includes(searchQuery));
-
                 filtered.forEach(item => {
                     const badgeClass = item.jenis === 'Masuk' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
                     bodyRows.innerHTML += `
@@ -1264,38 +1291,93 @@
                         </tr>`;
                 });
             } else if (currentTab === 'aset') {
-                headRow.innerHTML = `<th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4">Kecamatan</th><th class="p-4">Nama UPK</th><th class="p-4">Modal Awal</th><th class="p-4">Total Aset</th><th class="p-4">Pertumbuhan</th><th class="p-4">Status Hukum</th><th class="p-4 text-center">Aksi</th>`;
-                
+                // PENGELOMPOKKAN DATABASE UPK BERDASARKAN PROVINSI SUPAYA TIDAK PANJANG
                 const filtered = getFilteredData('aset').filter(item => 
                     item.provinsi.toLowerCase().includes(searchQuery) ||
                     item.kabupaten.toLowerCase().includes(searchQuery) ||
                     item.namaUPK.toLowerCase().includes(searchQuery)
                 );
 
+                // Group by Provinsi
+                let groupedByProv = {};
                 filtered.forEach(item => {
-                    const growth = item.modalAwal > 0 ? (((item.totalAset - item.modalAwal) / item.modalAwal) * 100).toFixed(1) : 0;
-                    const growthBadge = growth >= 0 ? `<span class="text-emerald-600 dark:text-emerald-400 font-bold">+${growth}%</span>` : `<span class="text-rose-600 font-bold">${growth}%</span>`;
-
-                    bodyRows.innerHTML += `
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
-                            <td class="p-4 font-extrabold text-xs text-indigo-900 dark:text-indigo-400">${item.provinsi}</td>
-                            <td class="p-4 font-bold text-xs text-slate-700 dark:text-slate-300">${item.kabupaten}</td>
-                            <td class="p-4 text-xs text-slate-600 dark:text-slate-400">${item.kecamatan || '-'}</td>
-                            <td class="p-4 font-extrabold text-slate-900 dark:text-white">${item.namaUPK}</td>
-                            <td class="p-4 font-mono text-xs text-slate-600 dark:text-slate-400">${formatRupiah(item.modalAwal)}</td>
-                            <td class="p-4 font-mono text-xs font-black text-sky-700 dark:text-sky-400">${formatRupiah(item.totalAset)}</td>
-                            <td class="p-4 font-mono text-xs">${growthBadge}</td>
-                            <td class="p-4"><span class="px-3 py-1 text-[11px] font-bold rounded-full border bg-sky-50 text-sky-700 border-sky-200">${item.statusBadanHukum || 'Belum'}</span></td>
-                            <td class="p-4 text-center">${getActionButtons(item.id, 'aset')}</td>
-                        </tr>`;
+                    let prov = (item.provinsi || 'LAINNYA').toUpperCase();
+                    if (!groupedByProv[prov]) groupedByProv[prov] = [];
+                    groupedByProv[prov].push(item);
                 });
-            } else if (currentTab === 'docs') {
-                headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Judul Dokumen</th><th class="p-4">Kategori</th><th class="p-4">Tanggal Unggah</th><th class="p-4">Pengunggah</th><th class="p-4 text-center">Berkas File</th><th class="p-4 text-center">Aksi</th>`;
-                const filtered = getFilteredData('docs').filter(d => d.judul.toLowerCase().includes(searchQuery) || d.kategori.toLowerCase().includes(searchQuery));
 
+                let htmlContent = '';
+                for (let prov in groupedByProv) {
+                    let items = groupedByProv[prov];
+                    let totalProvAset = items.reduce((acc, curr) => acc + (curr.totalAset || 0), 0);
+                    let totalProvModal = items.reduce((acc, curr) => acc + (curr.modalAwal || 0), 0);
+
+                    htmlContent += `
+                        <div class="border-b border-slate-200 dark:border-slate-800 mb-6 pb-4 last:mb-0">
+                            <div class="bg-gradient-to-r from-sky-900/40 to-blue-900/40 p-3.5 rounded-xl border border-sky-500/30 flex flex-wrap justify-between items-center mb-3">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-map-location-dot text-sky-400"></i>
+                                    <h3 class="font-extrabold text-sm uppercase text-slate-900 dark:text-white">PROVINSI: ${prov}</h3>
+                                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">${items.length} UPK</span>
+                                </div>
+                                <div class="text-xs space-x-4 font-bold text-slate-600 dark:text-slate-300 mt-1 sm:mt-0">
+                                    <span>Modal: <b class="text-amber-500">${formatRupiah(totalProvModal)}</b></span>
+                                    <span>Total Aset: <b class="text-sky-400">${formatRupiah(totalProvAset)}</b></span>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                                    <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                                        <tr>
+                                            <th class="p-3">Kabupaten</th>
+                                            <th class="p-3">Kecamatan</th>
+                                            <th class="p-3">Nama UPK</th>
+                                            <th class="p-3">Modal Awal</th>
+                                            <th class="p-3">Total Aset</th>
+                                            <th class="p-3">Pertumbuhan</th>
+                                            <th class="p-3">Status Hukum</th>
+                                            <th class="p-3 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">`;
+
+                    items.forEach(item => {
+                        const growth = item.modalAwal > 0 ? (((item.totalAset - item.modalAwal) / item.modalAwal) * 100).toFixed(1) : 0;
+                        const growthBadge = growth >= 0 ? `<span class="text-emerald-600 dark:text-emerald-400 font-bold">+${growth}%</span>` : `<span class="text-rose-600 font-bold">${growth}%</span>`;
+
+                        htmlContent += `
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                                <td class="p-3 font-bold text-xs text-slate-700 dark:text-slate-300">${item.kabupaten}</td>
+                                <td class="p-3 text-xs text-slate-600 dark:text-slate-400">${item.kecamatan || '-'}</td>
+                                <td class="p-3 font-extrabold text-slate-900 dark:text-white">${item.namaUPK}</td>
+                                <td class="p-3 font-mono text-xs text-slate-600 dark:text-slate-400">${formatRupiah(item.modalAwal)}</td>
+                                <td class="p-3 font-mono text-xs font-black text-sky-700 dark:text-sky-400">${formatRupiah(item.totalAset)}</td>
+                                <td class="p-3 font-mono text-xs">${growthBadge}</td>
+                                <td class="p-3"><span class="px-2.5 py-1 text-[10px] font-bold rounded-full border bg-sky-50 text-sky-700 border-sky-200">${item.statusBadanHukum || 'Belum'}</span></td>
+                                <td class="p-3 text-center">${getActionButtons(item.id, 'aset')}</td>
+                            </tr>`;
+                    });
+
+                    htmlContent += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                }
+                container.innerHTML = `<div class="p-4 space-y-6">${htmlContent}</div>`;
+            } else if (currentTab === 'docs') {
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">ID</th><th class="p-4">Judul Dokumen</th><th class="p-4">Kategori</th><th class="p-4">Tanggal Unggah</th><th class="p-4">Pengunggah</th><th class="p-4 text-center">Berkas File</th><th class="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
+                const filtered = getFilteredData('docs').filter(d => d.judul.toLowerCase().includes(searchQuery) || d.kategori.toLowerCase().includes(searchQuery));
                 filtered.forEach(d => {
                     const fileLink = d.fileData ? `<a href="${d.fileData}" target="_blank" download="${d.judul}" class="px-3 py-1.5 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 border border-sky-200 rounded-lg text-xs font-bold inline-flex items-center hover:bg-sky-100 transition"><i class="fa-solid fa-download mr-1.5"></i> Unduh Berkas</a>` : `<span class="text-slate-400 italic text-xs">Tidak ada file</span>`;
-
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
                             <td class="p-4 font-mono text-xs text-slate-400">#${d.id}</td>
@@ -1308,9 +1390,15 @@
                         </tr>`;
                 });
             } else if (currentTab === 'users') {
-                headRow.innerHTML = `<th class="p-4">Username</th><th class="p-4">No HP</th><th class="p-4">Password</th><th class="p-4">Nama Akun</th><th class="p-4">Role</th><th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4 text-center">Aksi</th>`;
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">Username</th><th class="p-4">No HP</th><th class="p-4">Password</th><th class="p-4">Nama Akun</th><th class="p-4">Role</th><th class="p-4">Provinsi</th><th class="p-4">Kabupaten</th><th class="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('users').filter(u => u.nama.toLowerCase().includes(searchQuery) || u.username.includes(searchQuery) || (u.hp && u.hp.includes(searchQuery)));
-
                 filtered.forEach(u => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
@@ -1330,9 +1418,15 @@
                         </tr>`;
                 });
             } else if (currentTab === 'audit') {
-                headRow.innerHTML = `<th class="p-4">ID Log</th><th class="p-4">Waktu Aktivitas</th><th class="p-4">Pengguna</th><th class="p-4">Aksi / Keterangan</th>`;
+                container.innerHTML = `
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        <thead class="bg-slate-50/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 uppercase text-[11px] font-extrabold tracking-wider border-b border-slate-200 dark:border-slate-700">
+                            <tr><th class="p-4">ID Log</th><th class="p-4">Waktu Aktivitas</th><th class="p-4">Pengguna</th><th class="p-4">Aksi / Keterangan</th></tr>
+                        </thead>
+                        <tbody id="table-body-rows" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium"></tbody>
+                    </table>`;
+                const bodyRows = document.getElementById('table-body-rows');
                 const filtered = getFilteredData('audit').filter(a => a.aksi.toLowerCase().includes(searchQuery) || a.user.toLowerCase().includes(searchQuery));
-
                 filtered.forEach(a => {
                     bodyRows.innerHTML += `
                         <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
