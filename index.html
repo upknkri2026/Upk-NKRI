@@ -675,6 +675,12 @@
             ]
         };
 
+        function getDbKey(tab) {
+            if (tab === 'docs') return 'documents';
+            if (tab === 'audit') return 'auditLogs';
+            return tab;
+        }
+
         function formatDateToID(dateStr) {
             if (!dateStr) return '-';
             if (dateStr.includes('/')) return dateStr;
@@ -933,7 +939,8 @@
         }
 
         function getFilteredData(tabName) {
-            let list = database[tabName] || [];
+            let dbKey = getDbKey(tabName);
+            let list = database[dbKey] || [];
             if (!loggedUser || loggedUser.role === 'PUSAT') return list;
 
             if (tabName === 'users') {
@@ -941,6 +948,10 @@
                     return list.filter(u => u.role === 'DPD' && u.provinsi && u.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase());
                 }
                 return [];
+            }
+
+            if (tabName === 'docs' || tabName === 'audit') {
+                return list;
             }
 
             const startDate = document.getElementById('filter-date-start').value;
@@ -1170,7 +1181,7 @@
                 });
             } else if (currentTab === 'docs') {
                 headRow.innerHTML = `<th class="p-4">ID</th><th class="p-4">Judul Dokumen</th><th class="p-4">Kategori</th><th class="p-4">Tanggal Unggah</th><th class="p-4">Pengunggah</th><th class="p-4 text-center">Berkas File</th><th class="p-4 text-center">Aksi</th>`;
-                const filtered = (database.documents || []).filter(d => d.judul.toLowerCase().includes(searchQuery) || d.kategori.toLowerCase().includes(searchQuery));
+                const filtered = getFilteredData('docs').filter(d => d.judul.toLowerCase().includes(searchQuery) || d.kategori.toLowerCase().includes(searchQuery));
 
                 filtered.forEach(d => {
                     const fileLink = d.fileData ? `<a href="${d.fileData}" target="_blank" download="${d.judul}" class="px-3 py-1.5 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 border border-sky-200 rounded-lg text-xs font-bold inline-flex items-center hover:bg-sky-100 transition"><i class="fa-solid fa-download mr-1.5"></i> Unduh Berkas</a>` : `<span class="text-slate-400 italic text-xs">Tidak ada file</span>`;
@@ -1205,7 +1216,7 @@
                 });
             } else if (currentTab === 'audit') {
                 headRow.innerHTML = `<th class="p-4">ID Log</th><th class="p-4">Waktu Aktivitas</th><th class="p-4">Pengguna</th><th class="p-4">Aksi / Keterangan</th>`;
-                const filtered = (database.auditLogs || []).filter(a => a.aksi.toLowerCase().includes(searchQuery) || a.user.toLowerCase().includes(searchQuery));
+                const filtered = getFilteredData('audit').filter(a => a.aksi.toLowerCase().includes(searchQuery) || a.user.toLowerCase().includes(searchQuery));
 
                 filtered.forEach(a => {
                     bodyRows.innerHTML += `
@@ -1239,7 +1250,7 @@
                     <button onclick="editEntry(${id})" title="Edit Data" class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition border border-amber-200/60 hover:bg-amber-100">
                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                     </button>
-                    ${tab !== 'users' && tab !== 'docs' ? `
+                    ${tab !== 'users' && tab !== 'docs' && tab !== 'audit' ? `
                     <button onclick="openPrintModal(${id})" title="Cetak Bukti" class="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center transition border border-sky-200/60 hover:bg-sky-100">
                         <i class="fa-solid fa-print text-xs"></i>
                     </button>` : ''}
@@ -1258,7 +1269,8 @@
             modalTitle.innerText = id ? 'Edit Data' : 'Tambah Data Baru';
             fieldsContainer.innerHTML = '';
 
-            let item = id ? database[currentTab].find(x => x.id === id) : {};
+            let dbKey = getDbKey(currentTab);
+            let item = id ? database[dbKey].find(x => x.id === id) : {};
 
             if (currentTab === 'users') {
                 const defaultProvUser = loggedUser.role === 'DPW' ? loggedUser.provinsi : (item.provinsi || '');
@@ -1455,17 +1467,19 @@
                 const targetUser = id ? database.users.find(u => u.id == id) : null;
                 const isEditingAdminPusat = targetUser && targetUser.role === 'PUSAT';
 
+                const userObjInput = {
+                    id: parseInt(id),
+                    username: document.getElementById('field-username').value.trim(),
+                    hp: document.getElementById('field-hp').value.trim(),
+                    password: document.getElementById('field-password').value.trim(),
+                    nama: document.getElementById('field-nama').value.trim(),
+                    role: 'PUSAT',
+                    provinsi: '',
+                    kabupaten: ''
+                };
+
                 if (isEditingAdminPusat) {
-                    pendingUserObject = {
-                        id: parseInt(id),
-                        username: document.getElementById('field-username').value.trim(),
-                        hp: document.getElementById('field-hp').value.trim(),
-                        password: document.getElementById('field-password').value.trim(),
-                        nama: document.getElementById('field-nama').value.trim(),
-                        role: 'PUSAT',
-                        provinsi: '',
-                        kabupaten: ''
-                    };
+                    pendingUserObject = userObjInput;
                     closeFormModal();
                     document.getElementById('verify-modal').classList.remove('hidden');
                     document.getElementById('verify-modal').classList.add('flex');
@@ -1594,22 +1608,16 @@
         }
 
         function saveToDatabase(dataObj, id) {
+            let dbKey = getDbKey(currentTab);
             if (id) {
-                const index = database[currentTab].findIndex(x => x.id == id);
-                if (index !== -1) database[currentTab][index] = dataObj;
+                const index = database[dbKey].findIndex(x => x.id == id);
+                if (index !== -1) database[dbKey][index] = dataObj;
             } else {
-                database[currentTab].push(dataObj);
+                database[dbKey].push(dataObj);
             }
         }
 
         function editEntry(id) {
-            const targetUser = database.users.find(u => u.id === id);
-            if (currentTab === 'users' && targetUser && targetUser.role === 'PUSAT') {
-                pendingUserObject = targetUser;
-                document.getElementById('verify-modal').classList.remove('hidden');
-                document.getElementById('verify-modal').classList.add('flex');
-                return;
-            }
             openFormModal(id);
         }
 
@@ -1627,7 +1635,8 @@
             }
 
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                database[currentTab] = database[currentTab].filter(x => x.id !== id);
+                let dbKey = getDbKey(currentTab);
+                database[dbKey] = database[dbKey].filter(x => x.id !== id);
                 logAudit(`Menghapus data ID: #${id} pada tab ${currentTab}`);
                 updateDashboardStats();
                 renderTable();
@@ -1636,7 +1645,8 @@
         }
 
         function openPrintModal(id) {
-            const item = database[currentTab].find(x => x.id === id);
+            let dbKey = getDbKey(currentTab);
+            const item = database[dbKey].find(x => x.id === id);
             const detailsDiv = document.getElementById('print-details');
             const typeBadge = document.getElementById('print-type-badge');
             
@@ -1763,6 +1773,29 @@
                                     <td class="p-2 text-right">${formatRupiah(item.modalAwal)}</td>
                                     <td class="p-2 text-right font-bold text-sky-700">${formatRupiah(item.totalAset)}</td>
                                     <td class="p-2">${item.statusBadanHukum || 'Belum'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>`;
+            } else if (currentTab === 'docs') {
+                typeBadge.innerText = 'REKAPITULASI DOKUMEN & SK';
+                html = `
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-300 bg-slate-100 font-bold uppercase">
+                                <th class="p-2">Judul Dokumen</th>
+                                <th class="p-2">Kategori</th>
+                                <th class="p-2">Tanggal</th>
+                                <th class="p-2">Pengunggah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredData.map(d => `
+                                <tr class="border-b border-slate-100">
+                                    <td class="p-2 font-bold">${d.judul}</td>
+                                    <td class="p-2">${d.kategori}</td>
+                                    <td class="p-2">${d.tanggal}</td>
+                                    <td class="p-2">${d.pembuat}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
