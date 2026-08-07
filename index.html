@@ -603,7 +603,7 @@
 
     <!-- ================= 5. JAVASCRIPT & LOGIC ================= -->
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzCj0HXjVGEuaRlwqeApIfAbfGMnjU7V6RYyohKOeW70TnDW7ohAKVoPw7k1UJMD7KX/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJ8dlVpd-GiIuEzvy8wg0M-8RjGLqg3PvtYCrupjLG8djE97quAAWF5HVp0I1rDYBIXA/exec";
 
         let currentTab = 'aset';
         let loggedUser = null;
@@ -793,7 +793,6 @@
             statusEl.innerHTML = `<i class="fa-solid fa-rotate mr-1 text-[9px] animate-spin"></i> Saving...`;
 
             try {
-                // Diperbaiki: Hapus header application/json agar body tidak diblokir oleh mode no-cors browser
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
