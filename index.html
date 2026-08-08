@@ -650,12 +650,12 @@
                 { id: 1, judul: 'Rapat Kerja Nasional (Rakernas) Asosiasi UPK NKRI 2026', kategori: 'Kegiatan Nasional', tanggal: '15/01/2026', deskripsi: 'Rakernas dihadiri oleh seluruh pengurus DPW dan DPD se-Indonesia di Jakarta.', foto: '' }
             ],
             iuran: [
-                { id: 101, upk: 'UPK DAPM AMALI', tanggal: '01/08/2026', nominal: 500000, keterangan: 'Iuran Bulanan Agustus', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'AMALI' },
-                { id: 102, upk: 'UPK DAPM TONRA', tanggal: '03/08/2026', nominal: 750000, keterangan: 'Iuran Tahunan & Organisasi', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TONRA' }
+                { id: 101, upk: 'UPK DAPM AMALI', tanggal: '01/08/2026', nominal: 500000, keterangan: 'Iuran Bulanan Agustus', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'AMALI', inputOleh: 'DPD' },
+                { id: 102, upk: 'UPK DAPM TONRA', tanggal: '03/08/2026', nominal: 750000, keterangan: 'Iuran Tahunan & Organisasi', provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', kecamatan: 'TONRA', inputOleh: 'DPD' }
             ],
             kas: [
-                { id: 201, tanggal: '01/08/2026', keterangan: 'Pemasukan Iuran Anggota', jenis: 'Masuk', nominal: 1250000, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE' },
-                { id: 202, tanggal: '05/08/2026', keterangan: 'Biaya Operasional Rapat', jenis: 'Keluar', nominal: 300000, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE' }
+                { id: 201, tanggal: '01/08/2026', keterangan: 'Pemasukan Iuran Anggota', jenis: 'Masuk', nominal: 1250000, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', inputOleh: 'DPD' },
+                { id: 202, tanggal: '05/08/2026', keterangan: 'Biaya Operasional Rapat', jenis: 'Keluar', nominal: 300000, provinsi: 'SULAWESI SELATAN', kabupaten: 'BONE', inputOleh: 'DPD' }
             ],
             documents: [
                 { id: 1, judul: 'SK Pendirian Asosiasi UPK NKRI', kategori: 'Legalitas', tanggal: '10/01/2026', pembuat: 'Admin Pusat' },
@@ -1049,24 +1049,19 @@
                 });
             }
 
-            // 2. Filter ketat: Akun DPW/DPD HANYA menampilkan data yang wilayah provinsi/kabupatennya sesuai
-            // Dan secara mutlak menyaring keluar data yang bersumber dari entri pusat / Asnas pusat (yang tidak ada wilayah spesifiknya).
+            // 2. Pemisahan Mutlak: Jika akun yang login adalah DPW/DPD, BUANG semua data yang memiliki inputOleh === 'PUSAT'
+            if (tabName === 'iuran' || tabName === 'kas') {
+                list = list.filter(item => item.inputOleh !== 'PUSAT');
+            }
+
+            // 3. Filter berdasarkan wilayah provinsi / kabupaten masing-masing
             if (loggedUser.role === 'DPW') {
-                list = list.filter(item => {
-                    const prov = (item.provinsi || '').toUpperCase();
-                    const ket = (item.keterangan || item.upk || '').toLowerCase();
-                    // Jika iuran/kas berlabel pusat/asnas tanpa provinsi yang cocok, buang
-                    if ((tabName === 'iuran' || tabName === 'kas') && ket.includes('asnas') && !prov) return false;
-                    return prov === loggedUser.provinsi.toUpperCase();
-                });
+                list = list.filter(item => item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase());
             } else if (loggedUser.role === 'DPD') {
-                list = list.filter(item => {
-                    const prov = (item.provinsi || '').toUpperCase();
-                    const kab = (item.kabupaten || '').toUpperCase();
-                    const ket = (item.keterangan || item.upk || '').toLowerCase();
-                    if ((tabName === 'iuran' || tabName === 'kas') && ket.includes('asnas') && !kab) return false;
-                    return prov === loggedUser.provinsi.toUpperCase() && kab === loggedUser.kabupaten.toUpperCase();
-                });
+                list = list.filter(item => 
+                    item.provinsi && item.provinsi.toUpperCase() === loggedUser.provinsi.toUpperCase() &&
+                    item.kabupaten && item.kabupaten.toUpperCase() === loggedUser.kabupaten.toUpperCase()
+                );
             }
 
             if (tabName === 'kas') {
@@ -1519,7 +1514,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nomor WhatsApp</label>
                         <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
-                    </div>`;
+                    `;
             } else if (currentTab === 'galeri') {
                 fieldsContainer.innerHTML = `
                     <div>
@@ -1541,7 +1536,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Deskripsi Singkat</label>
                         <textarea id="field-deskripsi" rows="3" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">${item.deskripsi || ''}</textarea>
-                    </div>`;
+                    `;
             } else if (currentTab === 'users') {
                 const defaultProvUser = loggedUser.role === 'DPW' ? loggedUser.provinsi : (item.provinsi || '');
                 const currentRole = item.role || (loggedUser.role === 'DPW' ? 'DPD' : 'DPW');
@@ -1854,7 +1849,8 @@
                     kecamatan: document.getElementById('field-kecamatan').value.toUpperCase(),
                     tanggal: formatDateToID(tglRaw),
                     nominal: parseFloat(document.getElementById('field-nominal').value),
-                    keterangan: document.getElementById('field-keterangan').value
+                    keterangan: document.getElementById('field-keterangan').value,
+                    inputOleh: loggedUser.role // Menyimpan status role penginput (PUSAT, DPW, atau DPD)
                 };
                 saveToDatabase(dataObj, id);
 
@@ -1866,7 +1862,8 @@
                     jenis: 'Masuk',
                     nominal: dataObj.nominal,
                     provinsi: dataObj.provinsi,
-                    kabupaten: dataObj.kabupaten
+                    kabupaten: dataObj.kabupaten,
+                    inputOleh: loggedUser.role // Menyimpan status role penginput
                 };
                 const existingKasIndex = database.kas.findIndex(k => k.id === dataObj.id + 1);
                 if (existingKasIndex !== -1) {
@@ -1886,7 +1883,8 @@
                     jenis: document.getElementById('field-jenis').value,
                     nominal: parseFloat(document.getElementById('field-nominal').value),
                     provinsi: loggedUser.provinsi || '',
-                    kabupaten: loggedUser.kabupaten || ''
+                    kabupaten: loggedUser.kabupaten || '',
+                    inputOleh: loggedUser.role // Menyimpan status role penginput
                 };
                 saveToDatabase(dataObj, id);
                 logAudit(`Menambah/Mengubah Kas: ${dataObj.keterangan}`);
@@ -1951,7 +1949,7 @@
                     return;
                 }
                 if (loggedUser.role === 'DPW' && targetUser.role === 'DPW') {
-                    alert('Apakah Anda yakin tidak memiliki akses untuk menghapus akun ini?');
+                    alert('Anda tidak memiliki akses untuk menghapus akun ini!');
                     return;
                 }
             }
