@@ -1014,15 +1014,15 @@
         }
 
         // =========================================================================
-        // PEMISAHAN DATA SECARA MUTLAK (PUSAT vs DPW/DPD) AGAR IURAN/KAS PUSAT TIDAK BOCOR
+        // PEMISAHAN DATA SECARA MUTLAK (PUSAT vs DPW/DPD) + URUTAN TANGGAL TERBARU
         // =========================================================================
         function getFilteredData(tabName) {
             let dbKey = getDbKey(tabName);
             let list = database[dbKey] || [];
             
-            // 1. Jika Admin Pusat, tampilkan seluruh data nasional secara lengkap
+            // 1. Jika Admin Pusat, tampilkan seluruh data nasional secara lengkap & terurut tanggal terbaru
             if (!loggedUser || loggedUser.role === 'PUSAT') {
-                if (tabName === 'kas') {
+                if (tabName === 'kas' || tabName === 'iuran') {
                     return [...list].sort((a, b) => formatDateToISO(b.tanggal).localeCompare(formatDateToISO(a.tanggal)));
                 }
                 return list;
@@ -1064,7 +1064,8 @@
                 );
             }
 
-            if (tabName === 'kas') {
+            // 4. Urutkan berdasarkan tanggal terbaru (descending) untuk Kas dan Iuran
+            if (tabName === 'kas' || tabName === 'iuran') {
                 return [...list].sort((a, b) => formatDateToISO(b.tanggal).localeCompare(formatDateToISO(a.tanggal)));
             }
             return list;
@@ -1514,7 +1515,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Nomor WhatsApp</label>
                         <input type="text" id="field-hp" value="${item.hp || ''}" required placeholder="Contoh: 085398087772" class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">
-                    `;
+                    </div>`;
             } else if (currentTab === 'galeri') {
                 fieldsContainer.innerHTML = `
                     <div>
@@ -1536,7 +1537,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1.5">Deskripsi Singkat</label>
                         <textarea id="field-deskripsi" rows="3" required class="w-full p-3 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium outline-none text-slate-900 dark:text-white">${item.deskripsi || ''}</textarea>
-                    `;
+                    </div>`;
             } else if (currentTab === 'users') {
                 const defaultProvUser = loggedUser.role === 'DPW' ? loggedUser.provinsi : (item.provinsi || '');
                 const currentRole = item.role || (loggedUser.role === 'DPW' ? 'DPD' : 'DPW');
@@ -1850,7 +1851,7 @@
                     tanggal: formatDateToID(tglRaw),
                     nominal: parseFloat(document.getElementById('field-nominal').value),
                     keterangan: document.getElementById('field-keterangan').value,
-                    inputOleh: loggedUser.role // Menyimpan status role penginput (PUSAT, DPW, atau DPD)
+                    inputOleh: loggedUser.role // PUSAT, DPW, atau DPD
                 };
                 saveToDatabase(dataObj, id);
 
@@ -1863,7 +1864,7 @@
                     nominal: dataObj.nominal,
                     provinsi: dataObj.provinsi,
                     kabupaten: dataObj.kabupaten,
-                    inputOleh: loggedUser.role // Menyimpan status role penginput
+                    inputOleh: loggedUser.role // PUSAT, DPW, atau DPD
                 };
                 const existingKasIndex = database.kas.findIndex(k => k.id === dataObj.id + 1);
                 if (existingKasIndex !== -1) {
@@ -1884,7 +1885,7 @@
                     nominal: parseFloat(document.getElementById('field-nominal').value),
                     provinsi: loggedUser.provinsi || '',
                     kabupaten: loggedUser.kabupaten || '',
-                    inputOleh: loggedUser.role // Menyimpan status role penginput
+                    inputOleh: loggedUser.role // PUSAT, DPW, atau DPD
                 };
                 saveToDatabase(dataObj, id);
                 logAudit(`Menambah/Mengubah Kas: ${dataObj.keterangan}`);
